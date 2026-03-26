@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTINEL</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08111d;
+      --panel: #101c2b;
+      --text: #e7f1fb;
+      --muted: #8aa4be;
+      --accent: #13c7a3;
+      --border: #1f334a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(19,199,163,.18), transparent 35%),
+        linear-gradient(180deg, #08111d 0%, #0b1624 100%);
+      color: var(--text);
+    }
+    main {
+      width: min(720px, calc(100vw - 32px));
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(16, 28, 43, 0.94);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: 0.04em;
+    }
+    p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .links {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    a {
+      display: block;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.02);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    a:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      background: rgba(19, 199, 163, 0.06);
+    }
+    .label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .desc {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>SENTINEL</h1>
+    <p>Le backend Django fonctionne correctement. Utilisez les liens ci-dessous pour accéder rapidement aux principales entrées de l'application.</p>
+
+    <div class="links">
+      <a href="/api/docs/">
+        <span class="label">Documentation API</span>
+        <span class="desc">Interface Swagger pour explorer et tester les endpoints.</span>
+      </a>
+      <a href="/api/schema/">
+        <span class="label">Schéma OpenAPI</span>
+        <span class="desc">Description brute de l'API au format OpenAPI.</span>
+      </a>
+      <a href="/admin/">
+        <span class="label">Administration Django</span>
+        <span class="desc">Accès au back-office d'administration.</span>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

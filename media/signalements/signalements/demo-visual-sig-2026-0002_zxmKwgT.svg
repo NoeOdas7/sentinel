@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1440" viewBox="0 0 1280 1440">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#17324d"/>
+    <stop offset="100%" stop-color="#090c14"/>
+  </linearGradient>
+  <radialGradient id="halo" cx="0.18" cy="0.16" r="0.9">
+    <stop offset="0%" stop-color="#1fb89f" stop-opacity="0.95"/>
+    <stop offset="100%" stop-color="#1fb89f" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="1280" height="1440" fill="url(#bg)"/>
+<rect width="1280" height="1440" fill="url(#halo)"/>
+<circle cx="1080" cy="240" r="180" fill="#f6c667" fill-opacity="0.16"/>
+<rect x="94" y="118" width="1092" height="1204" rx="48" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+<text x="130" y="230" fill="#f3efe8" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700">SENTINEL REPORT</text>
+<text x="130" y="308" fill="#f6c667" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">MALI • MEDIAS</text>
+<text x="130" y="416" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="800">Campagne mediatique contre l</text>
+<text x="130" y="492" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="800">es ONG SRHR au Mali</text>
+<text x="130" y="626" fill="#dbe7f2" font-family="Arial, Helvetica, sans-serif" font-size="34">SIG-2026-0002 • CRITICITE MODEREE</text>
+<rect x="130" y="700" width="1020" height="2" fill="rgba(255,255,255,0.16)"/>
+<text x="130" y="808" fill="#d5dde8" font-family="Arial, Helvetica, sans-serif" font-size="36">Une serie d'emissions radio accuse des ONG internationales de promouvoir l'avortement au</text>
+<text x="130" y="860" fill="#d5dde8" font-family="Arial, Helvetica, sans-serif" font-size="36"> Mali.</text>
+<text x="130" y="1260" fill="#1fb89f" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Reseau ferme ODAS • veille collaborative</text>
+</svg>
