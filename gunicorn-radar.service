@@ -1,0 +1,47 @@
+# ════════════════════════════════════════════════════════════
+#  RADAR ODAS — Service Systemd pour Gunicorn
+#  Emplacement : /etc/systemd/system/gunicorn-radar.service
+#  Activer :
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable gunicorn-radar
+#    sudo systemctl start gunicorn-radar
+# ════════════════════════════════════════════════════════════
+
+[Unit]
+Description=Gunicorn RADAR ODAS — Centre ODAS
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=USER_VPS
+Group=www-data
+WorkingDirectory=/home/USER_VPS/sentinel/backend
+
+# Charge les variables d'environnement depuis .env
+EnvironmentFile=/home/USER_VPS/sentinel/backend/.env
+
+# Lancer gunicorn (adapter le chemin si venv utilisé)
+ExecStart=/home/USER_VPS/.local/bin/gunicorn \
+    sentinel_config.wsgi:application \
+    --workers 3 \
+    --bind 127.0.0.1:8000 \
+    --timeout 120 \
+    --keep-alive 5 \
+    --max-requests 1000 \
+    --max-requests-jitter 50 \
+    --access-logfile /var/log/gunicorn-radar-access.log \
+    --error-logfile /var/log/gunicorn-radar-error.log \
+    --log-level info
+
+# Redémarrage automatique en cas de crash
+Restart=on-failure
+RestartSec=5
+
+# Limites de sécurité
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
