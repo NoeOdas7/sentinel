@@ -1,0 +1,2 @@
+[    3989ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://app.netlify.com/access-control/bb-api/api/v1/sites/elaborate-manatee-ab2855.netlify.app:0
+[    7515ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://js.hs-banner.com/v2/7477936/banner.js:0

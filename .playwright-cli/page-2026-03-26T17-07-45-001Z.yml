@@ -1,0 +1,327 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e59]:
+    - generic [ref=e60]:
+      - generic [ref=e61]: 🛡️
+      - generic [ref=e62]:
+        - generic [ref=e63]: RADAR Mouvement ODAS
+        - generic [ref=e64]: Réseau ODAS
+    - navigation [ref=e65]:
+      - generic [ref=e66]: Principal
+      - generic [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Tableau de bord
+      - generic [ref=e73] [cursor=pointer]:
+        - img [ref=e74]
+        - text: Signalements
+        - generic [ref=e76]: "3"
+      - generic [ref=e77] [cursor=pointer]:
+        - img [ref=e78]
+        - text: Cartographie
+      - generic [ref=e81]: Ressources
+      - generic [ref=e82] [cursor=pointer]:
+        - img [ref=e83]
+        - text: Hub de ressources
+      - generic [ref=e86]: Administration
+      - generic [ref=e87] [cursor=pointer]:
+        - img [ref=e88]
+        - text: Mon profil
+    - generic [ref=e92] [cursor=pointer]:
+      - generic [ref=e93]: CO
+      - generic [ref=e94]:
+        - generic [ref=e95]: Contributeur Demo ODAS
+        - generic [ref=e96]: Contributeur
+  - banner [ref=e97]:
+    - generic [ref=e98]: Signalements
+    - generic [ref=e99]:
+      - button [ref=e101] [cursor=pointer]:
+        - img [ref=e103]
+      - button [ref=e106] [cursor=pointer]:
+        - img [ref=e107]
+      - generic [ref=e110] [cursor=pointer]: CO
+  - main [ref=e111]:
+    - generic [ref=e304]:
+      - generic [ref=e305]:
+        - generic [ref=e306]:
+          - img
+          - textbox "Rechercher un signalement..." [ref=e307]
+        - listbox [ref=e308] [cursor=pointer]:
+          - option "Afghanistan" [ref=e309]
+          - option "Afrique du Sud" [ref=e310]
+          - option "Albanie" [ref=e311]
+          - option "Algerie" [ref=e312]
+          - option "Allemagne" [ref=e313]
+          - option "Andorre" [ref=e314]
+          - option "Angola" [ref=e315]
+          - option "Antigua-et-Barbuda" [ref=e316]
+          - option "Arabie saoudite" [ref=e317]
+          - option "Argentine" [ref=e318]
+          - option "Armenie" [ref=e319]
+          - option "Australie" [ref=e320]
+          - option "Autriche" [ref=e321]
+          - option "Azerbaidjan" [ref=e322]
+          - option "Bahamas" [ref=e323]
+          - option "Bahrein" [ref=e324]
+          - option "Bangladesh" [ref=e325]
+          - option "Barbade" [ref=e326]
+          - option "Belgique" [ref=e327]
+          - option "Belize" [ref=e328]
+          - option "Benin" [ref=e329]
+          - option "Bhoutan" [ref=e330]
+          - option "Bielorussie" [ref=e331]
+          - option "Birmanie" [ref=e332]
+          - option "Bolivie" [ref=e333]
+          - option "Bosnie-Herzegovine" [ref=e334]
+          - option "Botswana" [ref=e335]
+          - option "Bresil" [ref=e336]
+          - option "Brunei" [ref=e337]
+          - option "Bulgarie" [ref=e338]
+          - option "Burkina Faso" [ref=e339]
+          - option "Burundi" [ref=e340]
+          - option "Cabo Verde" [ref=e341]
+          - option "Cambodge" [ref=e342]
+          - option "Cameroun" [ref=e343]
+          - option "Canada" [ref=e344]
+          - option "Centrafrique" [ref=e345]
+          - option "Chili" [ref=e346]
+          - option "Chine" [ref=e347]
+          - option "Chypre" [ref=e348]
+          - option "Colombie" [ref=e349]
+          - option "Comores" [ref=e350]
+          - option "Congo" [ref=e351]
+          - option "Coree du Nord" [ref=e352]
+          - option "Coree du Sud" [ref=e353]
+          - option "Costa Rica" [ref=e354]
+          - option "Cote d'Ivoire" [ref=e355]
+          - option "Croatie" [ref=e356]
+          - option "Cuba" [ref=e357]
+          - option "Danemark" [ref=e358]
+          - option "Djibouti" [ref=e359]
+          - option "Dominique" [ref=e360]
+          - option "Egypte" [ref=e361]
+          - option "Emirats arabes unis" [ref=e362]
+          - option "Equateur" [ref=e363]
+          - option "Erythree" [ref=e364]
+          - option "Espagne" [ref=e365]
+          - option "Estonie" [ref=e366]
+          - option "Eswatini" [ref=e367]
+          - option "Etats-Unis" [ref=e368]
+          - option "Ethiopie" [ref=e369]
+          - option "Fidji" [ref=e370]
+          - option "Finlande" [ref=e371]
+          - option "France" [ref=e372]
+          - option "Gabon" [ref=e373]
+          - option "Gambie" [ref=e374]
+          - option "Georgie" [ref=e375]
+          - option "Ghana" [ref=e376]
+          - option "Grece" [ref=e377]
+          - option "Grenade" [ref=e378]
+          - option "Guatemala" [ref=e379]
+          - option "Guinee" [ref=e380]
+          - option "Guinee-Bissau" [ref=e381]
+          - option "Guinee equatoriale" [ref=e382]
+          - option "Guyana" [ref=e383]
+          - option "Haiti" [ref=e384]
+          - option "Honduras" [ref=e385]
+          - option "Hongrie" [ref=e386]
+          - option "Inde" [ref=e387]
+          - option "Indonesie" [ref=e388]
+          - option "Irak" [ref=e389]
+          - option "Iran" [ref=e390]
+          - option "Irlande" [ref=e391]
+          - option "Islande" [ref=e392]
+          - option "Israel" [ref=e393]
+          - option "Italie" [ref=e394]
+          - option "Jamaique" [ref=e395]
+          - option "Japon" [ref=e396]
+          - option "Jordanie" [ref=e397]
+          - option "Kazakhstan" [ref=e398]
+          - option "Kenya" [ref=e399]
+          - option "Kirghizistan" [ref=e400]
+          - option "Kiribati" [ref=e401]
+          - option "Koweit" [ref=e402]
+          - option "Laos" [ref=e403]
+          - option "Lesotho" [ref=e404]
+          - option "Lettonie" [ref=e405]
+          - option "Liban" [ref=e406]
+          - option "Liberia" [ref=e407]
+          - option "Libye" [ref=e408]
+          - option "Liechtenstein" [ref=e409]
+          - option "Lituanie" [ref=e410]
+          - option "Luxembourg" [ref=e411]
+          - option "Macedoine du Nord" [ref=e412]
+          - option "Madagascar" [ref=e413]
+          - option "Malaisie" [ref=e414]
+          - option "Malawi" [ref=e415]
+          - option "Maldives" [ref=e416]
+          - option "Mali" [ref=e417]
+          - option "Malte" [ref=e418]
+          - option "Maroc" [ref=e419]
+          - option "Marshall" [ref=e420]
+          - option "Maurice" [ref=e421]
+          - option "Mauritanie" [ref=e422]
+          - option "Mexique" [ref=e423]
+          - option "Micronesie" [ref=e424]
+          - option "Moldavie" [ref=e425]
+          - option "Monaco" [ref=e426]
+          - option "Mongolie" [ref=e427]
+          - option "Montenegro" [ref=e428]
+          - option "Mozambique" [ref=e429]
+          - option "Namibie" [ref=e430]
+          - option "Nauru" [ref=e431]
+          - option "Nepal" [ref=e432]
+          - option "Nicaragua" [ref=e433]
+          - option "Niger" [ref=e434]
+          - option "Nigeria" [ref=e435]
+          - option "Norvege" [ref=e436]
+          - option "Nouvelle-Zelande" [ref=e437]
+          - option "Oman" [ref=e438]
+          - option "Ouganda" [ref=e439]
+          - option "Ouzbekistan" [ref=e440]
+          - option "Pakistan" [ref=e441]
+          - option "Palaos" [ref=e442]
+          - option "Palestine" [ref=e443]
+          - option "Panama" [ref=e444]
+          - option "Papouasie-Nouvelle-Guinee" [ref=e445]
+          - option "Paraguay" [ref=e446]
+          - option "Pays-Bas" [ref=e447]
+          - option "Perou" [ref=e448]
+          - option "Philippines" [ref=e449]
+          - option "Pologne" [ref=e450]
+          - option "Portugal" [ref=e451]
+          - option "Qatar" [ref=e452]
+          - option "Republique democratique du Congo" [ref=e453]
+          - option "Republique dominicaine" [ref=e454]
+          - option "Republique tcheque" [ref=e455]
+          - option "Roumanie" [ref=e456]
+          - option "Royaume-Uni" [ref=e457]
+          - option "Russie" [ref=e458]
+          - option "Rwanda" [ref=e459]
+          - option "Saint-Christophe-et-Nieves" [ref=e460]
+          - option "Saint-Marin" [ref=e461]
+          - option "Saint-Vincent-et-les-Grenadines" [ref=e462]
+          - option "Sainte-Lucie" [ref=e463]
+          - option "Salomon" [ref=e464]
+          - option "Salvador" [ref=e465]
+          - option "Samoa" [ref=e466]
+          - option "Sao Tome-et-Principe" [ref=e467]
+          - option "Senegal" [ref=e468]
+          - option "Serbie" [ref=e469]
+          - option "Seychelles" [ref=e470]
+          - option "Sierra Leone" [ref=e471]
+          - option "Singapour" [ref=e472]
+          - option "Slovaquie" [ref=e473]
+          - option "Slovenie" [ref=e474]
+          - option "Somalie" [ref=e475]
+          - option "Soudan" [ref=e476]
+          - option "Soudan du Sud" [ref=e477]
+          - option "Sri Lanka" [ref=e478]
+          - option "Suede" [ref=e479]
+          - option "Suisse" [ref=e480]
+          - option "Suriname" [ref=e481]
+          - option "Syrie" [ref=e482]
+          - option "Tadjikistan" [ref=e483]
+          - option "Tanzanie" [ref=e484]
+          - option "Tchad" [ref=e485]
+          - option "Thailande" [ref=e486]
+          - option "Timor oriental" [ref=e487]
+          - option "Togo" [ref=e488]
+          - option "Tonga" [ref=e489]
+          - option "Trinite-et-Tobago" [ref=e490]
+          - option "Tunisie" [ref=e491]
+          - option "Turkmenistan" [ref=e492]
+          - option "Turquie" [ref=e493]
+          - option "Tuvalu" [ref=e494]
+          - option "Ukraine" [ref=e495]
+          - option "Uruguay" [ref=e496]
+          - option "Vanuatu" [ref=e497]
+          - option "Vatican" [ref=e498]
+          - option "Venezuela" [ref=e499]
+          - option "Viet Nam" [ref=e500]
+          - option "Yemen" [ref=e501]
+          - option "Zambie" [ref=e502]
+          - option "Zimbabwe" [ref=e503]
+        - combobox [ref=e504] [cursor=pointer]:
+          - option "Tous les acteurs" [selected]
+          - option "Alliance pour la Famille Cameroun"
+          - option "Coalition Foi et Nation"
+          - option "Family Watch International"
+          - option "Observatoire Citoyen ODAS Test"
+          - option "Radio Esperance Afrique"
+        - combobox [ref=e505] [cursor=pointer]:
+          - option "Toute criticite" [selected]
+          - option "Elevee"
+          - option "Moderee"
+          - option "Faible"
+        - combobox [ref=e506] [cursor=pointer]:
+          - option "Tout type" [selected]
+          - option "Legislatif"
+          - option "Medias"
+          - option "Religieux"
+          - option "ONG"
+          - option "Numerique"
+          - option "Autre"
+        - combobox [ref=e507] [cursor=pointer]:
+          - option "Tout statut" [selected]
+          - option "En attente"
+          - option "Valide"
+          - option "Rejete"
+        - button "Rapports" [ref=e508] [cursor=pointer]
+        - button "+ Nouveau" [ref=e509] [cursor=pointer]
+      - generic [ref=e510]: 3 signalement(s)
+      - generic [ref=e511]:
+        - generic [ref=e512] [cursor=pointer]:
+          - generic [ref=e513]:
+            - generic [ref=e514]: SIG-2026-0005
+            - generic [ref=e515]: Elevee
+            - generic [ref=e516]: Valide
+            - generic [ref=e517]: 2 acteur(s)
+          - generic [ref=e518]: Petition contre le Protocole de Maputo a Madagascar
+          - generic [ref=e519]: Une coalition d'ONG religieuses a lance une petition nationale exigeant le retrait de Madagascar du Protocole de Maputo.
+          - generic [ref=e520]:
+            - generic [ref=e521]: Madagascar
+            - generic [ref=e522]: •
+            - generic [ref=e523]: ONG
+            - generic [ref=e524]: •
+            - generic [ref=e525]: 21/03/2026
+            - generic [ref=e526]: •
+            - generic [ref=e527]: Admin Demo ODAS
+          - generic [ref=e529]: Valeurs religieuses
+        - generic [ref=e530] [cursor=pointer]:
+          - generic [ref=e531]:
+            - generic [ref=e532]: SIG-2026-0002
+            - generic [ref=e533]: Moderee
+            - generic [ref=e534]: Valide
+            - generic [ref=e535]: 1 acteur(s)
+          - generic [ref=e536]: Campagne mediatique contre les ONG SRHR au Mali
+          - generic [ref=e537]: Une serie d'emissions radio accuse des ONG internationales de promouvoir l'avortement au Mali.
+          - generic [ref=e538]:
+            - generic [ref=e539]: Mali
+            - generic [ref=e540]: •
+            - generic [ref=e541]: Medias
+            - generic [ref=e542]: •
+            - generic [ref=e543]: 08/03/2026
+            - generic [ref=e544]: •
+            - generic [ref=e545]: Admin Demo ODAS
+          - generic [ref=e547]: Agenda occidental
+        - generic [ref=e548] [cursor=pointer]:
+          - generic [ref=e549]:
+            - generic [ref=e550]: SIG-2026-0001
+            - generic [ref=e551]: Elevee
+            - generic [ref=e552]: Valide
+            - generic [ref=e553]: 2 acteur(s)
+          - generic [ref=e554]: Projet de loi anti-SRHR au Cameroun
+          - generic [ref=e555]: Un projet de loi visant a criminaliser l'assistance a l'avortement a ete depose a l'Assemblee nationale du Cameroun.
+          - generic [ref=e556]:
+            - generic [ref=e557]: Cameroun
+            - generic [ref=e558]: •
+            - generic [ref=e559]: Legislatif
+            - generic [ref=e560]: •
+            - generic [ref=e561]: 10/03/2026
+            - generic [ref=e562]: •
+            - generic [ref=e563]: Admin Demo ODAS
+          - generic [ref=e564]:
+            - generic [ref=e565]: Anti-IVG
+            - generic [ref=e566]: Protection de la famille
+  - generic [ref=e246]:
+    - generic [ref=e247]: ✓
+    - generic [ref=e248]: Action effectuée

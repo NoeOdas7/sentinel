@@ -1,0 +1,5 @@
+[    2831ms] Unexpected identifier 'Ctrl'
+[    5522ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[    7622ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)

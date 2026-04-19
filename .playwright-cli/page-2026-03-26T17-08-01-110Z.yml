@@ -1,0 +1,254 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e59]:
+    - generic [ref=e60]:
+      - generic [ref=e61]: 🛡️
+      - generic [ref=e62]:
+        - generic [ref=e63]: RADAR Mouvement ODAS
+        - generic [ref=e64]: Réseau ODAS
+    - navigation [ref=e65]:
+      - generic [ref=e66]: Principal
+      - generic [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Tableau de bord
+      - generic [ref=e73] [cursor=pointer]:
+        - img [ref=e74]
+        - text: Signalements
+        - generic [ref=e76]: "3"
+      - generic [ref=e77] [cursor=pointer]:
+        - img [ref=e78]
+        - text: Cartographie
+      - generic [ref=e81]: Ressources
+      - generic [ref=e82] [cursor=pointer]:
+        - img [ref=e83]
+        - text: Hub de ressources
+      - generic [ref=e86]: Administration
+      - generic [ref=e87] [cursor=pointer]:
+        - img [ref=e88]
+        - text: Mon profil
+    - generic [ref=e92] [cursor=pointer]:
+      - generic [ref=e93]: CO
+      - generic [ref=e94]:
+        - generic [ref=e95]: Contributeur Demo ODAS
+        - generic [ref=e96]: Contributeur
+  - banner [ref=e97]:
+    - generic [ref=e98]: Cartographie des acteurs
+    - generic [ref=e99]:
+      - button [ref=e101] [cursor=pointer]:
+        - img [ref=e103]
+      - button [ref=e106] [cursor=pointer]:
+        - img [ref=e107]
+      - generic [ref=e110] [cursor=pointer]: CO
+  - main [ref=e111]:
+    - generic [ref=e567]:
+      - generic [ref=e568]:
+        - button "Tous" [ref=e569] [cursor=pointer]
+        - button "International" [ref=e570] [cursor=pointer]
+        - button "Local/National" [ref=e571] [cursor=pointer]
+        - button "Médias" [ref=e572] [cursor=pointer]
+        - button "Religieux" [ref=e573] [cursor=pointer]
+        - combobox [ref=e574]:
+          - option "Tous les pays" [selected]
+          - option "Afghanistan"
+          - option "Afrique du Sud"
+          - option "Albanie"
+          - option "Algerie"
+          - option "Allemagne"
+          - option "Andorre"
+          - option "Angola"
+          - option "Antigua-et-Barbuda"
+          - option "Arabie saoudite"
+          - option "Argentine"
+          - option "Armenie"
+          - option "Australie"
+          - option "Autriche"
+          - option "Azerbaidjan"
+          - option "Bahamas"
+          - option "Bahrein"
+          - option "Bangladesh"
+          - option "Barbade"
+          - option "Belgique"
+          - option "Belize"
+          - option "Benin"
+          - option "Bhoutan"
+          - option "Bielorussie"
+          - option "Birmanie"
+          - option "Bolivie"
+          - option "Bosnie-Herzegovine"
+          - option "Botswana"
+          - option "Bresil"
+          - option "Brunei"
+          - option "Bulgarie"
+          - option "Burkina Faso"
+          - option "Burundi"
+          - option "Cabo Verde"
+          - option "Cambodge"
+          - option "Cameroun"
+          - option "Canada"
+          - option "Centrafrique"
+          - option "Chili"
+          - option "Chine"
+          - option "Chypre"
+          - option "Colombie"
+          - option "Comores"
+          - option "Congo"
+          - option "Coree du Nord"
+          - option "Coree du Sud"
+          - option "Costa Rica"
+          - option "Cote d'Ivoire"
+          - option "Croatie"
+          - option "Cuba"
+          - option "Danemark"
+          - option "Djibouti"
+          - option "Dominique"
+          - option "Egypte"
+          - option "Emirats arabes unis"
+          - option "Equateur"
+          - option "Erythree"
+          - option "Espagne"
+          - option "Estonie"
+          - option "Eswatini"
+          - option "Etats-Unis"
+          - option "Ethiopie"
+          - option "Fidji"
+          - option "Finlande"
+          - option "France"
+          - option "Gabon"
+          - option "Gambie"
+          - option "Georgie"
+          - option "Ghana"
+          - option "Grece"
+          - option "Grenade"
+          - option "Guatemala"
+          - option "Guinee"
+          - option "Guinee-Bissau"
+          - option "Guinee equatoriale"
+          - option "Guyana"
+          - option "Haiti"
+          - option "Honduras"
+          - option "Hongrie"
+          - option "Inde"
+          - option "Indonesie"
+          - option "Irak"
+          - option "Iran"
+          - option "Irlande"
+          - option "Islande"
+          - option "Israel"
+          - option "Italie"
+          - option "Jamaique"
+          - option "Japon"
+          - option "Jordanie"
+          - option "Kazakhstan"
+          - option "Kenya"
+          - option "Kirghizistan"
+          - option "Kiribati"
+          - option "Koweit"
+          - option "Laos"
+          - option "Lesotho"
+          - option "Lettonie"
+          - option "Liban"
+          - option "Liberia"
+          - option "Libye"
+          - option "Liechtenstein"
+          - option "Lituanie"
+          - option "Luxembourg"
+          - option "Macedoine du Nord"
+          - option "Madagascar"
+          - option "Malaisie"
+          - option "Malawi"
+          - option "Maldives"
+          - option "Mali"
+          - option "Malte"
+          - option "Maroc"
+          - option "Marshall"
+          - option "Maurice"
+          - option "Mauritanie"
+          - option "Mexique"
+          - option "Micronesie"
+          - option "Moldavie"
+          - option "Monaco"
+          - option "Mongolie"
+          - option "Montenegro"
+          - option "Mozambique"
+          - option "Namibie"
+          - option "Nauru"
+          - option "Nepal"
+          - option "Nicaragua"
+          - option "Niger"
+          - option "Nigeria"
+          - option "Norvege"
+          - option "Nouvelle-Zelande"
+          - option "Oman"
+          - option "Ouganda"
+          - option "Ouzbekistan"
+          - option "Pakistan"
+          - option "Palaos"
+          - option "Palestine"
+          - option "Panama"
+          - option "Papouasie-Nouvelle-Guinee"
+          - option "Paraguay"
+          - option "Pays-Bas"
+          - option "Perou"
+          - option "Philippines"
+          - option "Pologne"
+          - option "Portugal"
+          - option "Qatar"
+          - option "Republique democratique du Congo"
+          - option "Republique dominicaine"
+          - option "Republique tcheque"
+          - option "Roumanie"
+          - option "Royaume-Uni"
+          - option "Russie"
+          - option "Rwanda"
+          - option "Saint-Christophe-et-Nieves"
+          - option "Saint-Marin"
+          - option "Saint-Vincent-et-les-Grenadines"
+          - option "Sainte-Lucie"
+          - option "Salomon"
+          - option "Salvador"
+          - option "Samoa"
+          - option "Sao Tome-et-Principe"
+          - option "Senegal"
+          - option "Serbie"
+          - option "Seychelles"
+          - option "Sierra Leone"
+          - option "Singapour"
+          - option "Slovaquie"
+          - option "Slovenie"
+          - option "Somalie"
+          - option "Soudan"
+          - option "Soudan du Sud"
+          - option "Sri Lanka"
+          - option "Suede"
+          - option "Suisse"
+          - option "Suriname"
+          - option "Syrie"
+          - option "Tadjikistan"
+          - option "Tanzanie"
+          - option "Tchad"
+          - option "Thailande"
+          - option "Timor oriental"
+          - option "Togo"
+          - option "Tonga"
+          - option "Trinite-et-Tobago"
+          - option "Tunisie"
+          - option "Turkmenistan"
+          - option "Turquie"
+          - option "Tuvalu"
+          - option "Ukraine"
+          - option "Uruguay"
+          - option "Vanuatu"
+          - option "Vatican"
+          - option "Venezuela"
+          - option "Viet Nam"
+          - option "Yemen"
+          - option "Zambie"
+          - option "Zimbabwe"
+      - generic [ref=e577]:
+        - generic [ref=e578]: "Connexions :"
+        - generic [ref=e579]: Financement
+        - generic [ref=e581]: Partenariat
+        - generic [ref=e583]: Relais médiatique
+        - generic [ref=e585]: Taille des nœuds = score de risque · Cliquez pour les détails · Drag pour déplacer
+  - generic [ref=e246]:
+    - generic [ref=e247]: ✓
+    - generic [ref=e248]: Action effectuée

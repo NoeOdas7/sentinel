@@ -1,0 +1,173 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e59]:
+    - generic [ref=e60]:
+      - generic [ref=e61]: 🛡️
+      - generic [ref=e62]:
+        - generic [ref=e63]: RADAR Mouvement ODAS
+        - generic [ref=e64]: Réseau ODAS
+    - navigation [ref=e65]:
+      - generic [ref=e66]: Principal
+      - generic [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Tableau de bord
+      - generic [ref=e73] [cursor=pointer]:
+        - img [ref=e74]
+        - text: Signalements
+        - generic [ref=e76]: "5"
+      - generic [ref=e77] [cursor=pointer]:
+        - img [ref=e78]
+        - text: Cartographie
+      - generic [ref=e81]: Ressources
+      - generic [ref=e82] [cursor=pointer]:
+        - img [ref=e83]
+        - text: Hub de ressources
+      - generic [ref=e86]: Administration
+      - generic [ref=e87] [cursor=pointer]:
+        - img [ref=e88]
+        - text: Membres
+      - generic [ref=e93] [cursor=pointer]:
+        - img [ref=e94]
+        - text: Validation
+        - generic [ref=e97]: "2"
+      - generic [ref=e98] [cursor=pointer]:
+        - img [ref=e99]
+        - text: Alertes
+      - generic [ref=e102] [cursor=pointer]:
+        - img [ref=e103]
+        - text: Mon profil
+    - generic [ref=e107] [cursor=pointer]:
+      - generic [ref=e108]: AO
+      - generic [ref=e109]:
+        - generic [ref=e110]: Admin Demo ODAS
+        - generic [ref=e111]: Administrateur
+  - banner [ref=e112]:
+    - generic [ref=e113]: Tableau de bord
+    - generic [ref=e114]:
+      - button [ref=e116] [cursor=pointer]:
+        - img [ref=e118]
+      - button [ref=e121] [cursor=pointer]:
+        - img [ref=e122]
+      - generic [ref=e125] [cursor=pointer]: AO
+  - main [ref=e126]:
+    - generic [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]: Tableau de bord partage pour les administrateurs et les utilisateurs.
+        - button "Telecharger un rapport" [ref=e130] [cursor=pointer]
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: Signalements ce mois
+            - generic [ref=e135]: ⚠️
+          - generic [ref=e136]: "3"
+          - generic [ref=e137]: ↗ +37% vs mois dernier
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]: Acteurs documentés
+            - generic [ref=e141]: 🎯
+          - generic [ref=e142]: "0"
+          - generic [ref=e143]: ↗ +2 nouveaux
+        - generic [ref=e144]:
+          - generic [ref=e145]:
+            - generic [ref=e146]: Pays couverts
+            - generic [ref=e147]: 🌍
+          - generic [ref=e148]: "3"
+          - generic [ref=e149]: 7/7 actifs
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]: Membres actifs
+            - generic [ref=e153]: 👥
+          - generic [ref=e154]: "2"
+          - generic [ref=e155]: ↗ +1 ce mois
+      - generic [ref=e156]:
+        - generic [ref=e157]:
+          - generic [ref=e158]:
+            - generic [ref=e159]: Tendances — Signalements
+            - generic [ref=e160]:
+              - button "1M" [ref=e161] [cursor=pointer]
+              - button "3M" [ref=e162] [cursor=pointer]
+              - button "6M" [ref=e163] [cursor=pointer]
+              - button "12M" [ref=e164] [cursor=pointer]
+          - generic [ref=e168]:
+            - generic [ref=e169]: Total
+            - generic [ref=e171]: Élevée
+            - generic [ref=e173]: Modérée
+            - generic [ref=e175]: Faible
+        - generic [ref=e177]:
+          - generic [ref=e179]: Narratifs dominants — Mars 2026
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - generic [ref=e182]: Protection de la famille
+              - generic [ref=e185]: "24"
+            - generic [ref=e186]:
+              - generic [ref=e187]: Valeurs religieuses
+              - generic [ref=e190]: "20"
+            - generic [ref=e191]:
+              - generic [ref=e192]: Souveraineté culturelle
+              - generic [ref=e195]: "16"
+            - generic [ref=e196]:
+              - generic [ref=e197]: Anti-genre / Idéologie
+              - generic [ref=e200]: "13"
+            - generic [ref=e201]:
+              - generic [ref=e202]: Agenda occidental
+              - generic [ref=e205]: "10"
+      - generic [ref=e206]:
+        - generic [ref=e207]:
+          - generic [ref=e208]: Derniers signalements validés
+          - button "Voir tout →" [ref=e209] [cursor=pointer]
+        - generic [ref=e210]:
+          - generic [ref=e264] [cursor=pointer]:
+            - generic [ref=e265]:
+              - generic [ref=e266]: SIG-2026-0005
+              - generic [ref=e267]: Elevee
+              - generic [ref=e268]: Valide
+              - generic [ref=e269]: 0 acteur(s)
+            - generic [ref=e270]: Petition contre le Protocole de Maputo a Madagascar
+            - generic [ref=e271]: Une coalition d'ONG religieuses a lance une petition nationale exigeant le retrait de Madagascar du Protocole de Maputo.
+            - generic [ref=e272]:
+              - generic [ref=e273]: Madagascar
+              - generic [ref=e274]: •
+              - generic [ref=e275]: ONG
+              - generic [ref=e276]: •
+              - generic [ref=e277]: 21/03/2026
+              - generic [ref=e278]: •
+              - generic [ref=e279]: Admin Demo ODAS
+            - generic [ref=e281]: Valeurs religieuses
+          - generic [ref=e282] [cursor=pointer]:
+            - generic [ref=e283]:
+              - generic [ref=e284]: SIG-2026-0002
+              - generic [ref=e285]: Moderee
+              - generic [ref=e286]: Valide
+              - generic [ref=e287]: 0 acteur(s)
+            - generic [ref=e288]: Campagne mediatique contre les ONG SRHR au Mali
+            - generic [ref=e289]: Une serie d'emissions radio accuse des ONG internationales de promouvoir l'avortement au Mali.
+            - generic [ref=e290]:
+              - generic [ref=e291]: Mali
+              - generic [ref=e292]: •
+              - generic [ref=e293]: Medias
+              - generic [ref=e294]: •
+              - generic [ref=e295]: 08/03/2026
+              - generic [ref=e296]: •
+              - generic [ref=e297]: Admin Demo ODAS
+            - generic [ref=e299]: Agenda occidental
+          - generic [ref=e300] [cursor=pointer]:
+            - generic [ref=e301]:
+              - generic [ref=e302]: SIG-2026-0001
+              - generic [ref=e303]: Elevee
+              - generic [ref=e304]: Valide
+              - generic [ref=e305]: 0 acteur(s)
+            - generic [ref=e306]: Projet de loi anti-SRHR au Cameroun
+            - generic [ref=e307]: Un projet de loi visant a criminaliser l'assistance a l'avortement a ete depose a l'Assemblee nationale du Cameroun.
+            - generic [ref=e308]:
+              - generic [ref=e309]: Cameroun
+              - generic [ref=e310]: •
+              - generic [ref=e311]: Legislatif
+              - generic [ref=e312]: •
+              - generic [ref=e313]: 10/03/2026
+              - generic [ref=e314]: •
+              - generic [ref=e315]: Admin Demo ODAS
+            - generic [ref=e316]:
+              - generic [ref=e317]: Anti-IVG
+              - generic [ref=e318]: Protection de la famille
+  - generic [ref=e261]:
+    - generic [ref=e262]: ✓
+    - generic [ref=e263]: Connexion reussie.

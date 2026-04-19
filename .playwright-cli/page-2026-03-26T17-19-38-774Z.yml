@@ -1,0 +1,200 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - img [ref=e14]:
+        - generic [ref=e29]: ODAS
+        - generic [ref=e30]: SRHR
+      - generic [ref=e32]: Réseau ODAS
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]: 🛡️
+        - generic [ref=e38]: RESEAU ODAS - VEILLE ANTI-DROITS
+      - generic [ref=e39]:
+        - generic [ref=e40]: Demande d'acces a RADAR Mouvement ODAS
+        - generic [ref=e41]:
+          - generic [ref=e42]: 🛡️
+          - generic [ref=e43]:
+            - strong [ref=e44]: Accès démo administrateur
+            - generic [ref=e45]: "Utilisez `admin@odas.org` et `admin123` pour valider les nouveaux comptes pendant la démonstration."
+        - generic [ref=e46]:
+          - generic [ref=e47]: Adresse email
+          - textbox "vous@organisation.org" [ref=e48]: admin@odas.org
+        - generic [ref=e49]:
+          - generic [ref=e50]: Mot de passe
+          - generic [ref=e51]:
+            - textbox "••••••••" [ref=e52]: admin123
+            - button "👁" [ref=e53] [cursor=pointer]
+        - generic [ref=e54]: Mot de passe oublié ?
+        - button "Se connecter" [ref=e55] [cursor=pointer]
+        - generic [ref=e56]: Pas encore de compte ? Créer un compte
+  - complementary [ref=e57]:
+    - generic [ref=e58]:
+      - generic [ref=e59]: 🛡️
+      - generic [ref=e60]:
+        - generic [ref=e61]: RADAR Mouvement ODAS
+        - generic [ref=e62]: Réseau ODAS
+    - navigation [ref=e63]:
+      - generic [ref=e64]: Principal
+      - generic [ref=e65] [cursor=pointer]:
+        - img [ref=e66]
+        - text: Tableau de bord
+      - generic [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - text: Signalements
+        - generic [ref=e74]: "3"
+      - generic [ref=e75] [cursor=pointer]:
+        - img [ref=e76]
+        - text: Cartographie
+      - generic [ref=e79]: Ressources
+      - generic [ref=e80] [cursor=pointer]:
+        - img [ref=e81]
+        - text: Hub de ressources
+      - generic [ref=e84]: Administration
+      - generic [ref=e85] [cursor=pointer]:
+        - img [ref=e86]
+        - text: Membres
+      - generic [ref=e91] [cursor=pointer]:
+        - img [ref=e92]
+        - text: Validation
+        - generic [ref=e95]: "3"
+      - generic [ref=e96] [cursor=pointer]:
+        - img [ref=e97]
+        - text: Alertes
+      - generic [ref=e100] [cursor=pointer]:
+        - img [ref=e101]
+        - text: Mon profil
+    - generic [ref=e105] [cursor=pointer]:
+      - generic [ref=e106]: NT
+      - generic [ref=e107]:
+        - generic [ref=e108]: Noé Tanoh
+        - generic [ref=e109]: Administrateur
+  - banner [ref=e110]:
+    - generic [ref=e111]: Tableau de bord
+    - generic [ref=e112]:
+      - button [ref=e114] [cursor=pointer]:
+        - img [ref=e116]
+      - button [ref=e119] [cursor=pointer]:
+        - img [ref=e120]
+      - generic [ref=e123] [cursor=pointer]: NT
+  - main [ref=e124]:
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]: Tableau de bord reseau avec synthese rapide, tendances de signalements et lecture plus fluide des chiffres cles.
+        - button "Telecharger un rapport" [ref=e129] [cursor=pointer]
+      - generic [ref=e130]:
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: Signalements ce mois
+            - generic [ref=e134]: ⚠️
+          - generic [ref=e135]: "26"
+          - generic [ref=e136]: ↗ +37% vs mois dernier
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - generic [ref=e139]: Acteurs documentés
+            - generic [ref=e140]: 🎯
+          - generic [ref=e141]: "8"
+          - generic [ref=e142]: ↗ +2 nouveaux
+        - generic [ref=e143]:
+          - generic [ref=e144]:
+            - generic [ref=e145]: Pays couverts
+            - generic [ref=e146]: 🌍
+          - generic [ref=e147]: "7"
+          - generic [ref=e148]: 7/7 actifs
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e151]: Membres actifs
+            - generic [ref=e152]: 👥
+          - generic [ref=e153]: "8"
+          - generic [ref=e154]: ↗ +1 ce mois
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]: Tendances — Signalements
+            - generic [ref=e160]:
+              - button "1M" [ref=e161] [cursor=pointer]
+              - button "3M" [ref=e162] [cursor=pointer]
+              - button "6M" [ref=e163] [cursor=pointer]
+              - button "12M" [ref=e164] [cursor=pointer]
+              - textbox "Date de debut" [ref=e165]
+              - textbox "Date de fin" [ref=e166]
+          - generic [ref=e170]:
+            - generic [ref=e171]: Total
+            - generic [ref=e173]: Élevée
+            - generic [ref=e175]: Modérée
+            - generic [ref=e177]: Faible
+        - generic [ref=e179]:
+          - generic [ref=e181]: Narratifs dominants — Mars 2026
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]: Protection de la famille
+              - generic [ref=e187]: "24"
+            - generic [ref=e188]:
+              - generic [ref=e189]: Valeurs religieuses
+              - generic [ref=e192]: "20"
+            - generic [ref=e193]:
+              - generic [ref=e194]: Souveraineté culturelle
+              - generic [ref=e197]: "16"
+            - generic [ref=e198]:
+              - generic [ref=e199]: Anti-genre / Idéologie
+              - generic [ref=e202]: "13"
+            - generic [ref=e203]:
+              - generic [ref=e204]: Agenda occidental
+              - generic [ref=e207]: "10"
+      - generic [ref=e208]:
+        - generic [ref=e209]:
+          - generic [ref=e210]: Derniers signalements validés
+          - button "Voir tout →" [ref=e211] [cursor=pointer]
+        - generic [ref=e212]:
+          - generic [ref=e213] [cursor=pointer]:
+            - generic [ref=e214]:
+              - generic [ref=e215]: SIG-2026-0341
+              - generic [ref=e216]: Élevée
+              - generic [ref=e217]: Validé
+            - generic [ref=e218]: Projet de loi anti-SRHR au Cameroun
+            - generic [ref=e219]:
+              - generic [ref=e220]: 🇨🇲 Cameroun
+              - generic [ref=e221]: •
+              - generic [ref=e222]: Législatif
+              - generic [ref=e223]: •
+              - generic [ref=e224]: 2026-03-10
+              - generic [ref=e225]: •
+              - generic [ref=e226]: Marie K.
+          - generic [ref=e227] [cursor=pointer]:
+            - generic [ref=e228]:
+              - generic [ref=e229]: SIG-2026-0340
+              - generic [ref=e230]: Modérée
+              - generic [ref=e231]: Validé
+            - generic [ref=e232]: Campagne médiatique contre les ONG SRHR au Mali
+            - generic [ref=e233]:
+              - generic [ref=e234]: 🇲🇱 Mali
+              - generic [ref=e235]: •
+              - generic [ref=e236]: Médias
+              - generic [ref=e237]: •
+              - generic [ref=e238]: 2026-03-08
+          - generic [ref=e239] [cursor=pointer]:
+            - generic [ref=e240]:
+              - generic [ref=e241]: SIG-2026-0339
+              - generic [ref=e242]: Élevée
+              - generic [ref=e243]: Validé
+            - generic [ref=e244]: Fatwa contre la planification familiale en Guinée
+            - generic [ref=e245]:
+              - generic [ref=e246]: 🇬🇳 Guinée
+              - generic [ref=e247]: •
+              - generic [ref=e248]: Religieux
+              - generic [ref=e249]: •
+              - generic [ref=e250]: 2026-03-05
+          - generic [ref=e251] [cursor=pointer]:
+            - generic [ref=e252]:
+              - generic [ref=e253]: SIG-2026-0338
+              - generic [ref=e254]: Modérée
+              - generic [ref=e255]: Validé
+            - generic [ref=e256]: Conférence anti-genre à Abidjan
+            - generic [ref=e257]:
+              - generic [ref=e258]: 🇨🇮 Côte d'Ivoire
+              - generic [ref=e259]: •
+              - generic [ref=e260]: ONG
+              - generic [ref=e261]: •
+              - generic [ref=e262]: 2026-03-01
+  - generic [ref=e263]:
+    - generic [ref=e264]: ✓
+    - generic [ref=e265]: Action effectuée

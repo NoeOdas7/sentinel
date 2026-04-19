@@ -1,0 +1,29 @@
+[     618ms] Unexpected identifier 'Ctrl'
+[    3278ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[    7831ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   10472ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   11829ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   17068ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   17480ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   17810ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   22231ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   22634ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   25546ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   25811ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   26044ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[   39914ms] ReferenceError: doLogin is not defined
+    at HTMLButtonElement.onclick (http://127.0.0.1:8000/:737:69)
+[  120951ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://127.0.0.1:8000/api/v1/auth/members/:0
+[ 2246507ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://127.0.0.1:8000/api/v1/signals/workspace/:0

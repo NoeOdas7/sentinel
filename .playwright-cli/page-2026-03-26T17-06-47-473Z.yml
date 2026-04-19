@@ -1,0 +1,173 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e59]:
+    - generic [ref=e60]:
+      - generic [ref=e61]: 🛡️
+      - generic [ref=e62]:
+        - generic [ref=e63]: RADAR Mouvement ODAS
+        - generic [ref=e64]: Réseau ODAS
+    - navigation [ref=e65]:
+      - generic [ref=e66]: Principal
+      - generic [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+        - text: Tableau de bord
+      - generic [ref=e73] [cursor=pointer]:
+        - img [ref=e74]
+        - text: Signalements
+        - generic [ref=e76]: "6"
+      - generic [ref=e77] [cursor=pointer]:
+        - img [ref=e78]
+        - text: Cartographie
+      - generic [ref=e81]: Ressources
+      - generic [ref=e82] [cursor=pointer]:
+        - img [ref=e83]
+        - text: Hub de ressources
+      - generic [ref=e86]: Administration
+      - generic [ref=e87] [cursor=pointer]:
+        - img [ref=e88]
+        - text: Membres
+      - generic [ref=e93] [cursor=pointer]:
+        - img [ref=e94]
+        - text: Validation
+        - generic [ref=e97]: "3"
+      - generic [ref=e98] [cursor=pointer]:
+        - img [ref=e99]
+        - text: Alertes
+      - generic [ref=e102] [cursor=pointer]:
+        - img [ref=e103]
+        - text: Mon profil
+    - generic [ref=e107] [cursor=pointer]:
+      - generic [ref=e108]: AO
+      - generic [ref=e109]:
+        - generic [ref=e110]: Admin Demo ODAS
+        - generic [ref=e111]: Administrateur
+  - banner [ref=e112]:
+    - generic [ref=e113]: Mon profil
+    - generic [ref=e114]:
+      - button [ref=e116] [cursor=pointer]:
+        - img [ref=e118]
+      - button [ref=e121] [cursor=pointer]:
+        - img [ref=e122]
+      - generic [ref=e125] [cursor=pointer]: AO
+  - main [ref=e126]:
+    - generic [ref=e320]:
+      - generic [ref=e321]:
+        - generic [ref=e322]:
+          - generic [ref=e324]: Informations personnelles
+          - generic [ref=e325]:
+            - generic [ref=e326]:
+              - generic [ref=e327]: AO
+              - generic [ref=e328]:
+                - generic [ref=e329]: Admin Demo ODAS
+                - generic [ref=e330]: admin@odas.org
+                - generic [ref=e332]: Administrateur
+            - generic [ref=e333]:
+              - generic [ref=e334]: Nom complet
+              - textbox [ref=e335]: Admin Demo ODAS
+            - generic [ref=e336]:
+              - generic [ref=e337]: Email
+              - textbox [ref=e338]: admin@odas.org
+            - generic [ref=e339]:
+              - generic [ref=e340]: Organisation
+              - textbox [ref=e341]: Centre ODAS
+            - generic [ref=e342]:
+              - generic [ref=e343]: Pays
+              - combobox [ref=e344]:
+                - option "Non renseigné"
+                - option "Bénin"
+                - option "Cameroun"
+                - option "Côte d'Ivoire"
+                - option "Guinée"
+                - option "Madagascar"
+                - option "Mali"
+                - option "RCA"
+                - option "Régional" [selected]
+            - button "Enregistrer" [ref=e345] [cursor=pointer]
+        - generic [ref=e346]:
+          - generic [ref=e348]: Changer le mot de passe
+          - generic [ref=e349]:
+            - generic [ref=e350]:
+              - generic [ref=e351]: Mot de passe actuel
+              - textbox "••••••••" [ref=e352]
+            - generic [ref=e353]:
+              - generic [ref=e354]: Nouveau mot de passe
+              - textbox "••••••••" [ref=e355]
+            - generic [ref=e356]:
+              - generic [ref=e357]: Confirmer
+              - textbox "••••••••" [ref=e358]
+            - button "Changer le mot de passe" [ref=e359] [cursor=pointer]
+      - generic [ref=e360]:
+        - generic [ref=e361]:
+          - generic [ref=e363]: Vérification par email (OTP)
+          - generic [ref=e364]:
+            - generic [ref=e365]:
+              - generic [ref=e366]: ✅
+              - generic [ref=e367]: OTP email activé
+            - generic [ref=e368]:
+              - text: À chaque connexion, un code à 6 chiffres est envoyé sur votre adresse email. Valide
+              - strong [ref=e369]: 10 minutes
+              - text: .
+            - generic [ref=e370]:
+              - generic [ref=e371]: Email de réception
+              - generic [ref=e372]: admin@odas.org
+            - button "Changer l'email de réception" [ref=e373] [cursor=pointer]
+        - generic [ref=e374]:
+          - generic [ref=e375]:
+            - generic [ref=e376]: Sessions actives
+            - button "Actualiser" [ref=e377] [cursor=pointer]
+          - generic [ref=e378]:
+            - generic [ref=e379]:
+              - generic [ref=e380]: 💻
+              - generic [ref=e381]:
+                - generic [ref=e382]:
+                  - text: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                  - generic [ref=e383]: Actuelle
+                - generic [ref=e384]: 26/03/2026 18:06 · 127.0.0.1
+            - generic [ref=e385]:
+              - generic [ref=e386]: 💻
+              - generic [ref=e387]:
+                - generic [ref=e388]: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                - generic [ref=e389]: 26/03/2026 18:00 · 127.0.0.1
+              - button "Révoquer" [ref=e390] [cursor=pointer]
+            - generic [ref=e391]:
+              - generic [ref=e392]: 💻
+              - generic [ref=e393]:
+                - generic [ref=e394]: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                - generic [ref=e395]: 26/03/2026 17:59 · 127.0.0.1
+              - button "Révoquer" [ref=e396] [cursor=pointer]
+            - generic [ref=e397]:
+              - generic [ref=e398]: 💻
+              - generic [ref=e399]:
+                - generic [ref=e400]: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                - generic [ref=e401]: 26/03/2026 17:52 · 127.0.0.1
+              - button "Révoquer" [ref=e402] [cursor=pointer]
+            - generic [ref=e403]:
+              - generic [ref=e404]: 💻
+              - generic [ref=e405]:
+                - generic [ref=e406]: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                - generic [ref=e407]: 26/03/2026 17:41 · 127.0.0.1
+              - button "Révoquer" [ref=e408] [cursor=pointer]
+            - generic [ref=e409]:
+              - generic [ref=e410]: 💻
+              - generic [ref=e411]:
+                - generic [ref=e412]: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                - generic [ref=e413]: 26/03/2026 17:40 · 127.0.0.1
+              - button "Révoquer" [ref=e414] [cursor=pointer]
+        - generic [ref=e415]:
+          - generic [ref=e417]: Préférences de notification
+          - generic [ref=e418]:
+            - generic [ref=e419]:
+              - generic [ref=e420]: Signalement validé / rejeté
+              - checkbox [checked] [ref=e421]
+            - generic [ref=e422]:
+              - generic [ref=e423]: Alertes criticité élevée
+              - checkbox [checked] [ref=e424]
+            - generic [ref=e425]:
+              - generic [ref=e426]: Résumé hebdomadaire
+              - checkbox [checked] [ref=e427]
+            - generic [ref=e428]:
+              - generic [ref=e429]: Nouvelles ressources
+              - checkbox [ref=e430]
+            - button "Enregistrer" [ref=e431] [cursor=pointer]
+  - generic [ref=e261]:
+    - generic [ref=e262]: ✓
+    - generic [ref=e263]: Connexion reussie.

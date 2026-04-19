@@ -1,0 +1,84 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - img [ref=e14]:
+        - generic [ref=e29]: ODAS
+        - generic [ref=e30]: SRHR
+      - generic [ref=e32]: Réseau ODAS
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]: 🛡️
+        - generic [ref=e38]: RESEAU ODAS - VEILLE ANTI-DROITS
+      - generic [ref=e268]:
+        - generic [ref=e269]: Vérification par email
+        - generic [ref=e270]:
+          - generic [ref=e271]: 📧
+          - generic [ref=e272]:
+            - generic [ref=e273]: ✉️
+            - generic [ref=e274]: contributeur.demo@odas.org
+          - generic [ref=e275]: "Un code à 6 chiffres vient d'être envoyé - Code demo: 963014"
+          - generic [ref=e276]: Vérifiez aussi vos spams si besoin
+        - generic [ref=e277]:
+          - textbox [ref=e278]
+          - textbox [ref=e279]
+          - textbox [ref=e280]
+          - textbox [ref=e281]
+          - textbox [ref=e282]
+          - textbox [ref=e283]
+        - generic [ref=e284]: Code valide pendant 09:59
+        - button "Vérifier et accéder" [ref=e285] [cursor=pointer]
+        - generic [ref=e286]: Pas reçu ? Renvoyer le code · Changer d'email
+  - complementary [ref=e57]:
+    - generic [ref=e58]:
+      - generic [ref=e59]: 🛡️
+      - generic [ref=e60]:
+        - generic [ref=e61]: RADAR Mouvement ODAS
+        - generic [ref=e62]: Réseau ODAS
+    - navigation [ref=e63]:
+      - generic [ref=e64]: Principal
+      - generic [ref=e65] [cursor=pointer]:
+        - img [ref=e66]
+        - text: Tableau de bord
+      - generic [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - text: Signalements
+        - generic [ref=e74]: "3"
+      - generic [ref=e75] [cursor=pointer]:
+        - img [ref=e76]
+        - text: Cartographie
+      - generic [ref=e79]: Ressources
+      - generic [ref=e80] [cursor=pointer]:
+        - img [ref=e81]
+        - text: Hub de ressources
+      - generic [ref=e84]: Administration
+      - generic [ref=e85] [cursor=pointer]:
+        - img [ref=e86]
+        - text: Membres
+      - generic [ref=e91] [cursor=pointer]:
+        - img [ref=e92]
+        - text: Validation
+        - generic [ref=e95]: "3"
+      - generic [ref=e96] [cursor=pointer]:
+        - img [ref=e97]
+        - text: Alertes
+      - generic [ref=e100] [cursor=pointer]:
+        - img [ref=e101]
+        - text: Mon profil
+    - generic [ref=e105] [cursor=pointer]:
+      - generic [ref=e106]: CO
+      - generic [ref=e107]:
+        - generic [ref=e108]: Contributeur Demo ODAS
+        - generic [ref=e109]: Contributeur
+  - banner [ref=e110]:
+    - generic [ref=e111]: Tableau de bord
+    - generic [ref=e112]:
+      - button [ref=e114] [cursor=pointer]:
+        - img [ref=e116]
+      - button [ref=e119] [cursor=pointer]:
+        - img [ref=e120]
+      - generic [ref=e123] [cursor=pointer]: CO
+  - main [ref=e124]:
+    - generic [ref=e267]: Session expiree.
+  - generic [ref=e263]:
+    - generic [ref=e264]: ✓
+    - generic [ref=e265]: Code envoye a contributeur.demo@odas.org

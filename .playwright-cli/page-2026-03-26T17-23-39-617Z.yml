@@ -1,0 +1,266 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e57]:
+    - generic [ref=e58]:
+      - generic [ref=e59]: 🛡️
+      - generic [ref=e60]:
+        - generic [ref=e61]: RADAR Mouvement ODAS
+        - generic [ref=e62]: Réseau ODAS
+    - navigation [ref=e63]:
+      - generic [ref=e64]: Principal
+      - generic [ref=e65] [cursor=pointer]:
+        - img [ref=e66]
+        - text: Tableau de bord
+      - generic [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - text: Signalements
+        - generic [ref=e74]: "3"
+      - generic [ref=e75] [cursor=pointer]:
+        - img [ref=e76]
+        - text: Cartographie
+      - generic [ref=e79]: Ressources
+      - generic [ref=e80] [cursor=pointer]:
+        - img [ref=e81]
+        - text: Hub de ressources
+      - generic [ref=e84]: Administration
+      - generic [ref=e100] [cursor=pointer]:
+        - img [ref=e101]
+        - text: Mon profil
+    - generic [ref=e105] [cursor=pointer]:
+      - generic [ref=e106]: CO
+      - generic [ref=e107]:
+        - generic [ref=e108]: Contributeur Demo ODAS
+        - generic [ref=e109]: Contributeur
+  - banner [ref=e110]:
+    - generic [ref=e111]: Tableau de bord
+    - generic [ref=e112]:
+      - button [ref=e114] [cursor=pointer]:
+        - img [ref=e116]
+      - button [ref=e119] [cursor=pointer]:
+        - img [ref=e120]
+      - generic [ref=e123] [cursor=pointer]: CO
+  - main [ref=e124]:
+    - generic [ref=e287]:
+      - generic [ref=e288]:
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - generic [ref=e292]: Reseau ferme ODAS · veille en continu
+            - generic [ref=e293]: Centre de veille personnel
+            - generic [ref=e294]: Retrouvez ici les signalements valides par le reseau, les mises a jour importantes, vos favoris de suivi et les contenus recents a surveiller. Cet espace vous permet de rester informe, de contribuer et de suivre l'evolution des alertes en temps reel.
+            - generic [ref=e295]:
+              - button "+ Nouveau signalement" [ref=e296] [cursor=pointer]
+              - button "Explorer le reseau" [ref=e297] [cursor=pointer]
+          - generic [ref=e298]:
+            - generic [ref=e299]:
+              - generic [ref=e300]: Mes signalements
+              - generic [ref=e301]: "0"
+              - generic [ref=e302]: Contribution personnelle
+            - generic [ref=e303]:
+              - generic [ref=e304]: En attente
+              - generic [ref=e305]: "0"
+              - generic [ref=e306]: Validation editoriale
+            - generic [ref=e307]:
+              - generic [ref=e308]: Publies
+              - generic [ref=e309]: "0"
+              - generic [ref=e310]: Visibles dans le reseau
+            - generic [ref=e311]:
+              - generic [ref=e312]: Favoris
+              - generic [ref=e313]: "0"
+              - generic [ref=e314]: Veille personnelle
+        - generic [ref=e316]:
+          - generic [ref=e317]: Publication recommandee dans le flux prioritaire.
+          - generic [ref=e318]: Piece de contexte ajoutee pour l'equipe editorial.
+          - generic [ref=e319]: Piece de contexte ajoutee pour l'equipe editorial.
+          - generic [ref=e320]: Discussion interne activee sur SIG-2026-0002
+          - generic [ref=e321]: Discussion interne activee sur SIG-2026-0002
+          - generic [ref=e322]: Piece de contexte ajoutee pour l'equipe editorial.
+          - generic [ref=e323]: Publication recommandee dans le flux prioritaire.
+          - generic [ref=e324]: Piece de contexte ajoutee pour l'equipe editorial.
+          - generic [ref=e325]: Piece de contexte ajoutee pour l'equipe editorial.
+          - generic [ref=e326]: Discussion interne activee sur SIG-2026-0002
+          - generic [ref=e327]: Discussion interne activee sur SIG-2026-0002
+          - generic [ref=e328]: Piece de contexte ajoutee pour l'equipe editorial.
+        - button "AO Admin Demo ODAS Madagascar · 4 h" [ref=e330]:
+          - generic [ref=e331]: AO
+          - generic [ref=e332]: Admin Demo ODAS
+          - generic [ref=e333]: Madagascar · 4 h
+        - generic [ref=e334]:
+          - generic [ref=e336]:
+            - generic [ref=e337]: Fil d'actualite
+            - generic [ref=e338]: Signalements valides, medias, interactions et veille du reseau.
+          - generic [ref=e339]:
+            - article [ref=e340]:
+              - generic [ref=e341]:
+                - generic [ref=e342]:
+                  - generic [ref=e343]: AO
+                  - generic [ref=e344]:
+                    - generic [ref=e345]: Admin Demo ODAS
+                    - generic [ref=e346]: "@admin.demo.odas"
+                    - generic [ref=e347]:
+                      - generic [ref=e348]: Valide
+                      - generic [ref=e349]: Elevee
+                - generic [ref=e350]: 4 h
+              - generic [ref=e351]: Une coalition d'ONG religieuses a lance une petition nationale exigeant le retrait de Madagascar du Protocole de Maputo.
+              - generic [ref=e353]:
+                - generic [ref=e354]: MADAGASCAR · ONG
+                - generic [ref=e355]: Petition contre le Protocole de Maputo a Madagascar
+                - generic [ref=e356]: SIG-2026-0005 · Centre ODAS
+              - generic [ref=e357]:
+                - generic [ref=e358]:
+                  - generic [ref=e359]: demo-visual-sig-2026-0005.svg
+                  - generic [ref=e360]: image · 2 Ko
+                  - link "Ouvrir" [ref=e361] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/media/signalements/signalements/demo-visual-sig-2026-0005.svg
+                - generic [ref=e362]:
+                  - generic [ref=e363]: demo-visual-sig-2026-0005.svg
+                  - generic [ref=e364]: image · 2 Ko
+                  - link "Ouvrir" [ref=e365] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/media/signalements/signalements/demo-visual-sig-2026-0005_9NySIXZ.svg
+              - generic [ref=e366]:
+                - button "Voir le dossier" [ref=e367]
+                - button "Utile 2" [ref=e368]
+                - button "Prioritaire 0" [ref=e369]
+                - button "Ajouter aux favoris" [ref=e370]
+                - generic [ref=e371]: 1 commentaire(s) · 4 reaction(s)
+            - article [ref=e372]:
+              - generic [ref=e373]:
+                - generic [ref=e374]:
+                  - generic [ref=e375]: AO
+                  - generic [ref=e376]:
+                    - generic [ref=e377]: Admin Demo ODAS
+                    - generic [ref=e378]: "@admin.demo.odas"
+                    - generic [ref=e379]:
+                      - generic [ref=e380]: Valide
+                      - generic [ref=e381]: Moderee
+                - generic [ref=e382]: 4 h
+              - generic [ref=e383]: Une serie d'emissions radio accuse des ONG internationales de promouvoir l'avortement au Mali.
+              - generic [ref=e385]:
+                - generic [ref=e386]: MALI · MEDIAS
+                - generic [ref=e387]: Campagne mediatique contre les ONG SRHR au Mali
+                - generic [ref=e388]: SIG-2026-0002 · Centre ODAS
+              - generic [ref=e389]:
+                - generic [ref=e390]:
+                  - generic [ref=e391]: demo-visual-sig-2026-0002.svg
+                  - generic [ref=e392]: image · 2 Ko
+                  - link "Ouvrir" [ref=e393] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/media/signalements/signalements/demo-visual-sig-2026-0002.svg
+                - generic [ref=e394]:
+                  - generic [ref=e395]: demo-visual-sig-2026-0002.svg
+                  - generic [ref=e396]: image · 2 Ko
+                  - link "Ouvrir" [ref=e397] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/media/signalements/signalements/demo-visual-sig-2026-0002_0fbOJq0.svg
+              - generic [ref=e398]:
+                - button "Voir le dossier" [ref=e399]
+                - button "Utile 0" [ref=e400]
+                - button "Prioritaire 2" [ref=e401]
+                - button "Ajouter aux favoris" [ref=e402]
+                - generic [ref=e403]: 1 commentaire(s) · 4 reaction(s)
+            - article [ref=e404]:
+              - generic [ref=e405]:
+                - generic [ref=e406]:
+                  - generic [ref=e407]: AO
+                  - generic [ref=e408]:
+                    - generic [ref=e409]: Admin Demo ODAS
+                    - generic [ref=e410]: "@admin.demo.odas"
+                    - generic [ref=e411]:
+                      - generic [ref=e412]: Valide
+                      - generic [ref=e413]: Elevee
+                - generic [ref=e414]: 4 h
+              - generic [ref=e415]: Un projet de loi visant a criminaliser l'assistance a l'avortement a ete depose a l'Assemblee nationale du Cameroun.
+              - generic [ref=e417]:
+                - generic [ref=e418]: CAMEROUN · LEGISLATIF
+                - generic [ref=e419]: Projet de loi anti-SRHR au Cameroun
+                - generic [ref=e420]: SIG-2026-0001 · Centre ODAS
+              - generic [ref=e422]:
+                - generic [ref=e423]: demo-visual-sig-2026-0001.svg
+                - generic [ref=e424]: image · 2 Ko
+                - link "Ouvrir" [ref=e425] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/media/signalements/signalements/demo-visual-sig-2026-0001.svg
+              - generic [ref=e426]:
+                - button "Voir le dossier" [ref=e427]
+                - button "Utile 2" [ref=e428]
+                - button "Prioritaire 0" [ref=e429]
+                - button "Ajouter aux favoris" [ref=e430]
+                - generic [ref=e431]: 1 commentaire(s) · 4 reaction(s)
+      - complementary [ref=e432]:
+        - generic [ref=e433]:
+          - generic [ref=e434]: Pulse reseau
+          - generic [ref=e435]: Les points chauds du moment et vos propres signaux prioritaires.
+          - generic [ref=e436]:
+            - generic [ref=e437]:
+              - generic [ref=e438]: Reseau
+              - generic [ref=e439]: Petition contre le Protocole de Maputo a Madagascar
+              - generic [ref=e440]: Madagascar · ONG · Valide
+            - generic [ref=e441]:
+              - generic [ref=e442]: Reseau
+              - generic [ref=e443]: Campagne mediatique contre les ONG SRHR au Mali
+              - generic [ref=e444]: Mali · Medias · Valide
+            - generic [ref=e445]:
+              - generic [ref=e446]: Reseau
+              - generic [ref=e447]: Projet de loi anti-SRHR au Cameroun
+              - generic [ref=e448]: Cameroun · Legislatif · Valide
+        - generic [ref=e449]:
+          - generic [ref=e450]: Fil d'activite
+          - generic [ref=e451]: On garde le fil, mais avec plus de rythme et plus de contexte.
+          - generic [ref=e453]:
+            - generic [ref=e454]:
+              - text: •
+              - generic [ref=e455]: Publication recommandee dans le flux prioritaire.
+              - generic [ref=e456]: "Signalement #2"
+              - generic [ref=e457]: 18 min
+            - generic [ref=e458]:
+              - text: •
+              - generic [ref=e459]: Piece de contexte ajoutee pour l'equipe editorial.
+              - generic [ref=e460]: "Signalement #1"
+              - generic [ref=e461]: 18 min
+            - generic [ref=e462]:
+              - text: •
+              - generic [ref=e463]: Piece de contexte ajoutee pour l'equipe editorial.
+              - generic [ref=e464]: "Signalement #5"
+              - generic [ref=e465]: 18 min
+            - generic [ref=e466]:
+              - text: •
+              - generic [ref=e467]: Discussion interne activee sur SIG-2026-0002
+              - generic [ref=e468]: "Signalement #2"
+              - generic [ref=e469]: 3 h
+            - generic [ref=e470]:
+              - text: •
+              - generic [ref=e471]: Discussion interne activee sur SIG-2026-0002
+              - generic [ref=e472]: "Signalement #2"
+              - generic [ref=e473]: 3 h
+            - generic [ref=e474]:
+              - text: •
+              - generic [ref=e475]: Piece de contexte ajoutee pour l'equipe editorial.
+              - generic [ref=e476]: "Signalement #2"
+              - generic [ref=e477]: 3 h
+            - generic [ref=e478]:
+              - text: •
+              - generic [ref=e479]: Piece de contexte ajoutee pour l'equipe editorial.
+              - generic [ref=e480]: "Signalement #2"
+              - generic [ref=e481]: 3 h
+            - generic [ref=e482]:
+              - text: •
+              - generic [ref=e483]: Discussion interne activee sur SIG-2026-0001
+              - generic [ref=e484]: "Signalement #1"
+              - generic [ref=e485]: 3 h
+            - generic [ref=e486]:
+              - text: •
+              - generic [ref=e487]: Diffuse au reseau de veille pour verification terrain.
+              - generic [ref=e488]: "Signalement #1"
+              - generic [ref=e489]: 3 h
+            - generic [ref=e490]:
+              - text: •
+              - generic [ref=e491]: Discussion interne activee sur SIG-2026-0005
+              - generic [ref=e492]: "Signalement #5"
+              - generic [ref=e493]: 3 h
+            - generic [ref=e494]:
+              - text: •
+              - generic [ref=e495]: Diffuse au reseau de veille pour verification terrain.
+              - generic [ref=e496]: "Signalement #5"
+              - generic [ref=e497]: 3 h
+        - generic [ref=e498]:
+          - generic [ref=e499]: Mes favoris
+          - generic [ref=e500]: Acces rapide a votre veille personnelle sans encombrer l'ecran principal.
+          - generic [ref=e502]: Ajoutez des favoris depuis le fil pour les retrouver ici.
+  - generic [ref=e263]:
+    - generic [ref=e264]: ✓
+    - generic [ref=e265]: Connexion réussie.

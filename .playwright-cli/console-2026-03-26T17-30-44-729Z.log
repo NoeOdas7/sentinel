@@ -1,0 +1,4 @@
+[ 4176907ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://127.0.0.1:8000/api/v1/signals/dashboard/:0
+[ 4176909ms] [ERROR] loadDashboardData Error: Session expiree.
+    at apiFetch (http://127.0.0.1:8000/:2879:13)
+    at async loadDashboardData (http://127.0.0.1:8000/:6073:19) @ http://127.0.0.1:8000/:6075
