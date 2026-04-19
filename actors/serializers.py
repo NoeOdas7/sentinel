@@ -9,5 +9,14 @@ class ConnexionSerializer(serializers.ModelSerializer):
 
 class ActeurSerializer(serializers.ModelSerializer):
     type_display=serializers.CharField(source='get_type_acteur_display',read_only=True)
+    logo_url=serializers.SerializerMethodField()
+    photo_url=serializers.SerializerMethodField()
     connexions_sortantes=ConnexionSerializer(many=True,read_only=True)
+
+    def get_logo_url(self, obj):
+        return obj.logo.url if obj.logo else ""
+
+    def get_photo_url(self, obj):
+        return obj.photo.url if obj.photo else ""
+
     class Meta: model=Acteur; fields='__all__'; read_only_fields=['date_creation','date_modification','contribue_par']

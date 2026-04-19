@@ -84,13 +84,15 @@ def read_rows(path):
 
 def infer_actor_type(value):
     current = normalize_lookup(value)
-    if "media" in current:
-        return "media"
     if "religieux" in current:
         return "rel"
+    if "media" in current:
+        return "media"
+    if "international" in current:
+        return "intl"
     if "local" in current or "national" in current:
         return "local"
-    return "intl"
+    return "local"
 
 
 def infer_countries(value):

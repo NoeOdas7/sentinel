@@ -53,102 +53,13 @@ def _normalize_actor_payload(request):
 def ensure_demo_actors():
     if Acteur.objects.exists():
         return
-
-    from signals.models import Narratif, Signalement
-
     demo_user = User.objects.filter(email__iexact=settings.DEMO_ADMIN_EMAIL, is_active=True).first()
     if not demo_user:
         return
+    from .seed_data import SEED_ACTEURS
 
-    narratifs = {
-        "Protection de la famille": Narratif.objects.get_or_create(nom="Protection de la famille")[0],
-        "Anti-IVG": Narratif.objects.get_or_create(nom="Anti-IVG")[0],
-        "Religion et morale": Narratif.objects.get_or_create(nom="Religion et morale")[0],
-        "Agenda occidental": Narratif.objects.get_or_create(nom="Agenda occidental")[0],
-        "Valeurs religieuses": Narratif.objects.get_or_create(nom="Valeurs religieuses")[0],
-    }
-
-    dataset = [
-        {
-            "nom": "Alliance pour la Famille Cameroun",
-            "type_acteur": "local",
-            "pays_operation": ["Cameroun"],
-            "score_risque": 78,
-            "sources_financement": "Collectes locales, relais confessionnels, soutiens prives.",
-            "zone_influence": "Parlement, eglises, medias communautaires.",
-            "strategie_mode_operatoire": "Lobbying legislatif, petitions, campagnes publiques.",
-            "discours_messages_cles": "Protection de la famille, refus des droits sexuels et reproductifs.",
-            "description": "Coalition locale active dans le plaidoyer anti-droits au Cameroun.",
-            "narratifs": ["Protection de la famille", "Anti-IVG"],
-        },
-        {
-            "nom": "Radio Esperance Afrique",
-            "type_acteur": "media",
-            "pays_operation": ["Mali", "Benin"],
-            "score_risque": 62,
-            "sources_financement": "Sponsors locaux, reseaux religieux, espaces publicitaires militants.",
-            "zone_influence": "Stations radio, debats publics, auditoires ruraux.",
-            "strategie_mode_operatoire": "Emission en serie, amplification de rumeurs, tribunes d'opinion.",
-            "discours_messages_cles": "Agenda occidental, corruption morale, defense des traditions.",
-            "description": "Media de relais regional pour des narratifs anti-droits.",
-            "narratifs": ["Agenda occidental", "Religion et morale"],
-        },
-        {
-            "nom": "Coalition Foi et Nation",
-            "type_acteur": "rel",
-            "pays_operation": ["RCA", "Madagascar"],
-            "score_risque": 71,
-            "sources_financement": "Reseaux confessionnels regionaux, donations internationales.",
-            "zone_influence": "Eglises, marches, responsables communautaires.",
-            "strategie_mode_operatoire": "Predications, mobilisations communautaires, declarations publiques.",
-            "discours_messages_cles": "Valeurs religieuses, moralite publique, souverainete culturelle.",
-            "description": "Reseau religieux mobilise contre plusieurs agendas SRHR.",
-            "narratifs": ["Valeurs religieuses", "Religion et morale"],
-        },
-        {
-            "nom": "Family Watch International",
-            "type_acteur": "intl",
-            "pays_operation": ["Etats-Unis", "Cameroun", "RCA", "Madagascar"],
-            "score_risque": 88,
-            "sources_financement": "Fondations conservatrices, partenaires internationaux.",
-            "zone_influence": "ONU, ministeres, reseaux parlementaires, conferences internationales.",
-            "strategie_mode_operatoire": "Partenariats, production de contenu, influence institutionnelle.",
-            "discours_messages_cles": "Protection des enfants, anti-genre, anti-IVG.",
-            "description": "Acteur international de reference dans la diffusion de narratifs anti-droits.",
-            "narratifs": ["Protection de la famille", "Anti-IVG", "Agenda occidental"],
-        },
-    ]
-
-    created = {}
-    for item in dataset:
-        narratif_names = item.pop("narratifs")
-        acteur = Acteur.objects.create(contribue_par=demo_user, **item)
-        acteur.narratifs.set([narratifs[name] for name in narratif_names])
-        created[acteur.nom] = acteur
-
-    connexions = [
-        ("Family Watch International", "Alliance pour la Famille Cameroun", "financement", "Soutien strategique et mise en reseau."),
-        ("Family Watch International", "Coalition Foi et Nation", "partenaire", "Coordination de campagnes et de messages."),
-        ("Radio Esperance Afrique", "Alliance pour la Famille Cameroun", "media", "Relais des prises de position et campagnes."),
-    ]
-    for source_name, cible_name, type_lien, description in connexions:
-        Connexion.objects.get_or_create(
-            source=created[source_name],
-            cible=created[cible_name],
-            type_lien=type_lien,
-            defaults={"description": description},
-        )
-
-    signal_map = {
-        "Projet de loi anti-SRHR au Cameroun": ["Alliance pour la Famille Cameroun", "Family Watch International"],
-        "Campagne mediatique contre les ONG SRHR au Mali": ["Radio Esperance Afrique"],
-        "Lobbying legislatif anti-LGBTIQ+ en RCA": ["Coalition Foi et Nation", "Family Watch International"],
-        "Petition contre le Protocole de Maputo a Madagascar": ["Coalition Foi et Nation", "Family Watch International"],
-    }
-    for signalement in Signalement.objects.all():
-        actor_names = signal_map.get(signalement.titre, [])
-        if actor_names:
-            signalement.acteurs_lies.set([created[name] for name in actor_names])
+    for item in SEED_ACTEURS:
+        Acteur.objects.create(contribue_par=demo_user, **item)
 
 
 def _country_matches(acteur, country):
