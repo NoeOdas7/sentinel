@@ -760,21 +760,15 @@ textarea.inp2{resize:vertical;min-height:100px}
       <!-- LOGIN -->
       <div id="f-login" class="auth-sel active">
         <div class="auth-form-title">Connectez-vous à votre espace sécurisé</div>
-        <div class="auth-demo">
-          <div style="font-size:18px;line-height:1">🛡️</div>
-          <div>
-            <strong>Accès démo administrateur</strong>
-            <span>Utilisez `admin@odas.org` et `admin123` pour valider les nouveaux comptes pendant la démonstration.</span>
-          </div>
-        </div>
+        
         <div class="fg">
           <label class="fl">Adresse email</label>
-          <input id="li-email" type="email" class="inp" placeholder="vous@organisation.org" value="admin@odas.org">
+          <input id="li-email" type="email" class="inp" placeholder="vous@organisation.org" value="">
         </div>
         <div class="fg">
           <label class="fl">Mot de passe</label>
           <div class="inp-pw">
-            <input id="li-pw" type="password" class="inp" placeholder="••••••••" value="admin123">
+            <input id="li-pw" type="password" class="inp" placeholder="••••••••" value="">
             <button class="toggle-pw" onclick="togglePw('li-pw',this)">👁</button>
           </div>
         </div>
@@ -1586,6 +1580,16 @@ function showForm(id) {
   if (el) { el.classList.add('active'); el.style.display = 'block'; }
 }
 
+function updateOtpHelp(firstLogin = false) {
+  pendingLoginMode = firstLogin ? 'first_login' : 'otp';
+  const help = document.getElementById('otp-help-text');
+  if (help) {
+    help.textContent = firstLogin
+      ? "Entrez le code reçu dans l'email d'approbation pour votre première connexion"
+      : "Un code à 6 chiffres vient d'être envoyé";
+  }
+}
+
 function togglePw(inputOrId, btn) {
   const inp = typeof inputOrId === 'string' ? document.getElementById(inputOrId) : inputOrId;
   inp.type = inp.type === 'password' ? 'text' : 'password';
@@ -1628,7 +1632,69 @@ function otpBack(e, el, idx) {
   }
 }
 
+async function doLogin() {
+  const email = document.getElementById('li-email').value.trim();
+  const password = document.getElementById('li-pw').value;
+  const btn = document.getElementById('login-btn');
+  const txt = document.getElementById('login-btn-txt');
+  txt.textContent = 'Connexion...';
+  btn.disabled = true;
 
+  try {
+    const response = await fetch(`${API}/auth/login/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Connexion impossible.');
+    // Connexion directe admin (pas d'OTP)
+    if (data.token) {
+      authToken = data.token;
+      currentUser = data.user || null;
+      saveSession();
+      clearInterval(otpInterval);
+      enterApp();
+      toast('Connexion réussie.');
+      return;
+    }
+    pendingLoginEmail = data.email || email;
+    updateOtpHelp(!!data.first_login);
+    document.getElementById('otp-target').textContent = pendingLoginEmail;
+    showForm('f-otp');
+    startOTPTimer();
+    toast(data.message || ('Code envoyé à ' + pendingLoginEmail));
+  } catch (error) {
+    toast(error.message || 'Connexion impossible.');
+  } finally {
+    txt.textContent = 'Se connecter';
+    btn.disabled = false;
+  }
+}
+
+async function resendOTP() {
+  if (!pendingLoginEmail) {
+    toast('Reconnectez-vous pour demander un nouveau code.');
+    return;
+  }
+  document.querySelectorAll('.otp-box').forEach(box => { box.value = ''; box.classList.remove('error', 'filled'); });
+  document.querySelectorAll('.otp-box')[0]?.focus();
+  const el = document.getElementById('otp-timer');
+  try {
+    const response = await fetch(`${API}/auth/resend-otp/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: pendingLoginEmail }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Impossible de renvoyer le code.');
+    if (el) el.style.color = 'var(--cyan)';
+    startOTPTimer();
+    toast(data.message || 'Nouveau code envoyé !');
+  } catch (error) {
+    toast(error.message || 'Impossible de renvoyer le code.');
+  }
+}
 
 async function verifyOTP() {
   const boxes = document.querySelectorAll('.otp-box');
@@ -1737,26 +1803,19 @@ async function submitRegistration() {
 const TITLES = { dashboard: 'Tableau de bord', signalements: 'Signalements', cartographie: 'Cartographie des acteurs', ressources: 'Hub de ressources', membres: 'Espace membres', validation: 'Validation des signalements', alertes: 'Alertes', profil: 'Mon profil' };
 
 function nav(id) {
-  const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
-  const fallbackPage = allowed.has('dashboard') ? 'dashboard' : Array.from(allowed)[0] || 'profil';
-  const targetId = allowed.has(id) ? id : fallbackPage;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById('p-' + targetId);
+  const page = document.getElementById('p-' + id);
   if (page) page.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + targetId + "'") && n.style.display !== 'none') n.classList.add('active');
+    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
   });
-  const dashboardLabel = 'Tableau de bord';
-  document.getElementById('tp-title').textContent = targetId === 'dashboard' ? dashboardLabel : (TITLES[targetId] || targetId);
-  if (targetId === 'dashboard') loadDashboardData();
-  if (targetId === 'cartographie') initNet();
-  if (targetId === 'profil') syncSessions();
-  if (targetId === 'membres' && ['admin', 'analyste', 'moderateur'].includes(currentUser?.role)) loadMembersAdminData();
-  if (targetId === 'signalements' || targetId === 'validation') loadSignalementsData();
-  applyRoleDashboard();
+  document.getElementById('tp-title').textContent = TITLES[id] || id;
+  if (id === 'dashboard') initChart();
+  if (id === 'cartographie') initNet();
+  if (id === 'profil') syncSessions();
+  if (id === 'membres') loadMembersAdminData();
 }
-window.nav = nav;
 
 // ════════════════════════════════════════
 // MODALS
@@ -1779,8 +1838,35 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.q
 // ════════════════════════════════════════
 // SIGNALEMENT STEPS
 // ════════════════════════════════════════
-
-
+function sigStep(dir) {
+  sigStep_ = Math.max(0, Math.min(3, sigStep_ + dir));
+  document.querySelectorAll('[id^="ss"]').forEach(s => s.style.display = 'none');
+  document.getElementById('ss' + sigStep_).style.display = 'block';
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('si' + i);
+    el.classList.remove('active', 'done');
+    if (i < sigStep_) el.classList.add('done');
+    else if (i === sigStep_) el.classList.add('active');
+    if (i < 3) document.getElementById('sl' + i).style.background = i < sigStep_ ? 'var(--cyan)' : 'var(--border)';
+  }
+  document.getElementById('sig-prev').style.display = sigStep_ > 0 ? 'flex' : 'none';
+  const next = document.getElementById('sig-next');
+  if (sigStep_ === 3) {
+    next.textContent = '✓ Soumettre le signalement';
+    next.onclick = () => { closeMo('mo-new-sig'); resetSig(); toast('📋 Signalement soumis ! En attente de validation.'); };
+  } else {
+    next.textContent = 'Suivant →';
+    next.onclick = () => sigStep(1);
+  }
+}
+function resetSig() {
+  sigStep_ = 0;
+  document.querySelectorAll('[id^="ss"]').forEach((s, i) => s.style.display = i === 0 ? 'block' : 'none');
+  for (let i = 0; i < 4; i++) { const el = document.getElementById('si' + i); el.classList.remove('active','done'); if(i===0) el.classList.add('active'); if(i<3) document.getElementById('sl'+i).style.background='var(--border)'; }
+  document.getElementById('sig-prev').style.display = 'none';
+  document.getElementById('sig-next').textContent = 'Suivant →';
+  document.getElementById('sig-next').onclick = () => sigStep(1);
+}
 
 // ════════════════════════════════════════
 // NETWORK GRAPH
@@ -1814,6 +1900,15 @@ const PANEL_DATA = {
 };
 
 let nc, nctx, selectedActor = null, dragging = null, panX = 0, panY = 0;
+
+function getVisibleActors() {
+  return ACTORS.filter(actor => netFilter === 'all' || actor.type === netFilter);
+}
+
+function getVisibleEdges() {
+  const visibleIds = new Set(getVisibleActors().map(actor => actor.id));
+  return EDGES.filter(edge => visibleIds.has(edge.from) && visibleIds.has(edge.to));
+}
 
 function initNet() {
   nc = document.getElementById('net-canvas');
@@ -1907,9 +2002,43 @@ function onNClick(e) {
   const [mx, my] = getXY(e), a = getActorAt(mx, my);
   if (a) { selectedActor = a.id; openActorPanel(a); }
 }
-
+function openActorPanel(a) {
+  const d = PANEL_DATA[a.id]; if (!d) return;
+  document.getElementById('ap-name').textContent = a.label.replace('\n', ' ');
+  document.getElementById('ap-score').textContent = a.score;
+  document.getElementById('ap-score').style.color = d.scoreColor;
+  document.getElementById('ap-risk-lbl').textContent = d.riskLbl;
+  document.getElementById('ap-risk-lbl').style.color = d.scoreColor;
+  document.getElementById('ap-pays').textContent = d.pays;
+  document.getElementById('ap-narratifs').innerHTML = d.narratifs.map(n => `<span class="sig-tag">${n}</span>`).join('');
+  document.getElementById('ap-fin').textContent = d.fin;
+  document.getElementById('ap-conn').textContent = d.conn;
+  const circumf = 2 * Math.PI * 26, offset = circumf * (1 - a.score / 100);
+  const ring = document.getElementById('ap-ring');
+  ring.setAttribute('stroke-dashoffset', offset); ring.setAttribute('stroke', d.scoreColor);
+  const badgeColors = { intl: 'b-red', local: 'b-orange', media: 'b-purple', rel: 'b-green' };
+  const badgeLabels = { intl: 'International', local: 'Local/National', media: 'Médias', rel: 'Religieux' };
+  document.getElementById('ap-badges').innerHTML = `<span class="b ${badgeColors[a.type]}">${badgeLabels[a.type]}</span>`;
+  document.getElementById('actor-panel').classList.add('open');
+}
 function closePanel() { document.getElementById('actor-panel').classList.remove('open'); selectedActor = null; }
-
+function filterNet(type) {
+  netFilter = type;
+  if (selectedActor && !getVisibleActors().some(actor => actor.id === selectedActor)) {
+    closePanel();
+  }
+  document.querySelectorAll('#p-cartographie .filters .btn-sm').forEach(btn => {
+    const isActive =
+      (type === 'all' && btn.textContent.includes('Tous')) ||
+      (type === 'intl' && btn.textContent.includes('International')) ||
+      (type === 'local' && btn.textContent.includes('Local')) ||
+      (type === 'media' && btn.textContent.includes('M')) ||
+      (type === 'rel' && btn.textContent.includes('Religieux'));
+    btn.className = isActive ? 'btn btn-p btn-sm' : 'btn btn-g btn-sm';
+  });
+  initNet();
+  toast(type === 'all' ? 'Affichage de tous les acteurs' : `Filtre activé : ${type}`);
+}
 
 // ════════════════════════════════════════
 // CHART
@@ -1943,7 +2072,10 @@ function initChart() {
     }
   });
 }
-
+function updatePeriod(m) {
+  const all = { 3:['Jan','Fév','Mar'], 6:['Oct','Nov','Déc','Jan','Fév','Mar'], 12:['Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc','Jan','Fév','Mar'] };
+  if (chartInst) { chartInst.data.labels = all[m] || all[6]; chartInst.update(); }
+}
 
 // ════════════════════════════════════════
 // UTILS
@@ -1975,6 +2107,48 @@ function setSignalModalContent(data) {
     statusBadge.textContent = data.status;
     statusBadge.className = data.status === 'En attente' ? 'b b-cyn' : data.status === 'Rejeté' ? 'b b-red' : 'b b-green';
   }
+}
+
+function setupSignalementFilters() {
+  const page = document.getElementById('p-signalements');
+  if (!page) return;
+  const cards = Array.from(page.querySelectorAll('.sig-card'));
+  cards.forEach(card => {
+    const meta = normalizeText(card.querySelector('.sig-meta')?.textContent);
+    const title = normalizeText(card.querySelector('.sig-title')?.textContent);
+    const badges = Array.from(card.querySelectorAll('.b')).map(badge => normalizeText(badge.textContent));
+    card.dataset.search = `${title} ${meta} ${badges.join(' ')}`;
+    card.dataset.pays = meta.includes('cameroun') ? 'cameroun' : meta.includes('benin') ? 'benin' : meta.includes('guinee') ? 'guinee' : meta.includes('madagascar') ? 'madagascar' : meta.includes('mali') ? 'mali' : meta.includes('rca') ? 'rca' : meta.includes('cote d ivoire') ? 'cote_ivoire' : '';
+    card.dataset.criticite = badges.some(v => v.includes('elevee')) ? 'elevee' : badges.some(v => v.includes('moderee')) ? 'moderee' : 'faible';
+    card.dataset.type = meta.includes('legislatif') ? 'legislatif' : meta.includes('medias') ? 'medias' : meta.includes('religieux') ? 'religieux' : meta.includes('numerique') ? 'numerique' : meta.includes('ong') ? 'ong' : '';
+    card.dataset.status = badges.some(v => v.includes('en attente')) ? 'en_attente' : badges.some(v => v.includes('rejete')) ? 'rejete' : 'valide';
+    const ref = card.querySelector('.sig-ref')?.textContent?.trim() || '';
+    const titleText = card.querySelector('.sig-title')?.textContent?.trim() || '';
+    card.addEventListener('click', () => setSignalModalContent({ ref, title: titleText, status: card.dataset.status === 'en_attente' ? 'En attente' : card.dataset.status === 'rejete' ? 'Rejeté' : 'Validé' }));
+  });
+  const [searchInput, paysSel, criticiteSel, typeSel, statutSel] = page.querySelectorAll('.filters input, .filters select');
+  const counter = page.querySelector('div[style*="font-size:12px;color:var(--txt3);margin-bottom:14px"]');
+  const applyFilters = () => {
+    const search = normalizeText(searchInput?.value);
+    const pays = normalizeText(paysSel?.value);
+    const criticite = normalizeText(criticiteSel?.value);
+    const type = normalizeText(typeSel?.value);
+    const statut = normalizeText(statutSel?.value);
+    let visible = 0;
+    cards.forEach(card => {
+      const match =
+        (!search || card.dataset.search.includes(search)) &&
+        (!pays || pays.includes('tous') || card.dataset.pays === pays.replace(/[^a-z_]/g, '')) &&
+        (!criticite || criticite.includes('toute') || card.dataset.criticite === (criticite.includes('elevee') ? 'elevee' : criticite.includes('moderee') ? 'moderee' : 'faible')) &&
+        (!type || type.includes('tout') || card.dataset.type === (type.includes('legislatif') ? 'legislatif' : type.includes('medias') ? 'medias' : type.includes('religieux') ? 'religieux' : type.includes('numerique') ? 'numerique' : 'ong')) &&
+        (!statut || statut.includes('tout') || card.dataset.status === (statut.includes('attente') ? 'en_attente' : statut.includes('rejete') ? 'rejete' : 'valide'));
+      card.style.display = match ? '' : 'none';
+      if (match) visible += 1;
+    });
+    if (counter) counter.textContent = `${visible} signalement(s)`;
+  };
+  [searchInput, paysSel, criticiteSel, typeSel, statutSel].forEach(el => el && el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', applyFilters));
+  applyFilters();
 }
 
 function setupResourceFilters() {
@@ -2119,6 +2293,16 @@ function initializeInteractiveFeatures() {
   }
 }
 
+async function apiFetch(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+  if (!headers['Content-Type'] && options.body) headers['Content-Type'] = 'application/json';
+  if (authToken) headers.Authorization = `Bearer ${authToken}`;
+  const response = await fetch(path.startsWith('http') ? path : `${API}${path}`, { ...options, headers });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || data.detail || 'Requête impossible.');
+  return data;
+}
+
 function getRoleBadgeClass(role) {
   return role === 'admin' ? 'b-red' : role === 'analyste' ? 'b-purple' : role === 'moderateur' ? 'b-orange' : role === 'bailleur' ? 'b-gray' : 'b-cyn';
 }
@@ -2229,6 +2413,25 @@ function renderPendingMembers(users) {
   `).join('');
 }
 
+async function approveMember(uid) {
+  const approveBtn = document.getElementById(`approve-btn-${uid}`);
+  const rejectBtn = document.getElementById(`reject-btn-${uid}`);
+  if (approveBtn) { approveBtn.disabled = true; approveBtn.textContent = 'Traitement...'; }
+  if (rejectBtn) rejectBtn.disabled = true;
+  try {
+    await apiFetch(`/auth/members/${uid}/`, { method: 'PATCH', body: JSON.stringify({ decision: 'approve' }) });
+    const card = document.getElementById(`pending-card-${uid}`);
+    if (card) { card.style.borderLeftColor = '#3db87a'; card.style.opacity = '0.5'; }
+    toast("Compte approuvé. L'email avec le code de première connexion a été envoyé.");
+    await loadMembersAdminData();
+  } catch (e) {
+    console.error('approveMember error:', e);
+    toast(e.message || 'Erreur lors de l\'approbation.');
+    if (approveBtn) { approveBtn.disabled = false; approveBtn.textContent = '✓ Approuver'; }
+    if (rejectBtn) rejectBtn.disabled = false;
+  }
+}
+
 async function rejectMember(uid) {
   const approveBtn = document.getElementById(`approve-btn-${uid}`);
   const rejectBtn = document.getElementById(`reject-btn-${uid}`);
@@ -2315,6 +2518,23 @@ function openMemberModal(user) {
     };
   }
   openMo('mo-member');
+}
+
+async function syncAuthenticatedUI() {
+  if (!authToken || !currentUser) return;
+  setProfileFromUser(currentUser);
+  const memberControls = document.querySelectorAll('#p-membres .filters input, #p-membres .filters select');
+  const membersSearch = document.getElementById('members-search') || memberControls[0];
+  const membersRole = document.getElementById('members-role-filter') || memberControls[1];
+  const membersCountry = document.getElementById('members-country-filter') || memberControls[2];
+  [membersSearch, membersRole, membersCountry].forEach(el => {
+    if (el && !el.dataset.boundAdmin) {
+      el.dataset.boundAdmin = 'true';
+      el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', loadMembersAdminData);
+    }
+  });
+  await loadMembersAdminData();
+  await syncSessions();
 }
 
 // ════════════════════════════════════════
@@ -2473,6 +2693,31 @@ let narratifsCache = [];
 let isSubmittingSignalement = false;
 const SESSION_STORAGE_VERSION = 'demo-v2';
 
+function getRoleLabel(role) {
+  return {
+    admin: 'Administrateur',
+    analyste: 'Analyste',
+    moderateur: 'Moderateur',
+    contributeur: 'Contributeur',
+    bailleur: 'Bailleur',
+  }[role] || 'Membre';
+}
+
+function getSignalementsPageParts() {
+  const page = document.getElementById('p-signalements');
+  if (!page) return {};
+  const [searchInput, paysSel, criticiteSel, typeSel, statutSel] = page.querySelectorAll('.filters input, .filters select');
+  const counter = page.querySelector('div[style*="font-size:12px;color:var(--txt3);margin-bottom:14px"]');
+  let list = page.querySelector('[data-signals-dynamic-list]');
+  if (!list) {
+    list = document.createElement('div');
+    list.dataset.signalsDynamicList = 'true';
+    Array.from(page.querySelectorAll(':scope > .sig-card')).forEach(card => card.remove());
+    page.appendChild(list);
+  }
+  return { page, searchInput, paysSel, criticiteSel, typeSel, statutSel, counter, list };
+}
+
 function getValidationPageParts() {
   const page = document.getElementById('p-validation');
   if (!page) return {};
@@ -2518,6 +2763,98 @@ function formatSignalementDate(value) {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString('fr-FR');
 }
 
+function renderSignalementCard(signal) {
+  return `
+    <div class="sig-card ${signal.criticite}" data-signal-id="${signal.id}">
+      <div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;flex-wrap:wrap">
+        <span class="sig-ref">${escapeHtml(signal.reference)}</span>
+        <span class="b ${signalementCritBadge(signal.criticite)}">${escapeHtml(signal.criticite_display || signal.criticite)}</span>
+        <span class="b ${signalementStatusBadge(signal.statut)}">${escapeHtml(signal.statut_display || signalementStatusLabel(signal.statut))}</span>
+      </div>
+      <div class="sig-title">${escapeHtml(signal.titre)}</div>
+      <div class="sig-desc">${escapeHtml(signal.description)}</div>
+      <div class="sig-meta"><span>${signalementCountryFlag(signal.pays)} ${escapeHtml(signal.pays_display || signal.pays)}</span><span>•</span><span>${escapeHtml(signal.type_display || signal.type_evenement)}</span><span>•</span><span>${escapeHtml(formatSignalementDate(signal.date_evenement))}</span><span>•</span><span>${escapeHtml(signal.contributeur_detail?.nom_complet || 'ODAS')}</span></div>
+      <div class="sig-tags">${(signal.narratifs_detail || []).map(item => `<span class="sig-tag">${escapeHtml(item.nom)}</span>`).join('')}</div>
+    </div>
+  `;
+}
+
+function renderValidationCard(signal) {
+  return `
+    <div class="val-card" data-validation-id="${signal.id}">
+      <div style="display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+        <span class="b ${signalementCritBadge(signal.criticite)}">${escapeHtml(signal.criticite_display || signal.criticite)}</span>
+        <span class="b b-cyn">En attente</span>
+      </div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:4px">${escapeHtml(signal.reference)} - ${escapeHtml(signal.titre)}</div>
+      <div style="font-size:12px;color:var(--txt3);margin-bottom:8px">${escapeHtml(signal.contributeur_detail?.nom_complet || 'ODAS')} · ${signalementCountryFlag(signal.pays)} ${escapeHtml(signal.pays_display || signal.pays)} · ${escapeHtml(signal.type_display || signal.type_evenement)} · ${escapeHtml(formatSignalementDate(signal.date_evenement))}</div>
+      <div style="font-size:13px;line-height:1.6;color:var(--txt2)">${escapeHtml(signal.description)}</div>
+      <div class="val-actions">
+        <button class="btn btn-sm" data-action="approve" style="background:var(--green2);color:var(--green);border:1px solid rgba(61,184,122,.3)">✓ Valider</button>
+        <button class="btn btn-sm btn-d" data-action="reject">✕ Rejeter</button>
+        <button class="btn btn-sm btn-g" data-action="detail">Voir le détail</button>
+      </div>
+    </div>
+  `;
+}
+
+function setSignalModalDetails(signal) {
+  setSignalModalContent({
+    ref: signal.reference,
+    title: signal.titre,
+    status: signal.statut_display || signalementStatusLabel(signal.statut),
+  });
+  const modal = document.getElementById('mo-sig');
+  if (!modal) return;
+  const values = modal.querySelectorAll('.g2 > div > div:last-child');
+  if (values[0]) values[0].textContent = `${signalementCountryFlag(signal.pays)} ${signal.pays_display || signal.pays}`;
+  if (values[1]) values[1].textContent = signal.type_display || signal.type_evenement;
+  if (values[2]) values[2].textContent = formatSignalementDate(signal.date_evenement);
+  if (values[3]) values[3].innerHTML = `<span class="b ${signal.fiabilite === 'confirmee' ? 'b-green' : signal.fiabilite === 'probable' ? 'b-orange' : 'b-gray'}">${escapeHtml(signal.fiabilite || 'Non renseignee')}</span>`;
+  if (values[4]) values[4].textContent = signal.contributeur_detail?.nom_complet || 'ODAS';
+  if (values[5]) values[5].textContent = signal.reference;
+  const blocks = modal.querySelectorAll('.mo-bd > div');
+  const desc = blocks[1]?.querySelector('div:last-child');
+  const tags = blocks[2]?.querySelector('div:last-child');
+  if (desc) desc.textContent = signal.description || '';
+  if (tags) tags.innerHTML = (signal.narratifs_detail || []).map(item => `<span class="sig-tag">${escapeHtml(item.nom)}</span>`).join('') || '<span class="sig-tag">Aucun narratif</span>';
+}
+
+function getFilteredSignalements() {
+  const { searchInput, paysSel, criticiteSel, typeSel, statutSel } = getSignalementsPageParts();
+  const search = normalizeText(searchInput?.value);
+  const pays = mapChoice(SIGNAL_PAYS_MAP, paysSel?.value);
+  const criticite = mapChoice(SIGNAL_CRIT_MAP, criticiteSel?.value);
+  const typeEvenement = mapChoice(SIGNAL_TYPE_MAP, typeSel?.value);
+  const statut = normalizeText(statutSel?.value).includes('attente')
+    ? 'en_attente'
+    : normalizeText(statutSel?.value).includes('rejete')
+      ? 'rejete'
+      : normalizeText(statutSel?.value).includes('valide')
+        ? 'valide'
+        : '';
+  return signalementsCache.filter(signal => {
+    const haystack = normalizeText(`${signal.reference} ${signal.titre} ${signal.description} ${signal.pays_display || ''} ${signal.type_display || ''} ${signal.statut_display || ''}`);
+    return (!search || haystack.includes(search))
+      && (!pays || signal.pays === pays)
+      && (!criticite || signal.criticite === criticite)
+      && (!typeEvenement || signal.type_evenement === typeEvenement)
+      && (!statut || signal.statut === statut);
+  });
+}
+
+function bindSignalementCards(container, source) {
+  container.querySelectorAll('[data-signal-id]').forEach(card => {
+    const signal = source.find(item => item.id === Number(card.dataset.signalId));
+    if (!signal) return;
+    card.addEventListener('click', () => {
+      activeSignalRef = signal.reference;
+      setSignalModalDetails(signal);
+      openMo('mo-sig');
+    });
+  });
+}
+
 function renderSignalementsList(items) {
   const { list, counter } = getSignalementsPageParts();
   if (!list) return;
@@ -2531,6 +2868,55 @@ function renderSignalementsList(items) {
   if (counter) counter.textContent = `${items.length} signalement(s)`;
 }
 
+function renderValidationList(items) {
+  const { list, alertBox } = getValidationPageParts();
+  if (!list) return;
+  if (alertBox) alertBox.textContent = `${items.length} signalement${items.length > 1 ? 's' : ''} en attente`;
+  const validationBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("validation"))?.querySelector('.sb-badge');
+  if (validationBadge) validationBadge.textContent = items.length;
+  const signalBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("signalements"))?.querySelector('.sb-badge');
+  if (signalBadge) signalBadge.textContent = signalementsCache.length;
+  if (!items.length) {
+    list.innerHTML = `<div class="pending-empty">Aucun signalement en attente.</div>`;
+    return;
+  }
+  list.innerHTML = items.map(renderValidationCard).join('');
+  list.querySelectorAll('[data-validation-id]').forEach(card => {
+    const signal = items.find(item => item.id === Number(card.dataset.validationId));
+    if (!signal) return;
+    card.querySelector('[data-action="approve"]')?.addEventListener('click', event => {
+      event.stopPropagation();
+      moderateSignalement(signal.id, 'valider');
+    });
+    card.querySelector('[data-action="reject"]')?.addEventListener('click', event => {
+      event.stopPropagation();
+      moderateSignalement(signal.id, 'rejeter');
+    });
+    card.querySelector('[data-action="detail"]')?.addEventListener('click', event => {
+      event.stopPropagation();
+      setSignalModalDetails(signal);
+      openMo('mo-sig');
+    });
+  });
+}
+
+function renderDashboardData(stats) {
+  dashboardStatsCache = stats;
+  const kpiValues = document.querySelectorAll('#p-dashboard .kpi-val');
+  if (kpiValues[0]) kpiValues[0].textContent = stats.signalements_mois ?? '0';
+  if (kpiValues[1]) kpiValues[1].textContent = stats.acteurs_documentes ?? '0';
+  if (kpiValues[2]) kpiValues[2].textContent = stats.pays_couverts ?? '0';
+  if (kpiValues[3]) kpiValues[3].textContent = stats.membres_actifs ?? '0';
+  const listWrap = document.querySelector('#p-dashboard .card:last-child > div[style="padding:12px"]');
+  if (listWrap) {
+    const latest = stats.derniers_signalements || [];
+    listWrap.innerHTML = latest.length
+      ? latest.map(renderSignalementCard).join('')
+      : `<div class="pending-empty">Aucun signalement valide pour le moment.</div>`;
+    bindSignalementCards(listWrap, latest);
+  }
+}
+
 async function moderateSignalement(id, action) {
   try {
     await apiFetch(`/signals/${id}/valider/`, {
@@ -2541,6 +2927,22 @@ async function moderateSignalement(id, action) {
     await Promise.all([loadSignalementsData(), loadDashboardData()]);
   } catch (error) {
     toast(error.message || 'Action impossible.');
+  }
+}
+
+async function loadSignalementsData() {
+  if (!authToken || !currentUser) return;
+  try {
+    signalementsCache = await apiFetch('/signals/');
+    renderSignalementsList(getFilteredSignalements());
+    renderValidationList(signalementsCache.filter(item => item.statut === 'en_attente'));
+    if (userHasPersonalDashboard() && workspaceCache && document.getElementById('p-dashboard')?.classList.contains('active')) {
+      renderWorkspaceDashboard(workspaceCache);
+    }
+  } catch (error) {
+    const { list, counter } = getSignalementsPageParts();
+    if (list) list.innerHTML = `<div class="pending-empty">${escapeHtml(error.message)}</div>`;
+    if (counter) counter.textContent = 'Erreur de chargement';
   }
 }
 
@@ -2732,9 +3134,44 @@ async function submitResourceForm() {
   }
 }
 
-renderMouPage = ;
+renderMouPage = function renderMouPage() {
+  const page = document.getElementById('p-mou');
+  if (!page) return;
+  page.innerHTML = `
+    <div class="mou-shell">
+      <section class="mou-hero">
+        <div class="mou-hero-title">MoU US Compact</div>
+        <div class="mou-hero-copy">Espace documentaire dedie aux memorandums, annexes, notes, presentations et fichiers de suivi du programme. Les documents ajoutes ici restent separes du Hub de ressources et sont prets pour une vraie alimentation terrain.</div>
+        <div class="mou-stat-row">
+          <div class="mou-stat" id="mou-doc-count">${mouResourcesCache.length} document(s)</div>
+          <div class="mou-stat">Espace secure ODAS</div>
+          <div class="mou-stat">Ajout de fichiers et de liens</div>
+        </div>
+      </section>
+      <div class="filters">
+        <div class="search-wrap" style="flex:1;max-width:360px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="mou-search" type="text" placeholder="Rechercher un document MoU US Compact..."></div>
+        <select class="fsel" id="mou-category"><option value="">Toutes categories</option><option value="rapports">Rapports</option><option value="guides">Guides pratiques</option><option value="outils">Outils</option><option value="formations">Formations</option><option value="juridique">Juridique</option></select>
+        <select class="fsel" id="mou-country"><option value="">Tous pays</option><option value="Tous">Tous</option>${ALL_COUNTRIES_FR.map(country => `<option value="${escapeHtml(country)}">${escapeHtml(country)}</option>`).join('')}</select>
+        <select class="fsel" id="mou-format"><option value="">Tous formats</option><option value="pdf">PDF</option><option value="docx">DOCX</option><option value="xlsx">XLSX</option><option value="pptx">PPTX</option><option value="lien">Lien web</option></select>
+        <button class="btn btn-p" type="button" onclick="openMouResourceModal()">+ Ajouter</button>
+      </div>
+      <div class="mou-grid" id="mou-grid"><div class="pending-empty" style="grid-column:1/-1">Chargement des documents...</div></div>
+    </div>
+  `;
+  bindMouFilters();
+  renderMouCards();
+  loadMouResources();
+};
 
-async 
+async function loadDashboardData() {
+  if (!authToken || !currentUser) return;
+  try {
+    const stats = await apiFetch('/signals/dashboard/');
+    renderDashboardData(stats);
+  } catch (error) {
+    console.error('loadDashboardData', error);
+  }
+}
 
 function handleExpiredSession(message) {
   isLogged = false;
@@ -2764,6 +3201,400 @@ async function apiFetch(path, options = {}) {
   return data;
 }
 
+async function restoreSession() {
+  try {
+    const token = localStorage.getItem('sentinel_token');
+    const user = localStorage.getItem('sentinel_user');
+    if (!token || !user) return;
+    authToken = token;
+    currentUser = JSON.parse(user);
+    await apiFetch('/auth/profile/');
+    enterApp();
+  } catch (error) {
+    clearSession();
+    authToken = '';
+    currentUser = null;
+  }
+}
+
+function enterApp() {
+  isLogged = true;
+  document.getElementById('auth-page').style.display = 'none';
+  if (currentUser) {
+    const initials = (currentUser.initiales || 'NT').slice(0, 2).toUpperCase();
+    const name = currentUser.nom_complet || 'Utilisateur';
+    document.getElementById('sb-av').textContent = initials;
+    document.getElementById('tp-av').textContent = initials;
+    document.getElementById('sb-name').textContent = name;
+    const roleEl = document.getElementById('sb-role');
+    if (roleEl) roleEl.textContent = getRoleLabel(currentUser.role);
+  }
+  initChart();
+  initializeInteractiveFeatures();
+}
+
+function nav(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('p-' + id);
+  if (page) page.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
+  });
+  document.getElementById('tp-title').textContent = TITLES[id] || id;
+  if (id === 'dashboard') loadDashboardData();
+  if (id === 'cartographie') initNet();
+  if (id === 'profil') syncSessions();
+  if (id === 'membres') loadMembersAdminData();
+  if (id === 'signalements' || id === 'validation') loadSignalementsData();
+}
+
+function setupSignalementFilters() {
+  const { page, searchInput, paysSel, criticiteSel, typeSel, statutSel } = getSignalementsPageParts();
+  if (!page) return;
+  [searchInput, paysSel, criticiteSel, typeSel, statutSel].forEach(el => {
+    if (el && !el.dataset.boundSignals) {
+      el.dataset.boundSignals = 'true';
+      el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => renderSignalementsList(getFilteredSignalements()));
+    }
+  });
+}
+
+function setupValidationCards() {
+  getValidationPageParts();
+}
+
+function initializeInteractiveFeatures() {
+  const registerButton = document.querySelector('#f-register .btn-auth');
+  if (registerButton) {
+    registerButton.id = 'register-btn';
+    registerButton.onclick = submitRegistration;
+  }
+  const registerWarn = document.querySelector('#f-register .auth-warn');
+  if (registerWarn) {
+    registerWarn.textContent = "L'acces est d'abord valide par un administrateur ODAS. Une fois valide, l'utilisateur recoit un code par email pour sa premiere connexion.";
+  }
+  setupSignalementFilters();
+  setupResourceFilters();
+  setupMemberFilters();
+  setupValidationCards();
+  setupModalButtons();
+  syncAuthenticatedUI();
+  loadSignalementsData();
+  loadDashboardData();
+  if (document.getElementById('p-cartographie')?.classList.contains('active')) {
+    initNet();
+  }
+}
+
+const SIGNAL_MODAL_TAG_ALIAS = {
+  'valeurs africaines': 'Protection de la famille',
+  'anti-genre': 'Religion et morale',
+  'famille naturelle': 'Protection de la famille',
+  'neo-colonialisme': 'Agenda occidental',
+  'arguments demographiques': 'Protection de la famille',
+  'souverainete nationale': 'Agenda occidental',
+  'anti-ivg': 'Anti-IVG',
+  'religion et morale': 'Religion et morale',
+  'droits des enfants': 'Protection de la famille',
+  'anti-lgbtiq+': 'Religion et morale',
+};
+const SIGNAL_PAYS_MAP = {
+  benin: 'benin',
+  cameroun: 'cameroun',
+  "cote d'ivoire": 'cote_ivoire',
+  'cote divoire': 'cote_ivoire',
+  guinee: 'guinee',
+  madagascar: 'madagascar',
+  mali: 'mali',
+  rca: 'rca',
+};
+const SIGNAL_TYPE_MAP = {
+  legislatif: 'legislatif',
+  medias: 'medias',
+  religieux: 'religieux',
+  ong: 'ong',
+  numerique: 'numerique',
+  autre: 'autre',
+};
+const SIGNAL_CRIT_MAP = {
+  faible: 'faible',
+  moderee: 'moderee',
+  elevee: 'elevee',
+};
+const SIGNAL_FIABILITE_MAP = {
+  confirmee: 'confirmee',
+  probable: 'probable',
+  rumeur: 'rumeur',
+};
+const SIGNAL_CONFIDENTIALITE_MAP = {
+  'public membres': 'membres',
+  'moderateurs uniquement': 'moderateurs',
+  'staff odas': 'staff',
+};
+
+function normalizeChoice(value) {
+  return normalizeText(value || '').replace(/[^\w\s+]/g, '').trim();
+}
+
+function mapChoice(map, value, fallback = '') {
+  return map[normalizeChoice(value)] || fallback;
+}
+
+function getSignalementModalElements() {
+  const modal = document.getElementById('mo-new-sig');
+  if (!modal) return {};
+  const step0Fields = modal.querySelectorAll('#ss0 .inp2');
+  return {
+    modal,
+    titleInput: step0Fields[0],
+    dateInput: step0Fields[1],
+    paysSelect: step0Fields[2],
+    typeSelect: step0Fields[3],
+    criticiteSelect: step0Fields[4],
+    fiabiliteSelect: step0Fields[5],
+    descriptionInput: modal.querySelector('#ss0 textarea.inp2'),
+    confidentialiteSelect: modal.querySelectorAll('#ss0 .inp2')[7],
+    narratifPills: Array.from(modal.querySelectorAll('#ss0 .cpill')),
+    actorCards: Array.from(modal.querySelectorAll('#ss1 .val-card')),
+    urlInputs: Array.from(modal.querySelectorAll('#ss2 input[type="url"]')),
+    addSourceButton: modal.querySelector('#ss2 .btn.btn-g.btn-sm'),
+    reviewCard: modal.querySelector('#ss3 .card'),
+  };
+}
+
+function collectSignalementDraft() {
+  const els = getSignalementModalElements();
+  return {
+    titre: els.titleInput?.value.trim() || '',
+    date_evenement: els.dateInput?.value || '',
+    pays: mapChoice(SIGNAL_PAYS_MAP, els.paysSelect?.value),
+    type_evenement: mapChoice(SIGNAL_TYPE_MAP, els.typeSelect?.value),
+    criticite: mapChoice(SIGNAL_CRIT_MAP, els.criticiteSelect?.value, 'moderee'),
+    fiabilite: mapChoice(SIGNAL_FIABILITE_MAP, els.fiabiliteSelect?.value, 'probable'),
+    confidentialite: mapChoice(SIGNAL_CONFIDENTIALITE_MAP, els.confidentialiteSelect?.value, 'membres'),
+    description: els.descriptionInput?.value.trim() || '',
+    selectedNarratifs: (els.narratifPills || [])
+      .filter(pill => pill.classList.contains('on'))
+      .map(pill => SIGNAL_MODAL_TAG_ALIAS[normalizeChoice(pill.textContent)] || '')
+      .filter(Boolean),
+    sources_url: (els.urlInputs || []).map(input => input.value.trim()).filter(Boolean),
+    selectedActorCount: (els.actorCards || []).filter(card => card.style.borderColor === 'rgb(0, 212, 170)').length,
+  };
+}
+
+async function ensureNarratifsCache() {
+  if (narratifsCache.length) return narratifsCache;
+  narratifsCache = await apiFetch('/signals/narratifs/');
+  return narratifsCache;
+}
+
+async function getSelectedNarratifIds(names) {
+  if (!names.length) return [];
+  const available = await ensureNarratifsCache();
+  const byName = new Map(available.map(item => [normalizeText(item.nom), item.id]));
+  return names.map(name => byName.get(normalizeText(name))).filter(Boolean);
+}
+
+function validateSignalementDraft(draft) {
+  if (!draft.titre) return 'Le titre du signalement est requis.';
+  if (!draft.date_evenement) return "La date de l'evenement est requise.";
+  if (!draft.pays) return 'Le pays est requis.';
+  if (!draft.type_evenement) return "Le type d'evenement est requis.";
+  if (!draft.description || draft.description.length < 50) {
+    return 'La description doit faire au moins 50 caracteres.';
+  }
+  return '';
+}
+
+function syncSignalementReview() {
+  const { reviewCard } = getSignalementModalElements();
+  if (!reviewCard) return;
+  const draft = collectSignalementDraft();
+  reviewCard.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Reference</div>
+        <div style="font-family:monospace;color:var(--cyan)">Attribuee automatiquement a la soumission</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Criticite</div>
+        <div><span class="b ${signalementCritBadge(draft.criticite)}">${escapeHtml(draft.criticite || 'moderee')}</span></div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Titre</div>
+        <div style="font-size:13px;color:var(--txt1)">${escapeHtml(draft.titre || 'A completer')}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Pays / type</div>
+        <div style="font-size:13px;color:var(--txt1)">${escapeHtml(draft.pays || '-')} / ${escapeHtml(draft.type_evenement || '-')}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Sources</div>
+        <div style="font-size:13px;color:var(--txt1)">${draft.sources_url.length} source(s)</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Acteurs selectionnes</div>
+        <div style="font-size:13px;color:var(--txt1)">${draft.selectedActorCount}</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;line-height:1.7;color:var(--txt2)">${escapeHtml(draft.description || 'Ajoutez une description factuelle pour finaliser le signalement.')}</div>
+  `;
+}
+
+function showDemoOtpHint(data, context = 'connexion') {
+  const code = data?.demo_code;
+  const help = document.getElementById('otp-help-text');
+  if (!code) {
+    if (help && help.dataset.baseText) help.textContent = help.dataset.baseText;
+    return;
+  }
+  const base = help?.textContent || "Un code a 6 chiffres vient d'etre envoye";
+  if (help) {
+    help.dataset.baseText = base;
+    help.textContent = `${base} - Code demo: ${code}`;
+  }
+  toast(`Code demo ${context}: ${code}`);
+}
+
+function saveSession() {
+  try {
+    localStorage.setItem('sentinel_token', authToken);
+    localStorage.setItem('sentinel_user', JSON.stringify(currentUser));
+    localStorage.setItem('sentinel_session_version', SESSION_STORAGE_VERSION);
+  } catch (e) {}
+}
+
+function clearSession() {
+  try {
+    localStorage.removeItem('sentinel_token');
+    localStorage.removeItem('sentinel_user');
+    localStorage.removeItem('sentinel_session_version');
+  } catch (e) {}
+}
+
+async function restoreSession() {
+  try {
+    const version = localStorage.getItem('sentinel_session_version');
+    if (version !== SESSION_STORAGE_VERSION) {
+      clearSession();
+      return;
+    }
+    const token = localStorage.getItem('sentinel_token');
+    const user = localStorage.getItem('sentinel_user');
+    if (!token || !user) return;
+    authToken = token;
+    currentUser = JSON.parse(user);
+    await apiFetch('/auth/profile/');
+    enterApp();
+  } catch (error) {
+    clearSession();
+    authToken = '';
+    currentUser = null;
+  }
+}
+
+async function submitSignalementFlow() {
+  if (isSubmittingSignalement) return;
+  const draft = collectSignalementDraft();
+  const validationError = validateSignalementDraft(draft);
+  if (validationError) {
+    toast(validationError);
+    sigStep_ = 0;
+    sigStep(0);
+    return;
+  }
+
+  isSubmittingSignalement = true;
+  const nextButton = document.getElementById('sig-next');
+  const previousLabel = nextButton?.textContent;
+  if (nextButton) {
+    nextButton.disabled = true;
+    nextButton.textContent = 'Soumission...';
+  }
+
+  try {
+    const narratifs = await getSelectedNarratifIds(draft.selectedNarratifs);
+    await apiFetch('/signals/create/', {
+      method: 'POST',
+      body: JSON.stringify({
+        titre: draft.titre,
+        pays: draft.pays,
+        date_evenement: draft.date_evenement,
+        type_evenement: draft.type_evenement,
+        criticite: draft.criticite,
+        description: draft.description,
+        narratifs,
+        acteurs_lies: [],
+        fiabilite: draft.fiabilite,
+        confidentialite: draft.confidentialite,
+        sources_url: draft.sources_url,
+      }),
+    });
+    closeMo('mo-new-sig');
+    resetSig();
+    toast('Signalement cree et place en attente de validation.');
+    await Promise.all([loadSignalementsData(), loadDashboardData()]);
+    if (['admin', 'analyste', 'moderateur'].includes(currentUser?.role)) {
+      nav('validation');
+    }
+  } catch (error) {
+    toast(error.message || 'Soumission impossible.');
+  } finally {
+    isSubmittingSignalement = false;
+    if (nextButton) {
+      nextButton.disabled = false;
+      nextButton.textContent = previousLabel || 'Suivant ->';
+    }
+  }
+}
+
+function resetSig() {
+  sigStep_ = 0;
+  document.querySelectorAll('[id^="ss"]').forEach((section, index) => {
+    section.style.display = index === 0 ? 'block' : 'none';
+  });
+  for (let i = 0; i < 4; i++) {
+    const item = document.getElementById('si' + i);
+    if (!item) continue;
+    item.classList.remove('active', 'done');
+    if (i === 0) item.classList.add('active');
+    if (i < 3) {
+      const line = document.getElementById('sl' + i);
+      if (line) line.style.background = 'var(--border)';
+    }
+  }
+  const els = getSignalementModalElements();
+  if (els.titleInput) els.titleInput.value = '';
+  if (els.dateInput) els.dateInput.value = new Date().toISOString().slice(0, 10);
+  if (els.paysSelect) els.paysSelect.value = '';
+  if (els.typeSelect) els.typeSelect.selectedIndex = 0;
+  if (els.criticiteSelect) els.criticiteSelect.selectedIndex = 1;
+  if (els.fiabiliteSelect) els.fiabiliteSelect.selectedIndex = 1;
+  if (els.descriptionInput) els.descriptionInput.value = '';
+  if (els.confidentialiteSelect) els.confidentialiteSelect.selectedIndex = 0;
+  (els.narratifPills || []).forEach(pill => pill.classList.remove('on'));
+  (els.actorCards || []).forEach(card => { card.style.borderColor = 'var(--border)'; });
+  document.querySelectorAll('#ss2 input[type="url"]').forEach((input, index) => {
+    if (index > 1) input.remove();
+    else input.value = '';
+  });
+  const fileInput = document.getElementById('signal-files-input');
+  if (fileInput) fileInput.value = '';
+  const fileList = document.getElementById('signal-files-list');
+  if (fileList) fileList.innerHTML = '';
+  selectedSignalFiles = [];
+  const prev = document.getElementById('sig-prev');
+  if (prev) prev.style.display = 'none';
+  const next = document.getElementById('sig-next');
+  if (next) {
+    next.disabled = false;
+    next.textContent = 'Suivant ->';
+    next.onclick = () => sigStep(1);
+  }
+  syncSignalementReview();
+}
+
 function sigStep(dir) {
   sigStep_ = Math.max(0, Math.min(3, sigStep_ + dir));
   document.querySelectorAll('[id^="ss"]').forEach(section => { section.style.display = 'none'; });
@@ -2791,6 +3622,47 @@ function sigStep(dir) {
   } else {
     next.textContent = 'Suivant ->';
     next.onclick = () => sigStep(1);
+  }
+}
+
+function setupSignalementComposer() {
+  const { addSourceButton } = getSignalementModalElements();
+  if (addSourceButton && !addSourceButton.dataset.boundSourceAdder) {
+    addSourceButton.dataset.boundSourceAdder = 'true';
+    addSourceButton.addEventListener('click', event => {
+      event.preventDefault();
+      const input = document.createElement('input');
+      input.className = 'inp2';
+      input.type = 'url';
+      input.placeholder = 'https://www.exemple.com/article';
+      input.style.marginTop = '8px';
+      addSourceButton.insertAdjacentElement('beforebegin', input);
+    });
+  }
+}
+
+function initializeInteractiveFeatures() {
+  const registerButton = document.querySelector('#f-register .btn-auth');
+  if (registerButton) {
+    registerButton.id = 'register-btn';
+    registerButton.onclick = submitRegistration;
+  }
+  const registerWarn = document.querySelector('#f-register .auth-warn');
+  if (registerWarn) {
+    registerWarn.textContent = "L'acces est d'abord valide par un administrateur ODAS. Une fois valide, l'utilisateur recoit un code par email pour sa premiere connexion.";
+  }
+  setupSignalementFilters();
+  setupSignalementComposer();
+  setupResourceFilters();
+  setupMemberFilters();
+  setupValidationCards();
+  setupModalButtons();
+  setupActorModal();
+  syncAuthenticatedUI();
+  loadSignalementsData();
+  loadDashboardData();
+  if (document.getElementById('p-cartographie')?.classList.contains('active')) {
+    initNet();
   }
 }
 
@@ -2914,6 +3786,14 @@ window.doLogin = doLogin;
 
 let workspaceCache = null;
 let selectedSignalFiles = [];
+
+function userCanModerate() {
+  return ['admin', 'analyste', 'moderateur'].includes(currentUser?.role);
+}
+
+function userHasPersonalDashboard() {
+  return false;
+}
 
 const ADMIN_DASHBOARD_TEMPLATE = document.getElementById('p-dashboard')?.innerHTML || '';
 
@@ -3059,12 +3939,141 @@ function renderWorkspacePostCard(signal, index) {
   `;
 }
 
+function renderWorkspaceDashboard(data) {
+  workspaceCache = data;
+  const page = document.getElementById('p-dashboard');
+  if (!page) return;
+  const stats = data?.stats || {};
+  page.innerHTML = `
+    <div class="sh" style="margin-bottom:18px">
+      <div>
+        <div class="sh-title">Tableau de bord de veille</div>
+        <div style="font-size:13px;color:var(--txt3);margin-top:4px">Vos contributions, vos favoris et le fil d'activite du reseau valide.</div>
+      </div>
+      <button class="btn btn-p" onclick="openMo('mo-new-sig')">+ Nouveau signalement</button>
+    </div>
+    <div class="kpi-grid" style="margin-bottom:20px">
+      <div class="kpi"><div class="kpi-hd"><span class="kpi-lbl">Mes signalements</span><div class="kpi-ico" style="background:var(--blue2)">📝</div></div><div class="kpi-val">${stats.mes_signalements ?? 0}</div><div class="kpi-trend">Suivi personnel</div></div>
+      <div class="kpi"><div class="kpi-hd"><span class="kpi-lbl">En attente</span><div class="kpi-ico" style="background:var(--orange2)">⏳</div></div><div class="kpi-val">${stats.en_attente ?? 0}</div><div class="kpi-trend">Validation editoriale</div></div>
+      <div class="kpi"><div class="kpi-hd"><span class="kpi-lbl">Valides</span><div class="kpi-ico" style="background:var(--green2)">✅</div></div><div class="kpi-val">${stats.valides ?? 0}</div><div class="kpi-trend">Publies au reseau</div></div>
+      <div class="kpi"><div class="kpi-hd"><span class="kpi-lbl">Favoris</span><div class="kpi-ico" style="background:var(--purple2)">⭐</div></div><div class="kpi-val">${stats.favoris ?? 0}</div><div class="kpi-trend">Signalements enregistres</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hd"><span class="card-tt">Mes signalements recents</span><button class="btn btn-xs btn-g" onclick="nav('signalements')">Tout voir</button></div>
+        <div class="card-bd" id="workspace-my-signals">${(data.mes_signalements || []).map(renderSignalementCard).join('') || '<div class="pending-empty">Aucun signalement soumis pour le moment.</div>'}</div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-tt">Favoris et veille personnelle</span></div>
+        <div class="card-bd" id="workspace-favorites">${(data.favoris || []).map(renderSignalementCard).join('') || '<div class="pending-empty">Aucun favori pour le moment.</div>'}</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="card-hd"><span class="card-tt">Fil d'activite</span></div>
+      <div class="card-bd" id="workspace-activity">${renderActivityFeed(data.activites || [])}</div>
+    </div>
+  `;
+  bindSignalementCards(document.getElementById('workspace-my-signals') || page, data.mes_signalements || []);
+  bindSignalementCards(document.getElementById('workspace-favorites') || page, data.favoris || []);
+}
+
 function openSignalDetailById(signalId) {
   const source = [...signalementsCache, ...(workspaceCache?.mes_signalements || []), ...(workspaceCache?.favoris || [])];
   const signal = source.find(item => item.id === signalId);
   if (signal) openSignalDetail(signal);
 }
 window.openSignalDetailById = openSignalDetailById;
+
+function renderWorkspaceDashboard(data) {
+  workspaceCache = data;
+  const page = document.getElementById('p-dashboard');
+  if (!page) return;
+  const stats = data?.stats || {};
+  const feed = buildWorkspaceFeed(data);
+  const pulseItems = buildWorkspacePulseItems(data);
+  const marquee = [
+    ...(data?.activites || []).slice(0, 6),
+    ...(data?.favoris || []).slice(0, 2).map(signal => ({
+      message: `${signal.reference} reste dans votre veille personnelle`,
+      created_at: signal.date_modification,
+    })),
+  ];
+  page.innerHTML = `
+    <div class="social-shell">
+      <div class="social-main">
+        <section class="social-hero">
+          <div class="social-hero-grid">
+            <div>
+              <div class="social-kicker">Reseau ferme ODAS · veille en continu</div>
+              <div class="social-title">Centre de veille personnel</div>
+              <div class="social-copy">Retrouvez ici les signalements valides par le reseau, les mises a jour importantes, vos favoris de suivi et les contenus recents a surveiller. Cet espace vous permet de rester informe, de contribuer et de suivre l'evolution des alertes en temps reel.</div>
+              <div class="social-cta">
+                <button class="btn btn-p" onclick="openMo('mo-new-sig')">+ Nouveau signalement</button>
+                <button class="btn btn-ghost-light" onclick="nav('signalements')">Explorer le reseau</button>
+              </div>
+            </div>
+            <div class="social-glance">
+              <div class="glance-tile"><div class="glance-eyebrow">Mes signalements</div><div class="glance-value">${stats.mes_signalements ?? 0}</div><div class="glance-caption">Contribution personnelle</div></div>
+              <div class="glance-tile"><div class="glance-eyebrow">En attente</div><div class="glance-value">${stats.en_attente ?? 0}</div><div class="glance-caption">Validation editoriale</div></div>
+              <div class="glance-tile"><div class="glance-eyebrow">Publies</div><div class="glance-value">${stats.valides ?? 0}</div><div class="glance-caption">Visibles dans le reseau</div></div>
+              <div class="glance-tile"><div class="glance-eyebrow">Favoris</div><div class="glance-value">${stats.favoris ?? 0}</div><div class="glance-caption">Veille personnelle</div></div>
+            </div>
+          </div>
+        </section>
+        <section class="social-ribbon">
+          <div class="social-ribbon-track">
+            ${[...marquee, ...marquee].map(item => `<span class="social-chip">${escapeHtml(formatActivityLabel(item))}</span>`).join('') || '<span class="social-chip">Le flux reseau se met a jour en continu.</span>'}
+          </div>
+        </section>
+        ${renderWorkspaceStories(data)}
+        <section>
+          <div class="sh" style="margin-bottom:14px">
+            <div>
+              <div class="sh-title">Fil d'actualite</div>
+              <div style="font-size:13px;color:var(--txt3);margin-top:4px">Signalements valides, medias, interactions et veille du reseau.</div>
+            </div>
+          </div>
+          <div class="feed-stack" id="workspace-feed">${feed.length ? feed.map(renderWorkspacePostCard).join('') : '<div class="pending-empty">Le fil se remplit des que le reseau publie ou que vous soumettez un signalement.</div>'}</div>
+        </section>
+      </div>
+      <aside class="social-side">
+        <div class="social-side-card">
+          <div class="social-side-title">Pulse reseau</div>
+          <div class="social-side-copy">Les points chauds du moment et vos propres signaux prioritaires.</div>
+          <div class="pulse-list">
+            ${pulseItems.length ? pulseItems.map(item => `<div class="pulse-item"><div class="pulse-label">${escapeHtml(item.label)}</div><div class="pulse-title">${escapeHtml(item.title)}</div><div class="pulse-sub">${escapeHtml(item.sub)}</div></div>`).join('') : '<div class="pending-empty">Aucun point chaud a afficher pour le moment.</div>'}
+          </div>
+        </div>
+        <div class="social-side-card">
+          <div class="social-side-title">Fil d'activite</div>
+          <div class="social-side-copy">On garde le fil, mais avec plus de rythme et plus de contexte.</div>
+          <div id="workspace-activity">${renderActivityFeed(data.activites || [])}</div>
+        </div>
+        <div class="social-side-card">
+          <div class="social-side-title">Mes favoris</div>
+          <div class="social-side-copy">Acces rapide a votre veille personnelle sans encombrer l'ecran principal.</div>
+          <div class="pulse-list">
+            ${(data.favoris || []).slice(0, 4).map(signal => `<button class="pulse-item" type="button" style="text-align:left;background:none;border:none;padding:12px 0;cursor:pointer" onclick="openSignalDetailById(${signal.id})"><div class="pulse-title">${escapeHtml(signal.titre)}</div><div class="pulse-sub">${escapeHtml(signal.reference)} · ${escapeHtml(signal.pays_display || signal.pays)}</div></button>`).join('') || '<div class="pending-empty">Ajoutez des favoris depuis le fil pour les retrouver ici.</div>'}
+          </div>
+        </div>
+      </aside>
+    </div>
+  `;
+  bindSignalementCards(document.getElementById('workspace-feed') || page, feed);
+}
+
+async function loadWorkspaceData() {
+  if (!authToken || !currentUser || !userHasPersonalDashboard()) return;
+  try {
+    const data = await apiFetch('/signals/workspace/');
+    renderWorkspaceDashboard(data);
+  } catch (error) {
+    const page = document.getElementById('p-dashboard');
+    if (page) {
+      page.innerHTML = `<div class="card"><div class="card-bd">${escapeHtml(error.message || 'Impossible de charger votre espace.')}</div></div>`;
+    }
+  }
+}
 
 function ensureSignalSocialSections() {
   const modalBody = document.querySelector('#mo-sig .mo-bd');
@@ -3281,6 +4290,178 @@ async function submitSignalComment(signalId) {
 }
 window.submitSignalComment = submitSignalComment;
 
+function setupSignalementComposer() {
+  const { addSourceButton } = getSignalementModalElements();
+  if (addSourceButton && !addSourceButton.dataset.boundSourceAdder) {
+    addSourceButton.dataset.boundSourceAdder = 'true';
+    addSourceButton.addEventListener('click', event => {
+      event.preventDefault();
+      const input = document.createElement('input');
+      input.className = 'inp2';
+      input.type = 'url';
+      input.placeholder = 'https://www.exemple.com/article';
+      input.style.marginTop = '8px';
+      addSourceButton.insertAdjacentElement('beforebegin', input);
+    });
+  }
+  const step3 = document.getElementById('ss2');
+  if (step3 && !step3.querySelector('#signal-files-input')) {
+    const uploadBox = step3.querySelector('div[style*="border:2px dashed"]');
+    if (uploadBox) {
+      uploadBox.innerHTML = `Ajouter des images, videos, PDF ou captures.`;
+      uploadBox.onclick = () => step3.querySelector('#signal-files-input')?.click();
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.id = 'signal-files-input';
+      input.multiple = true;
+      input.accept = 'image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt';
+      input.style.display = 'none';
+      input.addEventListener('change', () => {
+        selectedSignalFiles = Array.from(input.files || []);
+        let list = step3.querySelector('#signal-files-list');
+        if (!list) {
+          list = document.createElement('div');
+          list.id = 'signal-files-list';
+          list.style.marginTop = '10px';
+          uploadBox.insertAdjacentElement('afterend', list);
+        }
+        list.innerHTML = selectedSignalFiles.length
+          ? selectedSignalFiles.map(file => `<div style="font-size:12px;color:var(--txt2);margin-top:4px">${escapeHtml(file.name)} · ${Math.round(file.size / 1024)} Ko</div>`).join('')
+          : '<div style="font-size:12px;color:var(--txt3)">Aucun fichier selectionne.</div>';
+      });
+      uploadBox.parentElement.appendChild(input);
+    }
+  }
+}
+
+async function submitSignalementFlow() {
+  if (isSubmittingSignalement) return;
+  const draft = collectSignalementDraft();
+  const validationError = validateSignalementDraft(draft);
+  if (validationError) {
+    toast(validationError);
+    sigStep_ = 0;
+    sigStep(0);
+    return;
+  }
+  isSubmittingSignalement = true;
+  const nextButton = document.getElementById('sig-next');
+  const previousLabel = nextButton?.textContent;
+  if (nextButton) {
+    nextButton.disabled = true;
+    nextButton.textContent = 'Soumission...';
+  }
+  try {
+    const narratifs = await getSelectedNarratifIds(draft.selectedNarratifs);
+    const formData = new FormData();
+    formData.append('titre', draft.titre);
+    formData.append('pays', draft.pays);
+    formData.append('date_evenement', draft.date_evenement);
+    formData.append('type_evenement', draft.type_evenement);
+    formData.append('criticite', draft.criticite);
+    formData.append('description', draft.description);
+    formData.append('fiabilite', draft.fiabilite);
+    formData.append('confidentialite', draft.confidentialite);
+    draft.sources_url.forEach(source => formData.append('sources_url', source));
+    narratifs.forEach(id => formData.append('narratifs', id));
+    selectedSignalFiles.forEach(file => formData.append('pieces_jointes', file));
+    const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
+    const response = await fetch(`${API}/signals/create/`, { method: 'POST', headers, body: formData });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'Soumission impossible.');
+    closeMo('mo-new-sig');
+    resetSig();
+    selectedSignalFiles = [];
+    toast('Signalement cree avec medias et place en attente de validation.');
+    await Promise.all([loadSignalementsData(), loadDashboardData(), loadWorkspaceData(), loadNotificationCenter()]);
+    if (userCanModerate()) nav('validation');
+  } catch (error) {
+    toast(error.message || 'Soumission impossible.');
+  } finally {
+    isSubmittingSignalement = false;
+    if (nextButton) {
+      nextButton.disabled = false;
+      nextButton.textContent = previousLabel || 'Suivant ->';
+    }
+  }
+}
+
+async function loadDashboardData() {
+  if (!authToken || !currentUser) return;
+  try {
+    const stats = await apiFetch('/signals/dashboard/');
+    renderDashboardData(stats);
+  } catch (error) {
+    console.error('loadDashboardData', error);
+  }
+}
+
+function getAllowedPagesForRole(role) {
+  if (role === 'admin' || role === 'analyste') {
+    return ['dashboard', 'signalements', 'cartographie', 'ressources', 'membres', 'validation', 'alertes', 'profil'];
+  }
+  if (role === 'moderateur') {
+    return ['dashboard', 'signalements', 'cartographie', 'ressources', 'validation', 'profil'];
+  }
+  if (role === 'bailleur') {
+    return ['dashboard', 'signalements', 'ressources', 'profil'];
+  }
+  return ['dashboard', 'signalements', 'cartographie', 'ressources', 'profil'];
+}
+
+function applyRoleNavigation() {
+  const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
+  document.querySelectorAll('.sb-item').forEach(item => {
+    const match = item.getAttribute('onclick')?.match(/nav\('([^']+)'\)/);
+    if (!match) return;
+    item.style.display = allowed.has(match[1]) ? '' : 'none';
+  });
+  document.querySelectorAll('.sb-section').forEach(section => {
+    let sibling = section.nextElementSibling;
+    let hasVisibleItem = false;
+    while (sibling && !sibling.classList.contains('sb-section')) {
+      if (sibling.classList.contains('sb-item') && sibling.style.display !== 'none') {
+        hasVisibleItem = true;
+        break;
+      }
+      sibling = sibling.nextElementSibling;
+    }
+    section.style.display = hasVisibleItem ? '' : 'none';
+  });
+
+  const isAdminLike = ['admin', 'analyste', 'moderateur'].includes(currentUser?.role);
+  const notifItems = document.querySelectorAll('#notif-dd .notif-item');
+  notifItems.forEach(item => {
+    const target = item.getAttribute('onclick') || '';
+    const needsAdmin = target.includes("validation") || target.includes("membres");
+    item.style.display = needsAdmin && !isAdminLike ? 'none' : '';
+  });
+  const notifHeader = document.querySelector('#notif-dd .notif-hd span');
+  if (notifHeader) {
+    const visibleCount = Array.from(notifItems).filter(item => item.style.display !== 'none').length;
+    notifHeader.textContent = `Notifications (${visibleCount})`;
+  }
+}
+
+function applyRoleDashboard() {
+  const isAdminLike = ['admin', 'analyste', 'moderateur'].includes(currentUser?.role);
+  const title = document.getElementById('tp-title');
+  if (!isAdminLike && document.getElementById('p-dashboard')?.classList.contains('active') && title) {
+    title.textContent = 'Tableau de bord';
+  }
+  const dashboardPage = document.getElementById('p-dashboard');
+  if (!isAdminLike && dashboardPage) {
+    const legacyAdminBlocks = dashboardPage.querySelectorAll('.kpi-grid, .g2, .g3, .g4, .card');
+    legacyAdminBlocks.forEach(block => {
+      if (!block.closest('.social-shell')) block.style.display = 'none';
+    });
+  }
+  const memberKpi = document.querySelectorAll('#p-dashboard .kpi')[3];
+  if (memberKpi) memberKpi.style.display = isAdminLike ? '' : 'none';
+  const pendingSection = document.getElementById('pending-section');
+  if (pendingSection) pendingSection.style.display = currentUser?.role === 'admin' ? '' : 'none';
+}
+
 async function syncAuthenticatedUI() {
   if (!authToken || !currentUser) return;
   applyRoleNavigation();
@@ -3305,6 +4486,28 @@ async function syncAuthenticatedUI() {
   }
   await syncSessions();
 }
+
+function nav(id) {
+  const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
+  const fallbackPage = allowed.has('dashboard') ? 'dashboard' : Array.from(allowed)[0] || 'profil';
+  const targetId = allowed.has(id) ? id : fallbackPage;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('p-' + targetId);
+  if (page) page.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes("'" + targetId + "'") && n.style.display !== 'none') n.classList.add('active');
+  });
+  const dashboardLabel = 'Tableau de bord';
+  document.getElementById('tp-title').textContent = targetId === 'dashboard' ? dashboardLabel : (TITLES[targetId] || targetId);
+  if (targetId === 'dashboard') loadDashboardData();
+  if (targetId === 'cartographie') initNet();
+  if (targetId === 'profil') syncSessions();
+  if (targetId === 'membres' && ['admin', 'analyste', 'moderateur'].includes(currentUser?.role)) loadMembersAdminData();
+  if (targetId === 'signalements' || targetId === 'validation') loadSignalementsData();
+  applyRoleDashboard();
+}
+window.nav = nav;
 
 getSignalementModalElements = function getSignalementModalElements() {
   const modal = document.getElementById('mo-new-sig');
@@ -3461,10 +4664,21 @@ renderDashboardData = function renderDashboardData(stats) {
 };
 
 const __radarLoadActorNetworkData = loadActorNetworkData;
-loadActorNetworkData = ;
+loadActorNetworkData = async function loadActorNetworkData() {
+  await __radarLoadActorNetworkData();
+  signalementActorsCache = Object.values(actorDetailsById || {});
+  populateSignalementActorFilter();
+  populateReportActorFilter();
+  renderSignalementActorChoices(collectSignalementDraft().selectedActorIds || []);
+};
 
 const __radarSetupActorPanel = setupActorPanel;
-setupActorPanel = ;
+setupActorPanel = function setupActorPanel() {
+  __radarSetupActorPanel();
+  const rows = document.querySelectorAll('#actor-panel .ap-row .ap-lbl');
+  if (rows[2]) rows[2].textContent = "Zone d'influence / Financement";
+  if (rows[3]) rows[3].textContent = 'Strategie / Messages cles';
+};
 
 loadSignalementsData = async function loadSignalementsData() {
   if (!authToken || !currentUser) return;
@@ -3481,7 +4695,12 @@ loadSignalementsData = async function loadSignalementsData() {
   }
 };
 
-applyRoleDashboard = ;
+applyRoleDashboard = function applyRoleDashboard() {
+  const title = document.getElementById('tp-title');
+  if (document.getElementById('p-dashboard')?.classList.contains('active') && title) title.textContent = 'Tableau de bord';
+  const pendingSection = document.getElementById('pending-section');
+  if (pendingSection) pendingSection.style.display = currentUser?.role === 'admin' ? '' : 'none';
+};
 
 const __radarSyncAuthenticatedUI = syncAuthenticatedUI;
 syncAuthenticatedUI = async function() {
@@ -3672,7 +4891,25 @@ function bindTrendCalendarFilters() {
   });
 }
 
-populateCountryOptions = ;
+populateCountryOptions = function populateCountryOptions(select) {
+  if (!select) return;
+  const currentValue = select.multiple ? getMultiSelectValues(select) : select.value;
+  const includeBlank = !select.multiple;
+  select.innerHTML = includeBlank ? '<option value="">Tous les pays</option>' : '';
+  RADAR_COUNTRIES.forEach(country => {
+    const option = document.createElement('option');
+    option.value = country;
+    option.textContent = country;
+    select.appendChild(option);
+  });
+  if (select.multiple) {
+    Array.from(select.options).forEach(option => {
+      option.selected = Array.isArray(currentValue) && currentValue.includes(option.value);
+    });
+  } else {
+    select.value = typeof currentValue === 'string' ? currentValue : '';
+  }
+};
 
 function ensureDashboardEnhancements() {
   const dashboard = document.getElementById('p-dashboard');
@@ -3702,6 +4939,57 @@ function ensureDashboardEnhancements() {
     `;
   }
   bindTrendCalendarFilters();
+}
+
+function ensureSignalementFiltersUI() {
+  const page = document.getElementById('p-signalements');
+  const filters = page?.querySelector('.filters');
+  if (!filters || filters.dataset.radarEnhanced === 'true') return;
+  filters.dataset.radarEnhanced = 'true';
+  filters.innerHTML = `
+    <div class="filters-multi-grid">
+      <div class="filter-stack signal-filter-search">
+        <label>Recherche</label>
+        <div class="search-wrap" style="min-width:260px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="signal-search" placeholder="Rechercher un signalement, un pays, un acteur...">
+        </div>
+        <div class="filter-note">Recherche transversale sur le titre, le pays, les acteurs et le contenu du signalement.</div>
+      </div>
+      <div class="filter-stack">
+        <label>Pays</label>
+        <select class="fsel" id="signal-country-filter" multiple size="9"></select>
+        <div class="filter-note">Listbox multi-choix pour selectionner autant de pays que necessaire.</div>
+      </div>
+      <div class="filter-stack">
+        <label>Acteurs</label>
+        <select class="fsel" id="signal-actor-filter" multiple size="9"></select>
+        <div class="filter-note">Choisissez plusieurs acteurs documentes en meme temps.</div>
+      </div>
+      <div class="filter-stack">
+        <label>Criticite</label>
+        <select class="fsel" id="signal-criticite-filter" multiple size="6"><option value="elevee">Elevee</option><option value="moderee">Moderee</option><option value="faible">Faible</option></select>
+        <div class="filter-note">Combinez librement plusieurs niveaux de criticite.</div>
+      </div>
+      <div class="filter-stack">
+        <label>Type</label>
+        <select class="fsel" id="signal-type-filter" multiple size="9"><option value="legislatif">Legislatif</option><option value="medias">Medias</option><option value="religieux">Religieux</option><option value="ong">ONG</option><option value="numerique">Numerique</option><option value="autre">Autre</option></select>
+        <div class="filter-note">Gardez une vraie lecture par modalites, sans menu compresse.</div>
+      </div>
+      <div class="filter-stack">
+        <label>Statut</label>
+        <select class="fsel" id="signal-status-filter" multiple size="6"><option value="en_attente">En attente</option><option value="valide">Valide</option><option value="rejete">Rejete</option></select>
+        <div class="filter-note">Filtrez plusieurs statuts a la fois avec une vraie listbox.</div>
+      </div>
+    </div>
+    <div class="signal-filter-toolbar">
+      <div class="signal-filter-summary">Maintenez Ctrl ou Cmd pour choisir plusieurs modalites dans chaque listbox.</div>
+      <button class="btn btn-g" type="button" onclick="resetSignalementFilters()">Tout effacer</button>
+      <button class="btn btn-g" type="button" onclick="openMo('mo-report')">Rapports</button>
+      <button class="btn btn-p" type="button" onclick="openMo('mo-new-sig')">+ Nouveau</button>
+    </div>
+  `;
+  populateCountryOptions(document.getElementById('signal-country-filter'));
 }
 
 function ensureSignalementModalUI() {
@@ -4023,7 +5311,14 @@ setupSignalementFilters = function setupSignalementFilters() {
   });
 };
 
-window.resetSignalementFilters = ;
+window.resetSignalementFilters = function resetSignalementFilters() {
+  const { searchInput, paysSel, actorSel, criticiteSel, typeSel, statutSel } = getSignalementsPageParts();
+  if (searchInput) searchInput.value = '';
+  [paysSel, actorSel, criticiteSel, typeSel, statutSel].forEach(select => {
+    Array.from(select?.options || []).forEach(option => { option.selected = false; });
+  });
+  renderSignalementsList(getFilteredSignalements());
+};
 
 const ALL_COUNTRIES_FR = [
   'Afghanistan','Afrique du Sud','Albanie','AlgÃ©rie','Allemagne','Andorre','Angola','Antigua-et-Barbuda','Arabie saoudite','Argentine','ArmÃ©nie','Australie','Autriche','AzerbaÃ¯djan',
