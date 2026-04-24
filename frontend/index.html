@@ -628,15 +628,19 @@ textarea.inp2{resize:vertical;min-height:100px}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  #sb{transform:translateX(-100%)}
-  #sb.open{transform:none}
+  #sb{transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:200}
+  #sb.open{transform:none;box-shadow:4px 0 24px rgba(0,0,0,.2)}
   #main,#topbar{margin-left:0;left:0}
   .kpi-grid{grid-template-columns:1fr 1fr}
   .res-grid{grid-template-columns:1fr 1fr}
+  #sb-toggle{display:flex!important}
+  #sb-overlay{display:block}
 }
 @media(max-width:600px){
   .kpi-grid,.g2,.g3,.g4{grid-template-columns:1fr}
   .res-grid{grid-template-columns:1fr}
+  .page{padding:16px}
+  .card-hd{flex-direction:column;gap:8px;align-items:flex-start}
 }
 
 /* ═══ ANIMATIONS EXTRA ═══ */
@@ -989,6 +993,7 @@ textarea.inp2{resize:vertical;min-height:100px}
 <!-- ═══════════════════════════════════════
      SIDEBAR
 ═══════════════════════════════════════ -->
+<div id="sb-overlay" onclick="document.getElementById('sb').classList.remove('open')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;backdrop-filter:blur(2px)"></div>
 <aside id="sb">
   <div class="sb-logo">
     <div class="sb-logo-ico">
@@ -1083,7 +1088,12 @@ textarea.inp2{resize:vertical;min-height:100px}
      TOPBAR
 ═══════════════════════════════════════ -->
 <header id="topbar">
-  <div class="tp-title" id="tp-title">Tableau de bord</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button id="sb-toggle" onclick="document.getElementById('sb').classList.toggle('open')" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--txt);display:none;align-items:center;justify-content:center;border-radius:8px;transition:background .2s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='none'">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="tp-title" id="tp-title">Tableau de bord</div>
+  </div>
   <div class="tp-actions">
     <div style="position:relative">
       <button class="tp-btn" onclick="toggleNotif()">
@@ -1688,17 +1698,27 @@ function clearSession() {
   try { localStorage.removeItem('sentinel_token'); localStorage.removeItem('sentinel_user'); } catch(e) {}
 }
 function restoreSession() {
-  try {
-    const token = localStorage.getItem('sentinel_token');
-    const user = localStorage.getItem('sentinel_user');
-    if (token && user) { 
-      authToken = token; 
-      currentUser = JSON.parse(user); 
-      enterApp(); 
-    } else {
+  const token = localStorage.getItem('sentinel_token');
+  const user = localStorage.getItem('sentinel_user');
+  if (token && user) {
+    // Vérifier le token côté serveur avant d'entrer
+    fetch(`${API}/auth/profile/`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    }).then(r => {
+      if (r.ok) {
+        authToken = token;
+        currentUser = JSON.parse(user);
+        enterApp();
+      } else {
+        // Token invalide - supprimer et afficher login
+        localStorage.removeItem('sentinel_token');
+        localStorage.removeItem('sentinel_user');
+        document.getElementById('auth-page').classList.remove('hidden');
+      }
+    }).catch(() => {
       document.getElementById('auth-page').classList.remove('hidden');
-    }
-  } catch(e) {
+    });
+  } else {
     document.getElementById('auth-page').classList.remove('hidden');
   }
 }
