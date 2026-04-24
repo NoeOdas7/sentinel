@@ -1572,18 +1572,9 @@ async function restoreSession() {
   }
   try {
     const r = await fetch(API + '/auth/profile/', {headers:{'Authorization':'Bearer '+token}});
-    if (r.ok) {
-      authToken = token;
-      currentUser = JSON.parse(user);
-      enterApp();
-    } else {
-      localStorage.removeItem('sentinel_token');
-      localStorage.removeItem('sentinel_user');
-      document.getElementById('auth-page').style.display = '';
-    }
-  } catch(e) {
-    document.getElementById('auth-page').style.display = '';
-  }
+    if (r.ok) { authToken = token; currentUser = JSON.parse(user); enterApp(); }
+    else { localStorage.removeItem('sentinel_token'); localStorage.removeItem('sentinel_user'); document.getElementById('auth-page').style.display = ''; }
+  } catch(e) { document.getElementById('auth-page').style.display = ''; }
 }
   } catch(e) {}
 }
@@ -1820,19 +1811,26 @@ async function submitRegistration() {
 const TITLES = { dashboard: 'Tableau de bord', signalements: 'Signalements', cartographie: 'Cartographie des acteurs', ressources: 'Hub de ressources', membres: 'Espace membres', validation: 'Validation des signalements', alertes: 'Alertes', profil: 'Mon profil' };
 
 function nav(id) {
+  const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
+  const fallbackPage = allowed.has('dashboard') ? 'dashboard' : Array.from(allowed)[0] || 'profil';
+  const targetId = allowed.has(id) ? id : fallbackPage;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById('p-' + id);
+  const page = document.getElementById('p-' + targetId);
   if (page) page.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
+    if (n.getAttribute('onclick')?.includes("'" + targetId + "'") && n.style.display !== 'none') n.classList.add('active');
   });
-  document.getElementById('tp-title').textContent = TITLES[id] || id;
-  if (id === 'dashboard') initChart();
-  if (id === 'cartographie') initNet();
-  if (id === 'profil') syncSessions();
-  if (id === 'membres') loadMembersAdminData();
+  const dashboardLabel = 'Tableau de bord';
+  document.getElementById('tp-title').textContent = targetId === 'dashboard' ? dashboardLabel : (TITLES[targetId] || targetId);
+  if (targetId === 'dashboard') loadDashboardData();
+  if (targetId === 'cartographie') initNet();
+  if (targetId === 'profil') syncSessions();
+  if (targetId === 'membres' && ['admin', 'analyste', 'moderateur'].includes(currentUser?.role)) loadMembersAdminData();
+  if (targetId === 'signalements' || targetId === 'validation') loadSignalementsData();
+  applyRoleDashboard();
 }
+window.nav = nav;
 
 // ════════════════════════════════════════
 // MODALS
@@ -3217,300 +3215,6 @@ async function apiFetch(path, options = {}) {
   }
   return data;
 }
-
-async function restoreSession() {
-  try {
-    const token = localStorage.getItem('sentinel_token');
-    const user = localStorage.getItem('sentinel_user');
-    if (!token || !user) return;
-    authToken = token;
-    currentUser = JSON.parse(user);
-    await apiFetch('/auth/profile/');
-    enterApp();
-  } catch (error) {
-    clearSession();
-    authToken = '';
-    currentUser = null;
-  }
-}
-
-function enterApp() {
-  isLogged = true;
-  document.getElementById('auth-page').style.display = 'none';
-  if (currentUser) {
-    const initials = (currentUser.initiales || 'NT').slice(0, 2).toUpperCase();
-    const name = currentUser.nom_complet || 'Utilisateur';
-    document.getElementById('sb-av').textContent = initials;
-    document.getElementById('tp-av').textContent = initials;
-    document.getElementById('sb-name').textContent = name;
-    const roleEl = document.getElementById('sb-role');
-    if (roleEl) roleEl.textContent = getRoleLabel(currentUser.role);
-  }
-  initChart();
-  initializeInteractiveFeatures();
-}
-
-function nav(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById('p-' + id);
-  if (page) page.classList.add('active');
-  document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
-  });
-  document.getElementById('tp-title').textContent = TITLES[id] || id;
-  if (id === 'dashboard') loadDashboardData();
-  if (id === 'cartographie') initNet();
-  if (id === 'profil') syncSessions();
-  if (id === 'membres') loadMembersAdminData();
-  if (id === 'signalements' || id === 'validation') loadSignalementsData();
-}
-
-function setupSignalementFilters() {
-  const { page, searchInput, paysSel, criticiteSel, typeSel, statutSel } = getSignalementsPageParts();
-  if (!page) return;
-  [searchInput, paysSel, criticiteSel, typeSel, statutSel].forEach(el => {
-    if (el && !el.dataset.boundSignals) {
-      el.dataset.boundSignals = 'true';
-      el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => renderSignalementsList(getFilteredSignalements()));
-    }
-  });
-}
-
-function setupValidationCards() {
-  getValidationPageParts();
-}
-
-function initializeInteractiveFeatures() {
-  const registerButton = document.querySelector('#f-register .btn-auth');
-  if (registerButton) {
-    registerButton.id = 'register-btn';
-    registerButton.onclick = submitRegistration;
-  }
-  const registerWarn = document.querySelector('#f-register .auth-warn');
-  if (registerWarn) {
-    registerWarn.textContent = "L'acces est d'abord valide par un administrateur ODAS. Une fois valide, l'utilisateur recoit un code par email pour sa premiere connexion.";
-  }
-  setupSignalementFilters();
-  setupResourceFilters();
-  setupMemberFilters();
-  setupValidationCards();
-  setupModalButtons();
-  syncAuthenticatedUI();
-  loadSignalementsData();
-  loadDashboardData();
-  if (document.getElementById('p-cartographie')?.classList.contains('active')) {
-    initNet();
-  }
-}
-
-const SIGNAL_MODAL_TAG_ALIAS = {
-  'valeurs africaines': 'Protection de la famille',
-  'anti-genre': 'Religion et morale',
-  'famille naturelle': 'Protection de la famille',
-  'neo-colonialisme': 'Agenda occidental',
-  'arguments demographiques': 'Protection de la famille',
-  'souverainete nationale': 'Agenda occidental',
-  'anti-ivg': 'Anti-IVG',
-  'religion et morale': 'Religion et morale',
-  'droits des enfants': 'Protection de la famille',
-  'anti-lgbtiq+': 'Religion et morale',
-};
-const SIGNAL_PAYS_MAP = {
-  benin: 'benin',
-  cameroun: 'cameroun',
-  "cote d'ivoire": 'cote_ivoire',
-  'cote divoire': 'cote_ivoire',
-  guinee: 'guinee',
-  madagascar: 'madagascar',
-  mali: 'mali',
-  rca: 'rca',
-};
-const SIGNAL_TYPE_MAP = {
-  legislatif: 'legislatif',
-  medias: 'medias',
-  religieux: 'religieux',
-  ong: 'ong',
-  numerique: 'numerique',
-  autre: 'autre',
-};
-const SIGNAL_CRIT_MAP = {
-  faible: 'faible',
-  moderee: 'moderee',
-  elevee: 'elevee',
-};
-const SIGNAL_FIABILITE_MAP = {
-  confirmee: 'confirmee',
-  probable: 'probable',
-  rumeur: 'rumeur',
-};
-const SIGNAL_CONFIDENTIALITE_MAP = {
-  'public membres': 'membres',
-  'moderateurs uniquement': 'moderateurs',
-  'staff odas': 'staff',
-};
-
-function normalizeChoice(value) {
-  return normalizeText(value || '').replace(/[^\w\s+]/g, '').trim();
-}
-
-function mapChoice(map, value, fallback = '') {
-  return map[normalizeChoice(value)] || fallback;
-}
-
-function getSignalementModalElements() {
-  const modal = document.getElementById('mo-new-sig');
-  if (!modal) return {};
-  const step0Fields = modal.querySelectorAll('#ss0 .inp2');
-  return {
-    modal,
-    titleInput: step0Fields[0],
-    dateInput: step0Fields[1],
-    paysSelect: step0Fields[2],
-    typeSelect: step0Fields[3],
-    criticiteSelect: step0Fields[4],
-    fiabiliteSelect: step0Fields[5],
-    descriptionInput: modal.querySelector('#ss0 textarea.inp2'),
-    confidentialiteSelect: modal.querySelectorAll('#ss0 .inp2')[7],
-    narratifPills: Array.from(modal.querySelectorAll('#ss0 .cpill')),
-    actorCards: Array.from(modal.querySelectorAll('#ss1 .val-card')),
-    urlInputs: Array.from(modal.querySelectorAll('#ss2 input[type="url"]')),
-    addSourceButton: modal.querySelector('#ss2 .btn.btn-g.btn-sm'),
-    reviewCard: modal.querySelector('#ss3 .card'),
-  };
-}
-
-function collectSignalementDraft() {
-  const els = getSignalementModalElements();
-  return {
-    titre: els.titleInput?.value.trim() || '',
-    date_evenement: els.dateInput?.value || '',
-    pays: mapChoice(SIGNAL_PAYS_MAP, els.paysSelect?.value),
-    type_evenement: mapChoice(SIGNAL_TYPE_MAP, els.typeSelect?.value),
-    criticite: mapChoice(SIGNAL_CRIT_MAP, els.criticiteSelect?.value, 'moderee'),
-    fiabilite: mapChoice(SIGNAL_FIABILITE_MAP, els.fiabiliteSelect?.value, 'probable'),
-    confidentialite: mapChoice(SIGNAL_CONFIDENTIALITE_MAP, els.confidentialiteSelect?.value, 'membres'),
-    description: els.descriptionInput?.value.trim() || '',
-    selectedNarratifs: (els.narratifPills || [])
-      .filter(pill => pill.classList.contains('on'))
-      .map(pill => SIGNAL_MODAL_TAG_ALIAS[normalizeChoice(pill.textContent)] || '')
-      .filter(Boolean),
-    sources_url: (els.urlInputs || []).map(input => input.value.trim()).filter(Boolean),
-    selectedActorCount: (els.actorCards || []).filter(card => card.style.borderColor === 'rgb(0, 212, 170)').length,
-  };
-}
-
-async function ensureNarratifsCache() {
-  if (narratifsCache.length) return narratifsCache;
-  narratifsCache = await apiFetch('/signals/narratifs/');
-  return narratifsCache;
-}
-
-async function getSelectedNarratifIds(names) {
-  if (!names.length) return [];
-  const available = await ensureNarratifsCache();
-  const byName = new Map(available.map(item => [normalizeText(item.nom), item.id]));
-  return names.map(name => byName.get(normalizeText(name))).filter(Boolean);
-}
-
-function validateSignalementDraft(draft) {
-  if (!draft.titre) return 'Le titre du signalement est requis.';
-  if (!draft.date_evenement) return "La date de l'evenement est requise.";
-  if (!draft.pays) return 'Le pays est requis.';
-  if (!draft.type_evenement) return "Le type d'evenement est requis.";
-  if (!draft.description || draft.description.length < 50) {
-    return 'La description doit faire au moins 50 caracteres.';
-  }
-  return '';
-}
-
-function syncSignalementReview() {
-  const { reviewCard } = getSignalementModalElements();
-  if (!reviewCard) return;
-  const draft = collectSignalementDraft();
-  reviewCard.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div>
-        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Reference</div>
-        <div style="font-family:monospace;color:var(--cyan)">Attribuee automatiquement a la soumission</div>
-      </div>
-      <div>
-        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Criticite</div>
-        <div><span class="b ${signalementCritBadge(draft.criticite)}">${escapeHtml(draft.criticite || 'moderee')}</span></div>
-      </div>
-      <div>
-        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Titre</div>
-        <div style="font-size:13px;color:var(--txt1)">${escapeHtml(draft.titre || 'A completer')}</div>
-      </div>
-      <div>
-        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Pays / type</div>
-        <div style="font-size:13px;color:var(--txt1)">${escapeHtml(draft.pays || '-')} / ${escapeHtml(draft.type_evenement || '-')}</div>
-      </div>
-      <div>
-        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Sources</div>
-        <div style="font-size:13px;color:var(--txt1)">${draft.sources_url.length} source(s)</div>
-      </div>
-      <div>
-        <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Acteurs selectionnes</div>
-        <div style="font-size:13px;color:var(--txt1)">${draft.selectedActorCount}</div>
-      </div>
-    </div>
-    <div style="margin-top:12px;font-size:12px;line-height:1.7;color:var(--txt2)">${escapeHtml(draft.description || 'Ajoutez une description factuelle pour finaliser le signalement.')}</div>
-  `;
-}
-
-function showDemoOtpHint(data, context = 'connexion') {
-  const code = data?.demo_code;
-  const help = document.getElementById('otp-help-text');
-  if (!code) {
-    if (help && help.dataset.baseText) help.textContent = help.dataset.baseText;
-    return;
-  }
-  const base = help?.textContent || "Un code a 6 chiffres vient d'etre envoye";
-  if (help) {
-    help.dataset.baseText = base;
-    help.textContent = `${base} - Code demo: ${code}`;
-  }
-  toast(`Code demo ${context}: ${code}`);
-}
-
-function saveSession() {
-  try {
-    localStorage.setItem('sentinel_token', authToken);
-    localStorage.setItem('sentinel_user', JSON.stringify(currentUser));
-    localStorage.setItem('sentinel_session_version', SESSION_STORAGE_VERSION);
-  } catch (e) {}
-}
-
-function clearSession() {
-  try {
-    localStorage.removeItem('sentinel_token');
-    localStorage.removeItem('sentinel_user');
-    localStorage.removeItem('sentinel_session_version');
-  } catch (e) {}
-}
-
-async function restoreSession() {
-  try {
-    const version = localStorage.getItem('sentinel_session_version');
-    if (version !== SESSION_STORAGE_VERSION) {
-      clearSession();
-      return;
-    }
-    const token = localStorage.getItem('sentinel_token');
-    const user = localStorage.getItem('sentinel_user');
-    if (!token || !user) return;
-    authToken = token;
-    currentUser = JSON.parse(user);
-    await apiFetch('/auth/profile/');
-    enterApp();
-  } catch (error) {
-    clearSession();
-    authToken = '';
-    currentUser = null;
-  }
-}
-
 async function submitSignalementFlow() {
   if (isSubmittingSignalement) return;
   const draft = collectSignalementDraft();
@@ -3655,31 +3359,6 @@ function setupSignalementComposer() {
       input.style.marginTop = '8px';
       addSourceButton.insertAdjacentElement('beforebegin', input);
     });
-  }
-}
-
-function initializeInteractiveFeatures() {
-  const registerButton = document.querySelector('#f-register .btn-auth');
-  if (registerButton) {
-    registerButton.id = 'register-btn';
-    registerButton.onclick = submitRegistration;
-  }
-  const registerWarn = document.querySelector('#f-register .auth-warn');
-  if (registerWarn) {
-    registerWarn.textContent = "L'acces est d'abord valide par un administrateur ODAS. Une fois valide, l'utilisateur recoit un code par email pour sa premiere connexion.";
-  }
-  setupSignalementFilters();
-  setupSignalementComposer();
-  setupResourceFilters();
-  setupMemberFilters();
-  setupValidationCards();
-  setupModalButtons();
-  setupActorModal();
-  syncAuthenticatedUI();
-  loadSignalementsData();
-  loadDashboardData();
-  if (document.getElementById('p-cartographie')?.classList.contains('active')) {
-    initNet();
   }
 }
 
@@ -4503,28 +4182,6 @@ async function syncAuthenticatedUI() {
   }
   await syncSessions();
 }
-
-function nav(id) {
-  const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
-  const fallbackPage = allowed.has('dashboard') ? 'dashboard' : Array.from(allowed)[0] || 'profil';
-  const targetId = allowed.has(id) ? id : fallbackPage;
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById('p-' + targetId);
-  if (page) page.classList.add('active');
-  document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + targetId + "'") && n.style.display !== 'none') n.classList.add('active');
-  });
-  const dashboardLabel = 'Tableau de bord';
-  document.getElementById('tp-title').textContent = targetId === 'dashboard' ? dashboardLabel : (TITLES[targetId] || targetId);
-  if (targetId === 'dashboard') loadDashboardData();
-  if (targetId === 'cartographie') initNet();
-  if (targetId === 'profil') syncSessions();
-  if (targetId === 'membres' && ['admin', 'analyste', 'moderateur'].includes(currentUser?.role)) loadMembersAdminData();
-  if (targetId === 'signalements' || targetId === 'validation') loadSignalementsData();
-  applyRoleDashboard();
-}
-window.nav = nav;
 
 getSignalementModalElements = function getSignalementModalElements() {
   const modal = document.getElementById('mo-new-sig');
