@@ -83,6 +83,7 @@ h1,h2,h3,.font-syne{font-family:'Space Grotesk',sans-serif}
   overflow:hidden;
 }
 #auth-page.hidden{display:none!important;}
+#auth-page.hidden{display:none!important;}
 
 /* ── Colonne gauche héro ── */
 .auth-hero{
@@ -635,19 +636,16 @@ textarea.inp2{resize:vertical;min-height:100px}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  #sb{transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:200}
+  #sb{transform:translateX(-100%);transition:transform .3s;z-index:200}
   #sb.open{transform:none;box-shadow:4px 0 24px rgba(0,0,0,.2)}
   #main,#topbar{margin-left:0;left:0}
   .kpi-grid{grid-template-columns:1fr 1fr}
   .res-grid{grid-template-columns:1fr 1fr}
   #sb-toggle{display:flex!important}
-  #sb-overlay{display:block}
 }
 @media(max-width:600px){
   .kpi-grid,.g2,.g3,.g4{grid-template-columns:1fr}
   .res-grid{grid-template-columns:1fr}
-  .page{padding:16px}
-  .card-hd{flex-direction:column;gap:8px;align-items:flex-start}
 }
 
 /* ═══ ANIMATIONS EXTRA ═══ */
@@ -821,7 +819,7 @@ textarea.inp2{resize:vertical;min-height:100px}
         </div>
         <div>
           <div style="color:rgba(255,255,255,0.5);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase">Centre ODAS</div>
-          
+          <div style="color:#FFC800;font-size:13px;font-weight:600;letter-spacing:1px">Organisation pour le Dialogue</div>
         </div>
       </div>
 
@@ -1000,12 +998,7 @@ textarea.inp2{resize:vertical;min-height:100px}
 <!-- ═══════════════════════════════════════
      SIDEBAR
 ═══════════════════════════════════════ -->
-<div id="sb-overlay" onclick="
-  document.getElementById('sb').classList.remove('open');
-  this.style.display='none';
-  const btn=document.getElementById('sb-toggle');
-  if(btn) btn.innerHTML='<svg width=20 height=20 viewBox=\'0 0 24 24\' fill=none stroke=currentColor stroke-width=2.5><line x1=3 y1=6 x2=21 y2=6/><line x1=3 y1=12 x2=21 y2=12/><line x1=3 y1=18 x2=21 y2=18/></svg>';
-" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;backdrop-filter:blur(2px)"></div>
+<div id="sb-overlay" onclick="document.getElementById('sb').classList.remove('open');this.style.display='none';" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199"></div>
 <aside id="sb">
   <div class="sb-logo">
     <div class="sb-logo-ico">
@@ -1089,7 +1082,7 @@ textarea.inp2{resize:vertical;min-height:100px}
       <div class="sb-avatar" id="sb-av">NT</div>
       <div>
         <div class="sb-uname" id="sb-name">Noé Tanoh</div>
-        <div class="sb-urole" id="sb-role">Chargement...</div>
+        <div class="sb-urole" id="sb-role">Administrateur</div>
       </div>
     </div>
     </div>
@@ -1101,14 +1094,7 @@ textarea.inp2{resize:vertical;min-height:100px}
 ═══════════════════════════════════════ -->
 <header id="topbar">
   <div style="display:flex;align-items:center;gap:12px">
-    <button id="sb-toggle" onclick="
-      const sb=document.getElementById('sb');
-      const overlay=document.getElementById('sb-overlay');
-      sb.classList.toggle('open');
-      const isOpen=sb.classList.contains('open');
-      overlay.style.display=isOpen?'block':'none';
-      this.innerHTML=isOpen?'<svg width=20 height=20 viewBox=\'0 0 24 24\' fill=none stroke=currentColor stroke-width=2.5><line x1=18 y1=6 x2=6 y2=18/><line x1=6 y1=6 x2=18 y2=18/></svg>':'<svg width=20 height=20 viewBox=\'0 0 24 24\' fill=none stroke=currentColor stroke-width=2.5><line x1=3 y1=6 x2=21 y2=6/><line x1=3 y1=12 x2=21 y2=12/><line x1=3 y1=18 x2=21 y2=18/></svg>';
-    " style="background:none;border:none;cursor:pointer;padding:6px;color:var(--txt);display:none;align-items:center;justify-content:center;border-radius:8px;transition:background .2s">
+    <button id="sb-toggle" onclick="const sb=document.getElementById('sb');sb.classList.toggle('open');const o=document.getElementById('sb-overlay');o.style.display=sb.classList.contains('open')?'block':'none';" style="display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--txt);border-radius:8px">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
     <div class="tp-title" id="tp-title">Tableau de bord</div>
@@ -1463,8 +1449,8 @@ textarea.inp2{resize:vertical;min-height:100px}
         <div class="card-hd"><span class="card-tt">Informations personnelles</span></div>
         <div class="card-bd">
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:22px">
-            <div id="profile-av-big" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:20px;color:#fff">?</div>
-            <div><div id="profile-name-display" style="font-size:17px;font-weight:700"></div><div id="profile-email-display" style="font-size:13px;color:var(--txt3)"></div><div style="margin-top:5px"><span id="profile-role-badge" class="b b-gray"></span></div></div>
+            <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:20px;color:#fff">NT</div>
+            <div><div style="font-size:17px;font-weight:700">Noé Tanoh</div><div style="font-size:13px;color:var(--txt3)">noe.tanoh@ensea.edu.ci</div><div style="margin-top:5px"><span class="b b-red">Administrateur</span></div></div>
           </div>
           <div class="fg2"><label class="fl2">Nom complet</label><input class="inp2" id="profile-nom" value="Noé Tanoh"></div>
           <div class="fg2"><label class="fl2">Email</label><input class="inp2" id="profile-email" type="email" value="noe.tanoh@ensea.edu.ci" readonly style="opacity:.6;cursor:default"></div>
@@ -1739,8 +1725,13 @@ async function restoreSession() {
     localStorage.removeItem('sentinel_user');
     document.getElementById('auth-page').classList.remove('hidden');
   }
+} else {
+      document.getElementById('auth-page').classList.remove('hidden');
+    }
+  } catch(e) {
+    document.getElementById('auth-page').classList.remove('hidden');
+  }
 }
-
 
 // ════════════════════════════════════════
 // AUTH
@@ -2492,27 +2483,29 @@ function formatCountry(paysDisplay) {
 
 function setProfileFromUser(user) {
   if (!user) return;
-  // Update profile page dynamic elements
-  const nameEl = document.getElementById('profile-name-display');
-  const emailEl2 = document.getElementById('profile-email-display');
-  const roleEl2 = document.getElementById('profile-role-badge');
-  const avEl = document.getElementById('profile-av-big');
-  const initials = user.initiales ? user.initiales.slice(0,2) : (user.nom_complet||'NT').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  if (nameEl) nameEl.textContent = user.nom_complet || '';
-  if (emailEl2) emailEl2.textContent = user.email || '';
-  if (roleEl2) { roleEl2.textContent = formatRole(user.role_display); roleEl2.className = `b ${getRoleBadgeClass(user.role)}`; }
-  if (avEl) avEl.textContent = initials;
+  const profilePage = document.getElementById('p-profil');
+  if (!profilePage) return;
+  const heading = profilePage.querySelector('div[style*="font-size:17px;font-weight:700"]');
+  const emailDisplay = profilePage.querySelector('div[style*="font-size:13px;color:var(--txt3)"]');
+  const roleBadge = profilePage.querySelector('.b');
+  if (heading) heading.textContent = user.nom_complet || 'Utilisateur';
+  if (emailDisplay) emailDisplay.textContent = user.email || '';
+  if (roleBadge) {
+    roleBadge.textContent = formatRole(user.role_display);
+    roleBadge.className = `b ${getRoleBadgeClass(user.role)}`;
+  }
   const nomEl = document.getElementById('profile-nom');
   const emailEl = document.getElementById('profile-email');
   const orgEl = document.getElementById('profile-org');
   const paysEl = document.getElementById('profile-pays');
-  const profilePage = document.getElementById('p-profil');
-  const otpEmailEl = profilePage ? profilePage.querySelector('.card-bd div[style*="font-size:13px;font-weight:500"]') : null;
+  const otpEmailEl = profilePage.querySelector('.card-bd div[style*="font-size:13px;font-weight:500"]');
   if (nomEl) nomEl.value = user.nom_complet || '';
   if (emailEl) emailEl.value = user.email || '';
   if (orgEl) orgEl.value = user.organisation || '';
   if (paysEl && user.pays) paysEl.value = user.pays;
   if (otpEmailEl) otpEmailEl.textContent = user.email || '';
+  const avatarEl = profilePage.querySelector('div[style*="width:60px;height:60px"]');
+  if (avatarEl) { const initials = user.initiales ? user.initiales.slice(0,2) : (user.nom_complet||'NT').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); avatarEl.textContent = initials; }
 }
 
 function renderMembers(users) {
@@ -3370,7 +3363,21 @@ async function apiFetch(path, options = {}) {
   return data;
 }
 
-// restoreSession defined above
+async function restoreSession() {
+  try {
+    const token = localStorage.getItem('sentinel_token');
+    const user = localStorage.getItem('sentinel_user');
+    if (!token || !user) return;
+    authToken = token;
+    currentUser = JSON.parse(user);
+    await apiFetch('/auth/profile/');
+    enterApp();
+  } catch (error) {
+    clearSession();
+    authToken = '';
+    currentUser = null;
+  }
+}
 
 function enterApp() {
   isLogged = true;
@@ -3386,7 +3393,6 @@ function enterApp() {
   }
   initChart();
   initializeInteractiveFeatures();
-  if (typeof syncAuthenticatedUI === 'function') syncAuthenticatedUI();
 }
 
 function nav(id) {
@@ -3629,7 +3635,45 @@ function clearSession() {
   } catch (e) {}
 }
 
-// restoreSession handled above
+async function restoreSession() {
+  try {
+    const version = localStorage.getItem('sentinel_session_version');
+    if (version !== SESSION_STORAGE_VERSION) {
+      clearSession();
+      return;
+    }
+    const token = localStorage.getItem('sentinel_token');
+    const user = localStorage.getItem('sentinel_user');
+    if (!token || !user) return;
+    authToken = token;
+    currentUser = JSON.parse(user);
+    await apiFetch('/auth/profile/');
+    enterApp();
+  } catch (error) {
+    clearSession();
+    authToken = '';
+    currentUser = null;
+  }
+}
+
+async function submitSignalementFlow() {
+  if (isSubmittingSignalement) return;
+  const draft = collectSignalementDraft();
+  const validationError = validateSignalementDraft(draft);
+  if (validationError) {
+    toast(validationError);
+    sigStep_ = 0;
+    sigStep(0);
+    return;
+  }
+
+  isSubmittingSignalement = true;
+  const nextButton = document.getElementById('sig-next');
+  const previousLabel = nextButton?.textContent;
+  if (nextButton) {
+    nextButton.disabled = true;
+    nextButton.textContent = 'Soumission...';
+  }
 
   try {
     const narratifs = await getSelectedNarratifIds(draft.selectedNarratifs);
@@ -3916,13 +3960,7 @@ function userHasPersonalDashboard() {
 const ADMIN_DASHBOARD_TEMPLATE = document.getElementById('p-dashboard')?.innerHTML || '';
 
 getRoleLabel = function getRoleLabel(role) {
-  return {
-    admin: 'Administrateur ODAS',
-    analyste: 'Analyste',
-    moderateur: 'Modérateur',
-    contributeur: 'Contributeur',
-    bailleur: 'Bailleur',
-  }[role] || 'Membre réseau';
+  return {admin:'Administrateur ODAS',analyste:'Analyste',moderateur:'Modérateur',contributeur:'Contributeur',bailleur:'Bailleur'}[role] || 'Membre réseau';
 };
 
 function formatActivityLabel(item) {
@@ -5869,7 +5907,7 @@ function isPrimaryAdminUser() {
 }
 
 function userCanModerate() {
-  return ['admin', 'analyste', 'moderateur'].includes(currentUser?.role);
+  return isPrimaryAdminUser();
 }
 
 function userHasPersonalDashboard() {
