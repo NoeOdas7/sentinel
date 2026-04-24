@@ -133,6 +133,13 @@ h1,h2,h3,.font-syne{font-family:'Space Grotesk',sans-serif}
   background:linear-gradient(90deg,#1a5c1a,#FFC800,#009BFF);
 }
 .auth-panel-inner{width:100%;max-width:380px}
+@media(max-width:768px){
+  #auth-page{grid-template-columns:1fr!important;grid-template-rows:1fr!important}
+  .auth-hero{display:none!important}
+  .auth-panel{padding:32px 20px;box-shadow:none;min-height:100vh;justify-content:center}
+  .auth-panel::before{height:6px}
+  .auth-panel-inner{max-width:100%}
+}
 .auth-panel-logo{text-align:center;margin-bottom:28px}
 
 /* ── Video bg (dans .auth-hero) ── */
@@ -5893,12 +5900,11 @@ function applyActorPermissions() {
 }
 
 function isPrimaryAdminUser() {
-  const email = String(currentUser?.email || '').trim().toLowerCase();
-  return email === 'admin@odas.org';
+  return currentUser?.role === 'admin';
 }
 
 function userCanModerate() {
-  return isPrimaryAdminUser();
+  return ['admin', 'analyste', 'moderateur'].includes(currentUser?.role);
 }
 
 function userHasPersonalDashboard() {
