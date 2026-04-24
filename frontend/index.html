@@ -82,6 +82,7 @@ h1,h2,h3,.font-syne{font-family:'Space Grotesk',sans-serif}
   grid-template-columns:1fr 480px;
   overflow:hidden;
 }
+#auth-page.hidden{display:none!important;}
 
 /* ── Colonne gauche héro ── */
 .auth-hero{
@@ -757,7 +758,7 @@ textarea.inp2{resize:vertical;min-height:100px}
 <!-- ═══════════════════════════════════════
      AUTH PAGE
 ═══════════════════════════════════════ -->
-<div id="auth-page">
+<div id="auth-page" class="hidden">
 
   <!-- ── COLONNE GAUCHE : HERO ── -->
   <div class="auth-hero">
@@ -1690,8 +1691,16 @@ function restoreSession() {
   try {
     const token = localStorage.getItem('sentinel_token');
     const user = localStorage.getItem('sentinel_user');
-    if (token && user) { authToken = token; currentUser = JSON.parse(user); enterApp(); }
-  } catch(e) {}
+    if (token && user) { 
+      authToken = token; 
+      currentUser = JSON.parse(user); 
+      enterApp(); 
+    } else {
+      document.getElementById('auth-page').classList.remove('hidden');
+    }
+  } catch(e) {
+    document.getElementById('auth-page').classList.remove('hidden');
+  }
 }
 
 // ════════════════════════════════════════
@@ -1850,7 +1859,7 @@ async function verifyOTP() {
 
 function enterApp() {
   isLogged = true;
-  document.getElementById('auth-page').style.display = 'none';
+  document.getElementById('auth-page').classList.add('hidden');
   if (currentUser) {
     const initials = (currentUser.initiales || 'NT').slice(0, 2).toUpperCase();
     const name = currentUser.nom_complet || 'Utilisateur';
@@ -1871,7 +1880,7 @@ async function doLogout() {
   currentUser = null;
   pendingLoginEmail = '';
   clearSession();
-  document.getElementById('auth-page').style.display = 'flex';
+  document.getElementById('auth-page').classList.remove('hidden');
   showForm('f-login');
 }
 
@@ -3302,7 +3311,7 @@ function handleExpiredSession(message) {
   currentUser = null;
   pendingLoginEmail = '';
   clearSession();
-  document.getElementById('auth-page').style.display = 'flex';
+  document.getElementById('auth-page').classList.remove('hidden');
   showForm('f-login');
   toast(message || 'Votre session a expire. Reconnectez-vous.');
 }
@@ -3342,7 +3351,7 @@ async function restoreSession() {
 
 function enterApp() {
   isLogged = true;
-  document.getElementById('auth-page').style.display = 'none';
+  document.getElementById('auth-page').classList.add('hidden');
   if (currentUser) {
     const initials = (currentUser.initiales || 'NT').slice(0, 2).toUpperCase();
     const name = currentUser.nom_complet || 'Utilisateur';
