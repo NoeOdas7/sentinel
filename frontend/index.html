@@ -1884,16 +1884,7 @@ function resetSig() {
 // ════════════════════════════════════════
 // NETWORK GRAPH
 // ════════════════════════════════════════
-const ACTORS = [
-  { id:'fwi', x:0, y:-150, r:42, color:'#e05252', label:'Family Watch\nIntl', score:87, type:'intl' },
-  { id:'wcf', x:150, y:-70, r:39, color:'#d04040', label:'World Congress\nof Fam.', score:82, type:'intl' },
-  { id:'pnv', x:140, y:70, r:36, color:'#cc3535', label:'Political\nNetwork', score:71, type:'intl' },
-  { id:'cgz', x:85, y:0, r:35, color:'#8b6cf7', label:'CitizenGO\nAfrique', score:74, type:'local' },
-  { id:'alf', x:-10, y:130, r:34, color:'#e08a30', label:'Alliance\npour la Fam.', score:65, type:'local' },
-  { id:'rea', x:-90, y:50, r:32, color:'#9b72d0', label:'Radio\nEspérance', score:58, type:'media' },
-  { id:'mpm', x:-110, y:-60, r:32, color:'#e08a30', label:'Mouvement\nPro-Vie', score:61, type:'local' },
-  { id:'cig', x:-70, y:90, r:30, color:'#3db87a', label:'Conseil\nImams GN', score:52, type:'rel' }
-];
+let ACTORS = [];
 const EDGES = [
   { from:'fwi', to:'wcf', type:'financement' }, { from:'fwi', to:'pnv', type:'financement' },
   { from:'wcf', to:'pnv', type:'financement' }, { from:'fwi', to:'cgz', type:'financement' },
@@ -1923,9 +1914,41 @@ function getVisibleEdges() {
   return EDGES.filter(edge => visibleIds.has(edge.from) && visibleIds.has(edge.to));
 }
 
-function initNet() {
+async function initNet() {
   nc = document.getElementById('net-canvas');
   if (!nc) return;
+  // Charger les acteurs depuis l'API si pas encore chargés
+  if (ACTORS.length === 0 && authToken) {
+    try {
+      const data = await apiFetch('/actors/');
+      const TYPE_MAP = {intl:'intl', local:'local', media:'media', religieux:'rel'};
+      const COLORS = {intl:'#e05252', local:'#e08a30', media:'#8b6cf7', rel:'#3db87a'};
+      const RISK_COLORS = {critique:'#e05252', eleve:'#d04040', modere:'#e08a30', faible:'#3db87a'};
+      ACTORS = data.map((a, i) => {
+        const angle = (i / data.length) * Math.PI * 2;
+        const radius = 80 + Math.random() * 120;
+        const type = TYPE_MAP[a.type_acteur] || 'local';
+        const score = a.score_risque || 0;
+        const r = Math.max(20, Math.min(45, 20 + score / 4));
+        const color = score > 75 ? '#e05252' : score > 50 ? '#d04040' : score > 25 ? '#e08a30' : '#3db87a';
+        return {
+          id: String(a.id),
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius,
+          r, color, type,
+          label: a.nom.length > 20 ? a.nom.substring(0, 18) + '...' : a.nom,
+          score,
+          _data: a
+        };
+      });
+      // Mettre à jour le compteur
+      const counter = document.querySelector('#p-cartographie .card-hd span');
+      if (counter) counter.textContent = ACTORS.length + ' acteur' + (ACTORS.length > 1 ? 's' : '');
+      const listEl = document.querySelector('#p-cartographie .card-hd + div');
+    } catch(e) {
+      console.warn('Erreur chargement acteurs:', e);
+    }
+  }
   if (!nctx) {
     nctx = nc.getContext('2d');
     window.addEventListener('resize', resizeNet);
