@@ -1717,51 +1717,30 @@ function clearSession() {
   try { localStorage.removeItem('sentinel_token'); localStorage.removeItem('sentinel_user'); } catch(e) {}
 }
 async function restoreSession() {
+  const token = localStorage.getItem('sentinel_token');
+  const user = localStorage.getItem('sentinel_user');
+  if (!token || !user) {
+    document.getElementById('auth-page').classList.remove('hidden');
+    return;
+  }
   try {
-    const token = localStorage.getItem('sentinel_token');
-    const user = localStorage.getItem('sentinel_user');
-    if (!token || !user) {
-      document.getElementById('auth-page').classList.remove('hidden');
-      return;
-    }
-    authToken = token;
-    currentUser = JSON.parse(user);
-    // Vérifier le token côté serveur
-    const r = await fetch(`${API}/auth/profile/`, {
-      headers: { 'Authorization': 'Bearer ' + token }
-    });
+    const r = await fetch(API + '/auth/profile/', {headers:{'Authorization':'Bearer '+token}});
     if (r.ok) {
+      authToken = token;
+      currentUser = JSON.parse(user);
       enterApp();
     } else {
-      clearSession();
-      authToken = '';
-      currentUser = null;
+      localStorage.removeItem('sentinel_token');
+      localStorage.removeItem('sentinel_user');
       document.getElementById('auth-page').classList.remove('hidden');
     }
-  } catch (error) {
-    clearSession();
-    authToken = '';
-    currentUser = null;
-    document.getElementById('auth-page').classList.remove('hidden');
-  }
-}).then(r => {
-      if (r.ok) {
-        authToken = token;
-        currentUser = JSON.parse(user);
-        enterApp();
-      } else {
-        // Token invalide - supprimer et afficher login
-        localStorage.removeItem('sentinel_token');
-        localStorage.removeItem('sentinel_user');
-        document.getElementById('auth-page').classList.remove('hidden');
-      }
-    }).catch(() => {
-      document.getElementById('auth-page').classList.remove('hidden');
-    });
-  } else {
+  } catch(e) {
+    localStorage.removeItem('sentinel_token');
+    localStorage.removeItem('sentinel_user');
     document.getElementById('auth-page').classList.remove('hidden');
   }
 }
+
 
 // ════════════════════════════════════════
 // AUTH
@@ -3407,6 +3386,7 @@ function enterApp() {
   }
   initChart();
   initializeInteractiveFeatures();
+  if (typeof syncAuthenticatedUI === 'function') syncAuthenticatedUI();
 }
 
 function nav(id) {
