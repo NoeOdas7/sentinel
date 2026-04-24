@@ -1716,14 +1716,35 @@ function saveSession() {
 function clearSession() {
   try { localStorage.removeItem('sentinel_token'); localStorage.removeItem('sentinel_user'); } catch(e) {}
 }
-function restoreSession() {
-  const token = localStorage.getItem('sentinel_token');
-  const user = localStorage.getItem('sentinel_user');
-  if (token && user) {
-    // Vérifier le token côté serveur avant d'entrer
-    fetch(`${API}/auth/profile/`, {
+async function restoreSession() {
+  try {
+    const token = localStorage.getItem('sentinel_token');
+    const user = localStorage.getItem('sentinel_user');
+    if (!token || !user) {
+      document.getElementById('auth-page').classList.remove('hidden');
+      return;
+    }
+    authToken = token;
+    currentUser = JSON.parse(user);
+    // Vérifier le token côté serveur
+    const r = await fetch(`${API}/auth/profile/`, {
       headers: { 'Authorization': 'Bearer ' + token }
-    }).then(r => {
+    });
+    if (r.ok) {
+      enterApp();
+    } else {
+      clearSession();
+      authToken = '';
+      currentUser = null;
+      document.getElementById('auth-page').classList.remove('hidden');
+    }
+  } catch (error) {
+    clearSession();
+    authToken = '';
+    currentUser = null;
+    document.getElementById('auth-page').classList.remove('hidden');
+  }
+}).then(r => {
       if (r.ok) {
         authToken = token;
         currentUser = JSON.parse(user);
@@ -3370,21 +3391,7 @@ async function apiFetch(path, options = {}) {
   return data;
 }
 
-async function restoreSession() {
-  try {
-    const token = localStorage.getItem('sentinel_token');
-    const user = localStorage.getItem('sentinel_user');
-    if (!token || !user) return;
-    authToken = token;
-    currentUser = JSON.parse(user);
-    await apiFetch('/auth/profile/');
-    enterApp();
-  } catch (error) {
-    clearSession();
-    authToken = '';
-    currentUser = null;
-  }
-}
+// restoreSession defined above
 
 function enterApp() {
   isLogged = true;
@@ -3642,45 +3649,7 @@ function clearSession() {
   } catch (e) {}
 }
 
-async function restoreSession() {
-  try {
-    const version = localStorage.getItem('sentinel_session_version');
-    if (version !== SESSION_STORAGE_VERSION) {
-      clearSession();
-      return;
-    }
-    const token = localStorage.getItem('sentinel_token');
-    const user = localStorage.getItem('sentinel_user');
-    if (!token || !user) return;
-    authToken = token;
-    currentUser = JSON.parse(user);
-    await apiFetch('/auth/profile/');
-    enterApp();
-  } catch (error) {
-    clearSession();
-    authToken = '';
-    currentUser = null;
-  }
-}
-
-async function submitSignalementFlow() {
-  if (isSubmittingSignalement) return;
-  const draft = collectSignalementDraft();
-  const validationError = validateSignalementDraft(draft);
-  if (validationError) {
-    toast(validationError);
-    sigStep_ = 0;
-    sigStep(0);
-    return;
-  }
-
-  isSubmittingSignalement = true;
-  const nextButton = document.getElementById('sig-next');
-  const previousLabel = nextButton?.textContent;
-  if (nextButton) {
-    nextButton.disabled = true;
-    nextButton.textContent = 'Soumission...';
-  }
+// restoreSession handled above
 
   try {
     const narratifs = await getSelectedNarratifIds(draft.selectedNarratifs);
