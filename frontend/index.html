@@ -6636,6 +6636,8 @@ restoreSession();
 </script>
 <script>
 (function () {
+  document.documentElement.setAttribute('data-radar-fallback', 'booting');
+
   function safeTitleFor(id) {
     return {
       dashboard: 'Tableau de bord',
@@ -6684,6 +6686,17 @@ restoreSession();
     if (id === 'membres') callIfAvailable('loadMembersAdminData');
   };
 
+  document.addEventListener('click', function (event) {
+    var item = event.target && event.target.closest ? event.target.closest('.sb-item') : null;
+    if (!item) return;
+    var action = item.getAttribute('onclick') || '';
+    var match = action.match(/nav\('([^']+)'\)/);
+    if (!match) return;
+    event.preventDefault();
+    event.stopPropagation();
+    window.nav(match[1]);
+  }, true);
+
   document.querySelectorAll('.sb-item').forEach(function (item) {
     if (item.dataset.radarFallbackBound === 'true') return;
     item.dataset.radarFallbackBound = 'true';
@@ -6695,6 +6708,8 @@ restoreSession();
       window.nav(match[1]);
     });
   });
+
+  document.documentElement.setAttribute('data-radar-fallback', 'ready');
 })();
 </script>
 </body>
