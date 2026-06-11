@@ -5231,6 +5231,59 @@ updatePeriod = function updatePeriod(period) {
     chartInst.data.datasets[2].data = config.moderee;
     chartInst.data.datasets[3].data = config.faible;
     chartInst.update();
+  } else {
+    const canvas = document.getElementById('trendChart');
+    const ctx = canvas?.getContext?.('2d');
+    if (canvas && ctx) {
+      const dpr = window.devicePixelRatio || 1;
+      const width = Math.max(canvas.clientWidth || 640, 320);
+      const height = Math.max(canvas.clientHeight || 280, 220);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+
+      const padding = { top: 24, right: 18, bottom: 34, left: 34 };
+      const plotWidth = width - padding.left - padding.right;
+      const plotHeight = height - padding.top - padding.bottom;
+      const maxValue = Math.max(...config.total, ...config.elevee, ...config.moderee, ...config.faible, 1);
+
+      ctx.strokeStyle = 'rgba(138,154,164,.24)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 4; i += 1) {
+        const y = padding.top + (plotHeight / 3) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+      }
+
+      const drawSeries = (values, color) => {
+        ctx.beginPath();
+        values.forEach((value, index) => {
+          const x = padding.left + (plotWidth * index) / Math.max(values.length - 1, 1);
+          const y = padding.top + plotHeight - (value / maxValue) * plotHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      };
+
+      drawSeries(config.total, '#39a795');
+      drawSeries(config.elevee, '#d46543');
+      drawSeries(config.moderee, '#d08a3c');
+      drawSeries(config.faible, '#56a567');
+
+      ctx.fillStyle = '#6c7e89';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      config.labels.forEach((label, index) => {
+        const x = padding.left + (plotWidth * index) / Math.max(config.labels.length - 1, 1);
+        ctx.fillText(label, x, height - 10);
+      });
+    }
   }
   document.querySelectorAll('[data-period]').forEach(button => {
     button.className = Number(button.dataset.period) === Number(period) ? 'btn btn-xs btn-p' : 'btn btn-xs btn-g';
@@ -5552,16 +5605,20 @@ async function loadActorNetworkData() {
     if (netFilter && netFilter !== 'all') params.set('type', netFilter);
     if (actorCountryFilter) params.set('pays', actorCountryFilter);
     const query = params.toString() ? `?${params.toString()}` : '';
-    const [actors, network] = await Promise.all([
-      apiFetch(`/actors/${query}`),
-      apiFetch(`/actors/network/${query}`),
-    ]);
-    if (Array.isArray(actors) && Array.isArray(network?.edges)) {
-      applyActorGraphData(actors, network.edges);
+    const actors = await apiFetch(`/actors/${query}`);
+    let network = { edges: [] };
+    try {
+      network = await apiFetch(`/actors/network/${query}`);
+    } catch (networkError) {
+      console.warn('loadActorNetworkData network fallback', networkError);
+    }
+    if (Array.isArray(actors)) {
+      applyActorGraphData(actors, Array.isArray(network?.edges) ? network.edges : []);
       if (selectedActor && !ACTORS.some(actor => actor.id === selectedActor)) selectedActor = null;
       renderActorList();
       const activeActor = selectedActor ? ACTORS.find(actor => actor.id === selectedActor) : ACTORS[0];
       if (activeActor) openActorPanel(activeActor);
+      else initNet();
     }
   } catch (error) {
     console.error('loadActorNetworkData', error);
@@ -6542,6 +6599,22 @@ nav = function(id) {
   }
 };
 window.nav = nav;
+
+const __radarEnterAppFinal = enterApp;
+enterApp = function enterApp() {
+  __radarEnterAppFinal();
+  window.setTimeout(() => {
+    if (!authToken || !currentUser) return;
+    Promise.resolve(loadActorNetworkData()).catch(() => {});
+    Promise.resolve(loadDashboardData()).catch(() => {});
+  }, 180);
+};
+
+window.addEventListener('pageshow', () => {
+  if (!authToken || !currentUser) return;
+  Promise.resolve(loadActorNetworkData()).catch(() => {});
+  Promise.resolve(loadDashboardData()).catch(() => {});
+});
 
 ensureRoleSpecificExperience();
 ensureRadarExperienceStyles();
