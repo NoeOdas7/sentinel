@@ -6674,7 +6674,7 @@ restoreSession();
     return null;
   }
 
-  window.nav = window.nav || function (id) {
+  function fallbackNavigate(id) {
     showPage(id);
     if (id === 'dashboard') callIfAvailable('loadDashboardData');
     if (id === 'cartographie') {
@@ -6684,7 +6684,9 @@ restoreSession();
     if (id === 'signalements' || id === 'validation') callIfAvailable('loadSignalementsData');
     if (id === 'profil') callIfAvailable('syncSessions');
     if (id === 'membres') callIfAvailable('loadMembersAdminData');
-  };
+  }
+
+  try { window.nav = fallbackNavigate; } catch (_error) {}
 
   document.addEventListener('click', function (event) {
     var item = event.target && event.target.closest ? event.target.closest('.sb-item') : null;
@@ -6699,7 +6701,7 @@ restoreSession();
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-    window.nav(targetId);
+    fallbackNavigate(targetId);
   }, true);
 
   document.querySelectorAll('.sb-item').forEach(function (item) {
@@ -6721,7 +6723,7 @@ restoreSession();
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
-      window.nav(targetId);
+      fallbackNavigate(targetId);
     });
   });
 
