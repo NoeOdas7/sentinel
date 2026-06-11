@@ -6689,23 +6689,39 @@ restoreSession();
   document.addEventListener('click', function (event) {
     var item = event.target && event.target.closest ? event.target.closest('.sb-item') : null;
     if (!item) return;
-    var action = item.getAttribute('onclick') || '';
-    var match = action.match(/nav\('([^']+)'\)/);
-    if (!match) return;
+    var targetId = item.dataset.navTarget || '';
+    if (!targetId) {
+      var action = item.getAttribute('onclick') || '';
+      var match = action.match(/nav\('([^']+)'\)/);
+      targetId = match ? match[1] : '';
+    }
+    if (!targetId) return;
     event.preventDefault();
     event.stopPropagation();
-    window.nav(match[1]);
+    event.stopImmediatePropagation();
+    window.nav(targetId);
   }, true);
+
+  document.querySelectorAll('.sb-item').forEach(function (item) {
+    var action = item.getAttribute('onclick') || '';
+    var match = action.match(/nav\('([^']+)'\)/);
+    if (match) {
+      item.dataset.navTarget = match[1];
+      item.removeAttribute('onclick');
+      item.onclick = null;
+    }
+  });
 
   document.querySelectorAll('.sb-item').forEach(function (item) {
     if (item.dataset.radarFallbackBound === 'true') return;
     item.dataset.radarFallbackBound = 'true';
     item.addEventListener('click', function (event) {
-      var action = item.getAttribute('onclick') || '';
-      var match = action.match(/nav\('([^']+)'\)/);
-      if (!match) return;
+      var targetId = item.dataset.navTarget || '';
+      if (!targetId) return;
       event.preventDefault();
-      window.nav(match[1]);
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      window.nav(targetId);
     });
   });
 
