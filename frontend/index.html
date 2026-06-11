@@ -905,40 +905,40 @@ textarea.inp2{resize:vertical;min-height:100px}
   </div>
   <nav class="sb-nav">
     <div class="sb-section">Principal</div>
-    <div class="sb-item active" onclick="nav('dashboard')">
+    <div class="sb-item active" data-nav-target="dashboard">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
       Tableau de bord
     </div>
-    <div class="sb-item" onclick="nav('signalements')">
+    <div class="sb-item" data-nav-target="signalements">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       Signalements
       <span class="sb-badge">3</span>
     </div>
-    <div class="sb-item" onclick="nav('cartographie')">
+    <div class="sb-item" data-nav-target="cartographie">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
       Cartographie
     </div>
     <div class="sb-section">Ressources</div>
-    <div class="sb-item" onclick="nav('ressources')">
+    <div class="sb-item" data-nav-target="ressources">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
       Hub de ressources
     </div>
     <div class="sb-section">Administration</div>
-    <div class="sb-item" onclick="nav('membres')">
+    <div class="sb-item" data-nav-target="membres">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Membres
       <span class="sb-badge" id="sb-pending-badge" style="display:none">0</span>
     </div>
-    <div class="sb-item" onclick="nav('validation')">
+    <div class="sb-item" data-nav-target="validation">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       Validation
       <span class="sb-badge">3</span>
     </div>
-    <div class="sb-item" onclick="nav('alertes')">
+    <div class="sb-item" data-nav-target="alertes">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
       Alertes
     </div>
-    <div class="sb-item" onclick="nav('profil')">
+    <div class="sb-item" data-nav-target="profil">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Mon profil
     </div>
@@ -1802,13 +1802,26 @@ async function submitRegistration() {
 // ════════════════════════════════════════
 const TITLES = { dashboard: 'Tableau de bord', signalements: 'Signalements', cartographie: 'Cartographie des acteurs', ressources: 'Hub de ressources', membres: 'Espace membres', validation: 'Validation des signalements', alertes: 'Alertes', profil: 'Mon profil' };
 
+function getNavTargetFromElement(element) {
+  if (!element) return '';
+  const explicitTarget = element.dataset?.navTarget || element.dataset?.navPage || '';
+  if (explicitTarget) return explicitTarget;
+  const action = element.getAttribute?.('onclick') || '';
+  const match = action.match(/nav\('([^']+)'\)/);
+  return match ? match[1] : '';
+}
+
+function getSidebarItemByTarget(targetId) {
+  return Array.from(document.querySelectorAll('.sb-item')).find(item => getNavTargetFromElement(item) === targetId);
+}
+
 function nav(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
   const page = document.getElementById('p-' + id);
   if (page) page.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
+    if (getNavTargetFromElement(n) === id) n.classList.add('active');
   });
   document.getElementById('tp-title').textContent = TITLES[id] || id;
   if (id === 'dashboard') initChart();
@@ -2208,7 +2221,7 @@ function updatePendingCounts() {
   const pendingCount = pendingCards.length;
   const alertBox = document.querySelector('#p-validation .alert-b.warn div div');
   if (alertBox) alertBox.textContent = `${pendingCount} signalement${pendingCount > 1 ? 's' : ''} en attente`;
-  const validationBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("validation"))?.querySelector('.sb-badge');
+  const validationBadge = getSidebarItemByTarget('validation')?.querySelector('.sb-badge');
   if (validationBadge) validationBadge.textContent = pendingCount;
 }
 
@@ -2872,9 +2885,9 @@ function renderValidationList(items) {
   const { list, alertBox } = getValidationPageParts();
   if (!list) return;
   if (alertBox) alertBox.textContent = `${items.length} signalement${items.length > 1 ? 's' : ''} en attente`;
-  const validationBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("validation"))?.querySelector('.sb-badge');
+  const validationBadge = getSidebarItemByTarget('validation')?.querySelector('.sb-badge');
   if (validationBadge) validationBadge.textContent = items.length;
-  const signalBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("signalements"))?.querySelector('.sb-badge');
+  const signalBadge = getSidebarItemByTarget('signalements')?.querySelector('.sb-badge');
   if (signalBadge) signalBadge.textContent = signalementsCache.length;
   if (!items.length) {
     list.innerHTML = `<div class="pending-empty">Aucun signalement en attente.</div>`;
@@ -3239,7 +3252,7 @@ function nav(id) {
   const page = document.getElementById('p-' + id);
   if (page) page.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
+    if (getNavTargetFromElement(n) === id) n.classList.add('active');
   });
   document.getElementById('tp-title').textContent = TITLES[id] || id;
   if (id === 'dashboard') loadDashboardData();
@@ -4248,9 +4261,9 @@ function renderValidationList(items) {
   const { list, alertBox } = getValidationPageParts();
   if (!list) return;
   if (alertBox) alertBox.textContent = `${items.length} signalement${items.length > 1 ? 's' : ''} en attente`;
-  const validationBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("validation"))?.querySelector('.sb-badge');
+  const validationBadge = getSidebarItemByTarget('validation')?.querySelector('.sb-badge');
   if (validationBadge) validationBadge.textContent = items.length;
-  const signalBadge = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("signalements"))?.querySelector('.sb-badge');
+  const signalBadge = getSidebarItemByTarget('signalements')?.querySelector('.sb-badge');
   if (signalBadge) signalBadge.textContent = signalementsCache.length;
   list.innerHTML = items.length
     ? items.map(renderValidationCard).join('')
@@ -4412,9 +4425,9 @@ function getAllowedPagesForRole(role) {
 function applyRoleNavigation() {
   const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
   document.querySelectorAll('.sb-item').forEach(item => {
-    const match = item.getAttribute('onclick')?.match(/nav\('([^']+)'\)/);
-    if (!match) return;
-    item.style.display = allowed.has(match[1]) ? '' : 'none';
+    const targetId = getNavTargetFromElement(item);
+    if (!targetId) return;
+    item.style.display = allowed.has(targetId) ? '' : 'none';
   });
   document.querySelectorAll('.sb-section').forEach(section => {
     let sibling = section.nextElementSibling;
@@ -4496,7 +4509,7 @@ function nav(id) {
   const page = document.getElementById('p-' + targetId);
   if (page) page.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(n => {
-    if (n.getAttribute('onclick')?.includes("'" + targetId + "'") && n.style.display !== 'none') n.classList.add('active');
+    if (getNavTargetFromElement(n) === targetId && n.style.display !== 'none') n.classList.add('active');
   });
   const dashboardLabel = 'Tableau de bord';
   document.getElementById('tp-title').textContent = targetId === 'dashboard' ? dashboardLabel : (TITLES[targetId] || targetId);
@@ -5816,12 +5829,12 @@ function ensureRoleSpecificExperience() {
   const existingFeedPage = document.getElementById('p-actualites');
   if (existingFeedPage) existingFeedPage.remove();
   TITLES.mou = 'MoU US Compact';
-  const resourcesItem = Array.from(document.querySelectorAll('.sb-item')).find(item => item.getAttribute('onclick')?.includes("nav('ressources')"));
+  const resourcesItem = getSidebarItemByTarget('ressources');
   if (resourcesItem && !document.querySelector('[data-nav-page="mou"]')) {
     const mouItem = document.createElement('div');
     mouItem.className = 'sb-item';
     mouItem.dataset.navPage = 'mou';
-    mouItem.setAttribute('onclick', "nav('mou')");
+    mouItem.dataset.navTarget = 'mou';
     mouItem.innerHTML = `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><polyline points="14 3 14 8 19 8"/></svg>
       MoU US Compact
@@ -6092,9 +6105,9 @@ getAllowedPagesForRole = function getAllowedPagesForRole(role) {
 applyRoleNavigation = function applyRoleNavigation() {
   const allowed = new Set(getAllowedPagesForRole(currentUser?.role));
   document.querySelectorAll('.sb-item').forEach(item => {
-    const match = item.getAttribute('onclick')?.match(/nav\('([^']+)'\)/);
-    if (!match) return;
-    item.style.display = allowed.has(match[1]) ? '' : 'none';
+    const targetId = getNavTargetFromElement(item);
+    if (!targetId) return;
+    item.style.display = allowed.has(targetId) ? '' : 'none';
   });
   document.querySelectorAll('.sb-section').forEach(section => {
     let sibling = section.nextElementSibling;
@@ -6660,8 +6673,7 @@ restoreSession();
     items.forEach(function (item) { item.classList.remove('active'); });
     if (targetPage) targetPage.classList.add('active');
     items.forEach(function (item) {
-      var action = item.getAttribute('onclick') || '';
-      if (action.indexOf("nav('" + id + "')") !== -1) item.classList.add('active');
+      if (getNavTargetFromElement(item) === id) item.classList.add('active');
     });
     var title = document.getElementById('tp-title');
     if (title) title.textContent = safeTitleFor(id);
@@ -6691,12 +6703,7 @@ restoreSession();
   document.addEventListener('click', function (event) {
     var item = event.target && event.target.closest ? event.target.closest('.sb-item') : null;
     if (!item) return;
-    var targetId = item.dataset.navTarget || '';
-    if (!targetId) {
-      var action = item.getAttribute('onclick') || '';
-      var match = action.match(/nav\('([^']+)'\)/);
-      targetId = match ? match[1] : '';
-    }
+    var targetId = getNavTargetFromElement(item);
     if (!targetId) return;
     event.preventDefault();
     event.stopPropagation();
@@ -6705,10 +6712,9 @@ restoreSession();
   }, true);
 
   document.querySelectorAll('.sb-item').forEach(function (item) {
-    var action = item.getAttribute('onclick') || '';
-    var match = action.match(/nav\('([^']+)'\)/);
-    if (match) {
-      item.dataset.navTarget = match[1];
+    var targetId = getNavTargetFromElement(item);
+    if (targetId) {
+      item.dataset.navTarget = targetId;
       item.removeAttribute('onclick');
       item.onclick = null;
     }
@@ -6718,7 +6724,7 @@ restoreSession();
     if (item.dataset.radarFallbackBound === 'true') return;
     item.dataset.radarFallbackBound = 'true';
     item.addEventListener('click', function (event) {
-      var targetId = item.dataset.navTarget || '';
+      var targetId = getNavTargetFromElement(item);
       if (!targetId) return;
       event.preventDefault();
       event.stopPropagation();
