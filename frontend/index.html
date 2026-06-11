@@ -6634,5 +6634,68 @@ document.querySelectorAll('.auth-sel').forEach((el, i) => { if (i > 0) el.style.
 initializeInteractiveFeatures();
 restoreSession();
 </script>
+<script>
+(function () {
+  function safeTitleFor(id) {
+    return {
+      dashboard: 'Tableau de bord',
+      signalements: 'Signalements',
+      cartographie: 'Cartographie des acteurs',
+      mou: 'MoU US Compact',
+      ressources: 'Hub de ressources',
+      membres: 'Espace membres',
+      validation: 'Validation des signalements',
+      alertes: 'Alertes',
+      profil: 'Mon profil'
+    }[id] || 'RADAR';
+  }
+
+  function showPage(id) {
+    var pages = document.querySelectorAll('.page');
+    var items = document.querySelectorAll('.sb-item');
+    var targetPage = document.getElementById('p-' + id);
+    pages.forEach(function (page) { page.classList.remove('active'); });
+    items.forEach(function (item) { item.classList.remove('active'); });
+    if (targetPage) targetPage.classList.add('active');
+    items.forEach(function (item) {
+      var action = item.getAttribute('onclick') || '';
+      if (action.indexOf("nav('" + id + "')") !== -1) item.classList.add('active');
+    });
+    var title = document.getElementById('tp-title');
+    if (title) title.textContent = safeTitleFor(id);
+  }
+
+  function callIfAvailable(fnName) {
+    if (typeof window[fnName] === 'function') {
+      try { return window[fnName](); } catch (_error) {}
+    }
+    return null;
+  }
+
+  window.nav = window.nav || function (id) {
+    showPage(id);
+    if (id === 'dashboard') callIfAvailable('loadDashboardData');
+    if (id === 'cartographie') {
+      callIfAvailable('initNet');
+      callIfAvailable('loadActorNetworkData');
+    }
+    if (id === 'signalements' || id === 'validation') callIfAvailable('loadSignalementsData');
+    if (id === 'profil') callIfAvailable('syncSessions');
+    if (id === 'membres') callIfAvailable('loadMembersAdminData');
+  };
+
+  document.querySelectorAll('.sb-item').forEach(function (item) {
+    if (item.dataset.radarFallbackBound === 'true') return;
+    item.dataset.radarFallbackBound = 'true';
+    item.addEventListener('click', function (event) {
+      var action = item.getAttribute('onclick') || '';
+      var match = action.match(/nav\('([^']+)'\)/);
+      if (!match) return;
+      event.preventDefault();
+      window.nav(match[1]);
+    });
+  });
+})();
+</script>
 </body>
 </html>
