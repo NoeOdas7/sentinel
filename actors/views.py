@@ -51,15 +51,17 @@ def _normalize_actor_payload(request):
 
 
 def ensure_demo_actors():
-    if Acteur.objects.exists():
-        return
     demo_user = User.objects.filter(email__iexact=settings.DEMO_ADMIN_EMAIL, is_active=True).first()
     if not demo_user:
         return
-    from .seed_data import SEED_ACTEURS
+    from .seed_data import get_seed_actor_names, sync_seed_acteurs
 
-    for item in SEED_ACTEURS:
-        Acteur.objects.create(contribue_par=demo_user, **item)
+    expected_names = set(get_seed_actor_names())
+    current_names = set(
+        Acteur.objects.filter(contribue_par=demo_user).values_list("nom", flat=True)
+    )
+    if current_names != expected_names:
+        sync_seed_acteurs(demo_user)
 
 
 def _country_matches(acteur, country):

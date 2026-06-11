@@ -3,6 +3,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from .models import Acteur, Connexion
+from .seed_data import SEED_ACTEURS, sync_seed_acteurs
 
 
 User = get_user_model()
@@ -58,3 +59,29 @@ class ActeurApiTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('attachment;', response['Content-Disposition'])
         self.assertIn('Alliance Civique', response.content.decode('utf-8'))
+
+
+class RadarSeedDataTests(TestCase):
+    def setUp(self):
+        self.admin_user = User.objects.create_user(
+            email='admin@odas.org',
+            password='admin123',
+            nom_complet='Admin Demo ODAS',
+            role='admin',
+            is_active=True,
+            is_approved=True,
+            approval_status='approved',
+            first_login_completed=True,
+        )
+
+    def test_radar_seed_dataset_contains_regional_and_country_entries(self):
+        self.assertGreaterEqual(len(SEED_ACTEURS), 60)
+        names = {item['nom'] for item in SEED_ACTEURS}
+        self.assertIn("Conférence Épiscopale du Bénin / Archidiocèse de Cotonou", names)
+        self.assertIn("Collectif And Samm Jikko Yi Branche féminine Ndeyi Askan Yi (Sokhna Ndeye Diop, épouse du député Alioune Badara Ndao du PASTEF)", names)
+        self.assertTrue(any("Human Life International (HLI)" in name for name in names))
+
+    def test_sync_seed_acteurs_creates_document_based_entries(self):
+        sync_seed_acteurs(self.admin_user)
+        self.assertTrue(Acteur.objects.filter(nom__icontains="Doc-Jeff de Sarh").exists())
+        self.assertTrue(Acteur.objects.filter(nom__icontains="Conseil Supérieur Islamique").exists())

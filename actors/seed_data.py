@@ -1,70 +1,167 @@
-PROFILE_1 = {
-    "pays_operation": ["Tchad"],
-    "zone_influence": "Le Grand Nord du Tchad (région majoritairement islamique) : Kanem, Le Lac, Le BET, Ouaddaï Sud (majoritairement chrétien) : Mayo-Kebbi, Tandjilé, Mandoul, Moyen-Chari, Salamat Les mosquées Les églises Les écoles religieuses (coraniques) Facultés théologiques (FATES, Mabrouka) Espaces virtuels (réseaux sociaux et médias en ligne) Société civile Gouvernement ONU Institutions et Personnalités Politiques",
-    "strategie_mode_operatoire": "Conférences Lobbying (Influence politique) Financement de la construction d'infrastructures religieuses/Sanitaires Actions sociales (Dons aux personnes vulnérables) Financement des bourses d'étude vers les pays arabes Plaidoyer Prédications (anti-avortement et contraception ; mères célibataires ; la soumission des femmes ; anti-féminisme) Instrumentalisation de la population du fait de la faible alphabétisation Influence sur les normes sociales Sensibilisations communautaires Subventions aux organisations locales Couverture sous le mandat humanitaire Education et recherche",
-    "discours_messages_cles": "Souverainistes antis occidentaux Anti LGBT Défendre la culture de la vie dans toute l'Afrique Menace pour la famille et la divinité Evangiles Valeurs culturelles de l'Afrique Panafricanisme Le protocole de MAPUTO est un danger permanent 9 mois de grossesse perdue (pour parler des personnes LGBTQI+) Ancrage ethnique des discours L'accès au préservatif pour les jeunes induit une perte de contrôle de la famille Conservation de l'honneur de la famille \"Si je savais, j'allais t'avorter\" (à l'égard des personnes LGBTQ+) Hiérarchisation des péchés Influence occidentale et alliance sectaire La sacralisation du mariage et du corps de la femme Soyez féconds, multipliez-vous",
-}
+from __future__ import annotations
 
-PROFILE_2 = {
-    "pays_operation": ["Tchad"],
-    "zone_influence": "Les églises Les mosquées Les marchés et autres lieux publics Les écoles confessionnelles (Mabrouka) Catéchisme Dans la communauté (regroupements ethniques et culturels) Radios confessionnelles (La voix de l'espérance, Arc-en-ciel, Electron TV, Al-Nassour) Réseaux et Médias Sociaux",
-    "strategie_mode_operatoire": "Test de virginité avant le mariage Prédication islamique sur les places publiques Homélie et Prêche Emissions Radios sur le rôle traditionnel de la femme Evangélisation Alliances Déclaration publique Représentation théâtrale dans les églises Purification Monter les personnes handicapées contre les organisations ou pour le culte Exorcisme Martyriser et torturer pour guérir les personnes LGBTQI+ et qui avortent Exercices de pénitence Instrumentalisation de la population du fait de la faible alphabétisation Influence sur les normes sociales Sensibilisations communautaires",
-    "discours_messages_cles": "Fidélité jusqu'au mariage Dignité familiale est respectée La conservation du corps de la femme Le corps de la femme est le temple du Saint-Esprit et de la pureté L'avortement est un meurtre et donc un péché Le recours à l'avortement est strictement interdit par l'islam sauf en cas de malformations L'accès à la contraception pour les jeunes induit une perte de contrôle de la famille Le viol conjugal n'existe pas Le mariage d'une fille après ses premières menstrues est légitime Le mariage précoce est un cadre protecteur de la femme Contre-nature Stigmatisation des personnes LGBTQI+ et handicapées Les personnes LGBTQI+ sont des pécheurs qu'il faut guérir Pour les personnes en situation de handicap : vouées à la mendicité et au culte",
-}
+import json
+import re
+import unicodedata
+from pathlib import Path
 
-PROFILE_3 = {
-    "pays_operation": ["Tchad"],
-    "zone_influence": "Radio / TV Réseaux sociaux Communautés Emission grand public Evénements culturels Gouvernement Systèmes de Santé",
-    "strategie_mode_operatoire": "Stigmatisation des jeunes filles et adolescentes qui demandent des services SR Désinformation Débats sur ces sujets via les réseaux sociaux Des faits de sociétés qui tournent au buzz Banalisation des cas de VBG Intimidation et Harcèlement / Menaces Cyberharcèlement Culpabilisation Stigmatisation Discrimination Amplification du concept de \"Mâle Alpha\" (masculinité toxique) L'idéalisation d'un modèle traditionnel de famille Conservation des valeurs traditionnelles africaines",
-    "discours_messages_cles": "Versets bibliques Dérision des termes : \"Femme Indépendante/de valeur/Battante\" La femme de la place c'est à la cuisine La mère nourricière Le retour aux valeurs africaines La femme est la gardienne des traditions et des valeurs Les féministes frelatées / mal aimées / les blessées de l'existence Les féministes sont des lesbiennes La contraception est une stratégie des occidentaux pour limiter les naissances en Afrique Les enfants sont un don et une bénédiction de Dieu Les contraceptifs rendent les femmes stériles L'émancipation tue la soumission et va à l'encontre des valeurs familiales africaines Une femme normale doit être soumise",
-}
 
-PROFILE_4 = {
-    "pays_operation": ["Tchad"],
-    "zone_influence": "Parlement Gouvernement Rencontres stratégiques nationales Conseil des Ministres Réunion mensuelle de santé Plateforme SRMNIAN/PF Ateliers sur les DSSR / avortement",
-    "strategie_mode_operatoire": "Obstacle au vote d'une loi pro avortement / à la ratification du protocole de Maputo La signature du Consensus de Genève Blocage des initiatives et projets DSSR Liens avec les organisations internationales anti-droits (Women's Health Institute, FWI…) Contrôle et restrictions des activités des organisations travaillant sur les DSSR Infiltration dans les activités des organisations Restriction sur les terminologies : Genre ; avortement ; féminisme ; santé sexuelle",
-    "discours_messages_cles": "La ratification du PM n'est pas pertinente, ni une priorité pour le Tchad Une loi sur l'avortement encourage la dépravation des mœurs Les initiatives sur les DSSR vont à l'encontre de nos valeurs culturelles et religieuses Les organisations internationales travaillant sur les DSSR ont des agendas cachés",
-}
+DATA_FILE = Path(__file__).with_name("radar_doc_dataset.json")
 
-SEED_ACTEURS = [
-    {**PROFILE_1, "nom": "Caritas Internationalis", "type_acteur": "rel", "sources_financement": "Église catholique, Dons, Gouvernements", "description": "Organisation caritative catholique internationale qui appuie des activités humanitaires et sociales, influençant les normes sur la famille et la sexualité."},
-    {**PROFILE_1, "nom": "CRS (CATHOLIC RELIEF SERVICES)", "type_acteur": "rel", "sources_financement": "Église catholique, Gouvernements, Fondations", "description": "Agence humanitaire catholique américaine active dans le domaine de l'aide humanitaire et du développement, avec une position conservatrice sur les droits sexuels."},
-    {**PROFILE_1, "nom": "MUSLIM WORLD LEAGUE", "type_acteur": "rel", "sources_financement": "Arabie Saoudite, Dons privés, États du Golfe", "description": "Organisation islamique internationale promouvant les valeurs islamiques conservatrices, finançant des infrastructures religieuses et des bourses d'études vers les pays arabes."},
-    {**PROFILE_1, "nom": "THE CHURCH OF JESUS CHRIST OF LATTER-DAY SAINTS", "type_acteur": "rel", "sources_financement": "Membres, Dons internes", "description": "Église mormone active dans l'évangélisation et les actions sociales, promouvant des valeurs conservatrices sur la famille et la sexualité."},
-    {**PROFILE_1, "nom": "JW.ORG (Témoins de Jéhovah)", "type_acteur": "rel", "sources_financement": "Membres, Dons internes", "description": "Organisation religieuse internationale dont les membres s'opposent à l'avortement, à la contraception et aux droits LGBTQI+."},
-    {**PROFILE_1, "nom": "THE LUTHERAN WORLD FEDERATION", "type_acteur": "rel", "sources_financement": "Église luthérienne, Fondations, Gouvernements", "description": "Fédération d'églises luthériennes actives dans l'aide humanitaire, avec des positions variées mais généralement conservatrices sur les droits reproductifs."},
-    {**PROFILE_1, "nom": "JRS (JESUIT REFUGEE SERVICE)", "type_acteur": "rel", "sources_financement": "Compagnie de Jésus, Fondations, Gouvernements", "description": "Service jésuite des réfugiés actif dans l'éducation et l'aide humanitaire, avec des positions proches de l'Église catholique sur les droits reproductifs."},
-    {**PROFILE_1, "nom": "URGENCES PANAFRICANISTES", "type_acteur": "intl", "sources_financement": "Donateurs privés, Membres", "description": "Mouvement panafricaniste promouvant le retour aux valeurs africaines traditionnelles, opposé aux droits sexuels perçus comme une influence occidentale."},
-    {**PROFILE_1, "nom": "ACRA", "type_acteur": "intl", "sources_financement": "Fondations, Gouvernements", "description": "ONG italienne active dans le développement, opérant dans plusieurs pays africains."},
-    {**PROFILE_1, "nom": "ISESCO", "type_acteur": "intl", "sources_financement": "États membres de l'OCI", "description": "Organisation islamique pour l'éducation, les sciences et la culture, promouvant les valeurs islamiques dans les politiques éducatives et culturelles."},
-    {**PROFILE_2, "nom": "Église Catholique (BJ, Ci & SN) et Évangélique (BI)", "type_acteur": "rel", "sources_financement": "Église catholique, Dons, Fidèles", "description": "Institution religieuse catholique et évangélique influente au Tchad, opposée à l'avortement, à la contraception et aux droits LGBTQI+."},
-    {**PROFILE_2, "nom": "Conférence Épiscopale", "type_acteur": "rel", "sources_financement": "Église catholique", "description": "Organe officiel rassemblant les évêques catholiques du Tchad, influençant les politiques publiques sur les droits sexuels et reproductifs."},
-    {**PROFILE_2, "nom": "Conseil Suprême des Affaires Islamiques du Tchad (Dr Mahamat Khatir ISSA)", "type_acteur": "rel", "sources_financement": "État tchadien, Donateurs islamiques", "description": "Organe islamique suprême du Tchad présidé par le Dr Mahamat Khatir ISSA, opposé à l'avortement et à la contraception au nom des valeurs islamiques."},
-    {**PROFILE_2, "nom": "Dr Abakar WALAR – Imam Grande Mosquée de N'Djamena", "type_acteur": "rel", "sources_financement": "Dons, Fidèles", "description": "Imam influent de la Grande Mosquée de N'Djamena, prônant des positions conservatrices sur la sexualité, l'avortement et les droits des femmes."},
-    {**PROFILE_2, "nom": "EEMET – Entente des Églises Missionnaire et Évangéliques du Tchad", "type_acteur": "rel", "sources_financement": "Dons, Fidèles, Partenaires internationaux", "description": "Regroupement d'églises évangéliques et missionnaires du Tchad opposées à l'avortement, à la contraception et aux droits LGBTQI+."},
-    {**PROFILE_2, "nom": "FAKI SUZIKI – Imam et influenceur", "type_acteur": "rel", "sources_financement": "Dons, Fidèles", "description": "Imam et influenceur sur les réseaux sociaux, diffusant des messages conservateurs contre l'avortement, la contraception et les personnes LGBTQI+."},
-    {**PROFILE_2, "nom": "Associations des Autorités Coutumières et Traditionnelles du Tchad", "type_acteur": "local", "sources_financement": "État tchadien, Dons", "description": "Regroupement des chefs traditionnels et coutumiers tchadiens, opposés aux évolutions législatives sur les droits sexuels et reproductifs."},
-    {**PROFILE_2, "nom": "Guides et Scouts / AJEC – Association des Jeunes Catholiques", "type_acteur": "rel", "sources_financement": "Église catholique, Dons", "description": "Mouvements de jeunesse catholique promouvant les valeurs chrétiennes conservatrices auprès des jeunes, notamment l'abstinence et l'anti-avortement."},
-    {**PROFILE_2, "nom": "MAHAMAT AHMAT (Handicapé) – Imam et influenceur", "type_acteur": "rel", "sources_financement": "Dons, Fidèles", "description": "Imam et influenceur mobilisant la communauté contre les droits sexuels et reproductifs, notamment en instrumentalisant sa visibilité de personne en situation de handicap."},
-    {**PROFILE_2, "nom": "Abdoulaye MAYANGAR – Pasteur, Missionnaire Campus pour Christ N'Djamena", "type_acteur": "rel", "sources_financement": "Organisations missionnaires, Dons", "description": "Pasteur évangéliste actif dans les milieux universitaires, opposé à l'avortement, à la contraception et aux droits LGBTQI+, avec une présence en ligne."},
-    {**PROFILE_3, "nom": "Sultan du Dar Ouadaï", "type_acteur": "local", "sources_financement": "État tchadien, Revenus traditionnels", "description": "Chef traditionnel de la région de l'Ouaddaï, influençant les normes sociales et s'opposant aux droits sexuels et reproductifs."},
-    {**PROFILE_3, "nom": "Associations des Autorités Coutumières et Traditionnelles Tchad", "type_acteur": "local", "sources_financement": "État tchadien, Dons", "description": "Regroupement des autorités coutumières et traditionnelles opposées aux droits sexuels et reproductifs au nom des valeurs culturelles."},
-    {**PROFILE_3, "nom": "Dr Didier LALAYE FONONGTA dit Croque-mort – Influenceur réseaux sociaux", "type_acteur": "media", "sources_financement": "Revenus personnels, Dons", "description": "Influenceur tchadien actif sur les réseaux sociaux, diffusant des contenus anti-droits et stigmatisant les défenseurs des droits sexuels et reproductifs."},
-    {**PROFILE_3, "nom": "TOM LE TCHADIEN – Influenceur réseaux sociaux", "type_acteur": "media", "sources_financement": "Revenus personnels, Dons", "description": "Influenceur tchadien populaire sur les réseaux sociaux, promouvant des valeurs conservatrices sur le genre et la sexualité."},
-    {**PROFILE_3, "nom": "AUGUSTIN ZUSANNE – Influenceur réseaux sociaux", "type_acteur": "media", "sources_financement": "Revenus personnels, Dons", "description": "Influenceur sur les réseaux sociaux diffusant des messages anti-droits des femmes et anti-féministes."},
-    {**PROFILE_3, "nom": "CHARFADINE GALMAYE (Tchad One) – Médias", "type_acteur": "media", "sources_financement": "Revenus médiatiques, Publicités", "description": "Media tchadien diffusant des contenus conservateurs sur les droits des femmes et la sexualité."},
-    {**PROFILE_3, "nom": "Dominique DAMBA – Influence RS / Travail à la primature", "type_acteur": "local", "sources_financement": "Revenus personnels, État", "description": "Personnalité travaillant à la primature tchadienne et active sur les réseaux sociaux, diffusant des messages conservateurs."},
-    {**PROFILE_3, "nom": "AL-WIHDA INFO – Media en ligne", "type_acteur": "media", "sources_financement": "Revenus publicitaires, Donateurs", "description": "Media en ligne tchadien relayant régulièrement des contenus anti-droits sexuels et reproductifs."},
-    {**PROFILE_3, "nom": "Ernestine NETOUA – Activiste culturelle et influenceure", "type_acteur": "local", "sources_financement": "Revenus personnels, Dons", "description": "Activiste culturelle tchadienne promouvant les valeurs africaines traditionnelles et s'opposant aux droits des femmes et LGBTQI+."},
-    {**PROFILE_3, "nom": "Doc-Jeff de Sarh – Blogueur", "type_acteur": "media", "sources_financement": "Revenus personnels", "description": "Blogueur tchadien relayant des contenus anti-droits sexuels et reproductifs."},
-    {**PROFILE_3, "nom": "ABBA GARDE – Média / Presse écrite", "type_acteur": "media", "sources_financement": "Revenus publicitaires, Ventes", "description": "Journal tchadien ayant publié des articles contre les droits sexuels et reproductifs."},
-    {**PROFILE_3, "nom": "Dr DJIDDI Ali Sougoudi – Médecin / Influenceur", "type_acteur": "media", "sources_financement": "Revenus professionnels", "description": "Médecin tchadien et influenceur qui utilise son statut professionnel pour diffuser des messages contre l'avortement et la contraception."},
-    {**PROFILE_3, "nom": "Sarrah KOULAMALLAH – Leader d'opinion / Influenceuse", "type_acteur": "local", "sources_financement": "Revenus personnels", "description": "Leader d'opinion tchadienne diffusant des messages conservateurs sur le genre, la sexualité et les droits des femmes."},
-    {**PROFILE_4, "nom": "AMSADEN MAIDE HANGATA – Vice-Présidente de l'Assemblée nationale", "type_acteur": "local", "sources_financement": "État tchadien", "description": "Vice-Présidente de l'Assemblée nationale tchadienne, opposée à la ratification du Protocole de Maputo et aux lois sur l'avortement."},
-    {**PROFILE_4, "nom": "AHMAT HAROUN LARRY – Activiste / Influenceur", "type_acteur": "local", "sources_financement": "Revenus personnels", "description": "Activiste et influenceur politique tchadien s'opposant aux droits sexuels et reproductifs et aux initiatives DSSR."},
-    {**PROFILE_4, "nom": "KITOKO Gata Ngoulou – Ministre de la Femme et de la Petite Enfance", "type_acteur": "local", "sources_financement": "État tchadien", "description": "Actuelle Ministre de la Femme et de la Petite Enfance du Tchad, adoptant des positions conservatrices sur les droits sexuels et reproductifs."},
-    {**PROFILE_4, "nom": "Dr Khadidja AHMADAYE ABGRENE – Directrice de la Santé de la Reproduction (Ministère de la Santé)", "type_acteur": "local", "sources_financement": "État tchadien", "description": "Directrice de la Santé de la Reproduction au Ministère de la Santé, freinant les initiatives en matière de DSSR."},
-    {**PROFILE_4, "nom": "Mr Awad – Chargé de Communication, Cabinet Ministre de la Santé", "type_acteur": "local", "sources_financement": "État tchadien", "description": "Responsable de communication au cabinet du Ministre de la Santé, contrôlant les messages officiels sur les droits sexuels et reproductifs."},
-    {**PROFILE_4, "nom": "Dabsou GUIDAOUSSOU – Secrétaire Général, Ministère de la Santé Publique", "type_acteur": "local", "sources_financement": "État tchadien", "description": "Secrétaire Général du Ministère de la Santé Publique, bloquant les initiatives en matière de DSSR et d'avortement."},
-    {**PROFILE_4, "nom": "Hamit Maïdé Lony – Ancien Ministre de la Jeunesse et des Sports", "type_acteur": "local", "sources_financement": "État tchadien", "description": "Ancien Ministre de la Jeunesse et des Sports, influençant les politiques publiques contre les droits sexuels et reproductifs."},
+REGIONAL_COUNTRIES = [
+    "Bénin",
+    "Côte d'Ivoire",
+    "Cameroun",
+    "Tchad",
+    "Sénégal",
+    "Burkina Faso",
 ]
+
+COUNTRY_FIXUPS = {
+    "B?nin": "Bénin",
+    "C?te d'Ivoire": "Côte d'Ivoire",
+    "S?n?gal": "Sénégal",
+}
+
+NARRATIVE_RULES = [
+    ("Protection de la famille", ("famille", "cellule familiale", "valeurs familiales", "enfant", "vie")),
+    ("Religion et morale", ("dieu", "péché", "église", "islam", "relig", "évangile", "mosquée", "imam", "catholique")),
+    ("Souverainisme anti-occidental", ("occident", "souverain", "africain", "anti-afric", "impérial", "néocolonial", "maputo")),
+    ("Pseudo-science et désinformation", ("pseudo", "stérile", "stérilité", "scientifique", "désinformation", "médicale", "complications")),
+    ("Masculinité toxique et contrôle social", ("soumise", "masculinité", "mâle alpha", "polygamie", "virginité", "dépravation")),
+    ("Contrôle civique et institutionnel", ("blocage", "parlement", "ministère", "consensus de genève", "terminologies", "espace civique")),
+]
+
+TYPE_KEYWORDS = {
+    "rel": ("relig", "église", "eglise", "imam", "islam", "catholique", "mosquée", "mosquee", "vodoun", "confessionnel", "prédicateur", "prédication", "confrérie", "dahira", "pasteur"),
+    "media": ("média", "media", "radio", "tv", "télé", "tele", "blog", "numérique", "numerique", "influenceur", "blogueur", "chaîne", "chaine", "presse"),
+    "intl": ("international", "régional", "regional", "transnational", "union africaine", "onu", "vatican", "administration américaine"),
+}
+
+RISK_KEYWORDS = {
+    "high": ("parlement", "assemblée", "assemblee", "ministère", "ministere", "gouvernement", "union africaine", "consensus de genève", "maputo", "lobbying", "blocage"),
+    "medium": ("réseaux sociaux", "reseaux sociaux", "désinformation", "desinformation", "conférences", "conferences", "financement", "campagnes"),
+}
+
+
+def _clean_text(value):
+    current = str(value or "")
+    current = current.replace("\u2019", "'").replace("\u2018", "'").replace("\u201c", '"').replace("\u201d", '"')
+    current = current.replace("\xa0", " ")
+    current = re.sub(r"\s+", " ", current).strip()
+    return current
+
+
+def _normalize_lookup(value):
+    current = unicodedata.normalize("NFD", _clean_text(value))
+    current = "".join(char for char in current if unicodedata.category(char) != "Mn")
+    return current.lower()
+
+
+def _load_raw_entries():
+    return json.loads(DATA_FILE.read_text(encoding="utf-8"))
+
+
+def _infer_actor_type(category, scope):
+    lookup = _normalize_lookup(category)
+    for actor_type, keywords in TYPE_KEYWORDS.items():
+        if any(keyword in lookup for keyword in keywords):
+            return actor_type
+    return "intl" if scope == "regional" else "local"
+
+
+def _infer_narratifs(*values):
+    joined = " ".join(_clean_text(value) for value in values if value)
+    lookup = _normalize_lookup(joined)
+    labels = []
+    for label, keywords in NARRATIVE_RULES:
+        if any(keyword in lookup for keyword in keywords):
+            labels.append(label)
+    return labels or ["Veille anti-droits"]
+
+
+def _infer_risk_score(entry, actor_type):
+    scope = entry["scope"]
+    base = {
+        "intl": 78 if scope == "regional" else 70,
+        "rel": 68,
+        "media": 62,
+        "local": 66,
+    }.get(actor_type, 60)
+    joined = " ".join([
+        _clean_text(entry.get("category")),
+        _clean_text(entry.get("discours_cles")),
+        _clean_text(entry.get("strategies")),
+        _clean_text(entry.get("zones_influence")),
+    ])
+    lookup = _normalize_lookup(joined)
+    if any(keyword in lookup for keyword in RISK_KEYWORDS["high"]):
+        base += 10
+    if any(keyword in lookup for keyword in RISK_KEYWORDS["medium"]):
+        base += 5
+    if "régime militaire" in lookup or "regime militaire" in lookup:
+        base += 4
+    return min(base, 95)
+
+
+def _build_description(entry):
+    scope_label = "régional" if entry["scope"] == "regional" else f"pays - {', '.join(entry['countries'])}"
+    category = _clean_text(entry["category"])
+    return (
+        f"Entrée consolidée issue de la cartographie 2025-2026 des mouvements anti-droits "
+        f"(tableau {entry['source_table']}, portée {scope_label}, catégorie {category})."
+    )
+
+
+def _build_seed_acteurs():
+    seed = []
+    for entry in _load_raw_entries():
+        category = _clean_text(entry["category"])
+        actor_name = _clean_text(entry["actor_name"])
+        discourse = _clean_text(entry.get("discours_cles"))
+        strategies = _clean_text(entry.get("strategies"))
+        zones = _clean_text(entry.get("zones_influence"))
+        countries = [COUNTRY_FIXUPS.get(_clean_text(item), _clean_text(item)) for item in entry.get("countries", []) if _clean_text(item)]
+        actor_type = _infer_actor_type(category, entry["scope"])
+        seed.append(
+            {
+                "nom": actor_name,
+                "type_acteur": actor_type,
+                "pays_operation": countries or REGIONAL_COUNTRIES,
+                "score_risque": _infer_risk_score(entry, actor_type),
+                "sources_financement": "",
+                "zone_influence": zones,
+                "strategie_mode_operatoire": strategies,
+                "discours_messages_cles": discourse,
+                "description": _build_description(entry),
+                "narratifs_labels": _infer_narratifs(category, discourse, strategies, zones),
+            }
+        )
+    return seed
+
+
+SEED_ACTEURS = _build_seed_acteurs()
+
+
+def get_seed_actor_names():
+    return [item["nom"] for item in SEED_ACTEURS]
+
+
+def sync_seed_acteurs(admin_user):
+    from actors.models import Acteur
+    from signals.models import Narratif
+
+    seed_names = []
+    for item in SEED_ACTEURS:
+        payload = item.copy()
+        labels = payload.pop("narratifs_labels", [])
+        payload["contribue_par"] = admin_user
+        acteur, _ = Acteur.objects.update_or_create(nom=payload["nom"], defaults=payload)
+        if labels:
+            narratifs = [Narratif.objects.get_or_create(nom=label)[0] for label in labels]
+            acteur.narratifs.set(narratifs)
+        else:
+            acteur.narratifs.clear()
+        seed_names.append(acteur.nom)
+
+    Acteur.objects.filter(contribue_par=admin_user).exclude(nom__in=seed_names).delete()

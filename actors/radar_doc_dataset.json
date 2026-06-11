@@ -1,0 +1,867 @@
+[
+  {
+    "source_table": 2,
+    "scope": "regional",
+    "countries": [
+      "B?nin",
+      "C?te d'Ivoire",
+      "Cameroun",
+      "Tchad",
+      "S?n?gal",
+      "Burkina Faso"
+    ],
+    "category": "Organisations religieuses internationales",
+    "actor_name": "Église de Jésus-Christ des Saints des Derniers Jours (Mormons) Ligue Islamique Mondiale Family Watch International (FWI) Human Life International (HLI) Alliance Defending Freedom JRS / CRS / Caritas International World Congress of Families ISESCO / ICESCO Témoins de Jéhovah",
+    "discours_cles": "",
+    "strategies": "Financement d'infrastructures religieuses et sanitaires (sous condition d'objection de conscience). Lobbying institutionnel auprès des gouvernements et de l'Union Africaine. Sponsoring de conférences anti-droits. Recrutement et formation de prestataires de santé. Organisation de sommets et conférences de recrutement. Production de pseudo-évidences scientifiques.",
+    "zones_influence": "Conférences internationales. Parlements nationaux. Ministères de la Santé et de la Famille. Structures de soins confessionnelles. Facultés de médecine. Écoles bibliques et coraniques. ONU et Union Africaine."
+  },
+  {
+    "source_table": 2,
+    "scope": "regional",
+    "countries": [
+      "B?nin",
+      "C?te d'Ivoire",
+      "Cameroun",
+      "Tchad",
+      "S?n?gal",
+      "Burkina Faso"
+    ],
+    "category": "Réseaux panafricanistes conservateurs",
+    "actor_name": "Urgences Panafricanistes Mouvements souverainistes divers",
+    "discours_cles": "",
+    "strategies": "Légitimation idéologique du rejet des droits DSSR comme \"valeurs anti-africaines\". Jonction explicite entre défense des valeurs africaines et refus des droits reproductifs. Mobilisation des masses via les réseaux sociaux. Campagnes de désinformation à grande échelle.",
+    "zones_influence": "Réseaux sociaux (Facebook, TikTok, YouTube). Milieux politiques et académiques. Jeunesse urbaine. Médias grand public."
+  },
+  {
+    "source_table": 2,
+    "scope": "regional",
+    "countries": [
+      "B?nin",
+      "C?te d'Ivoire",
+      "Cameroun",
+      "Tchad",
+      "S?n?gal",
+      "Burkina Faso"
+    ],
+    "category": "Structures pro-life internationales",
+    "actor_name": "Association For Life Africa (AFLA, Zambie/Tanzanie) Heartbeat International CitizenGO",
+    "discours_cles": "",
+    "strategies": "Organisation de conférences de recrutement (Bénin, Octobre 2025) Formation à la création de centres d'aide à la grossesse. Endoctrinement religieux. Identification de profils pour former des groupes anti-avortement. Appui à la formalisation juridique des entités locales.",
+    "zones_influence": "Milieux religieux évangéliques. Établissements de santé. Réseaux de jeunes chrétiens engagés."
+  },
+  {
+    "source_table": 2,
+    "scope": "regional",
+    "countries": [
+      "B?nin",
+      "C?te d'Ivoire",
+      "Cameroun",
+      "Tchad",
+      "S?n?gal",
+      "Burkina Faso"
+    ],
+    "category": "Médias confessionnels transnationaux",
+    "actor_name": "Chaîne KTO Afrique",
+    "discours_cles": "",
+    "strategies": "Diffusion de désinformation médicale. Culpabilisation des femmes ayant eu recours à l'avortement. Amplification des narratifs conservateurs.",
+    "zones_influence": "Communautés religieuses (catholiques, évangéliques, islamiques). Radios communautaires relais. Réseaux sociaux."
+  },
+  {
+    "source_table": 2,
+    "scope": "regional",
+    "countries": [
+      "B?nin",
+      "C?te d'Ivoire",
+      "Cameroun",
+      "Tchad",
+      "S?n?gal",
+      "Burkina Faso"
+    ],
+    "category": "Acteurs politiques et institutionnels",
+    "actor_name": "Parlementaires alliés aux confessions religieuses Ministres conservateurs Régimes militaires au Sahel (Burkina Faso, Mali, Niger, Tchad)",
+    "discours_cles": "",
+    "strategies": "Influence législative directe. Blocage des réformes favorables aux DSSR. Restriction de l'espace civique. Signature du Consensus de Genève Contrôle des terminologies dans les documents officiels.",
+    "zones_influence": "Assemblées nationales. Conseils des ministres. Instances de l'Union Africaine. Institutions sous-régionales (CEDEAO, CEMAC)."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Institutionnel religieux",
+    "actor_name": "Conférence Épiscopale du Bénin / Archidiocèse de Cotonou",
+    "discours_cles": "« L'avortement est un péché. Seul Dieu est maître de la vie. Les enfants en situation de handicap sont les survivants d'une société qui aurait voulu les éliminer. »",
+    "strategies": "Publication de positions anti-IVG et anti-LGBTQ+. Lettres pastorales. Lobbying pastoral sur les décideurs politiques catholiques.",
+    "zones_influence": "Fidèles catholiques. Parlement. Ministère de la Santé."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Institutionnel religieux",
+    "actor_name": "Conseil Islamique du Bénin",
+    "discours_cles": "Position convergente avec l'Église catholique sur l'avortement. Mobilisation des imams.",
+    "strategies": "Prêches dans les mosquées. Mobilisation des fidèles.",
+    "zones_influence": "Communautés musulmanes."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Média confessionnel",
+    "actor_name": "Radio Immaculée Conception",
+    "discours_cles": "« L'avortement est un péché. Dieu est contre l'avortement. Protection de la femme et de la vie. »",
+    "strategies": "Diffusion de programmes de prière pour les « enfants avortés ». Homélies, conférences, émissions de culpabilisation.",
+    "zones_influence": "Fidèles de l'Église catholique."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Média confessionnel",
+    "actor_name": "Radio Maranatha",
+    "discours_cles": "« L'avortement est un péché contraire aux valeurs chrétiennes. »",
+    "strategies": "Émissions où pasteurs et leaders religieux condamnent l'avortement.",
+    "zones_influence": "Fidèles de l'Église évangélique."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Radios communautaires",
+    "actor_name": "La Voix de la Vallée, Tonassé FM, etc.",
+    "discours_cles": "« L'avortement est une arme d'extermination des familles africaines. » Instrumentalisation du handicap.",
+    "strategies": "Diffusion d'opinions de chefs traditionnels et religieux.",
+    "zones_influence": "Communautés rurales"
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Institut académique",
+    "actor_name": "Institut Jean Paul II (soutenu par l'Église catholique)",
+    "discours_cles": "6 catégories d'arguments : biologique, ontologique, de potentiel, moral, juridique, religieux/éthique pour défendre la personnalité juridique du fœtus.",
+    "strategies": "3 licences universitaires certifiées par l'État. Conférences et séminaires. Production de manuels de formation pour élèves, étudiants et séminaristes.",
+    "zones_influence": "Étudiants. Corps universitaire. Collaboration avec l'Université d'Abomey-Calavi."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Organisation catholique",
+    "actor_name": "Notre Dame de l'Enfant à Naître",
+    "discours_cles": "« L'enfant est sacré. Dieu le donne. Depuis la conception, l'enfant est un être à protéger. »",
+    "strategies": "Centres de grossesses en crise (hébergement jusqu'à l'accouchement). Sensibilisation dans paroisses et écoles chrétiennes.",
+    "zones_influence": "Jeunes filles et femmes en situation de vulnérabilité."
+  },
+  {
+    "source_table": 5,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Organisation de journalistes",
+    "actor_name": "ABCJ-KTO (journalistes catholiques)",
+    "discours_cles": "« L'avortement est un péché. Discours de protection de la famille. »",
+    "strategies": "Conférences sur « le journaliste catholique face aux structures de péché ». Publications et émissions.",
+    "zones_influence": "Espace médiatique catholique."
+  },
+  {
+    "source_table": 6,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Politique",
+    "actor_name": "Louis Vlavonou – Ancien Président de l'Assemblée nationale",
+    "discours_cles": "« L'avortement est un complot de l'Occident contre les pays pauvres. L'avortement est la mort d'une société. »",
+    "strategies": "Opposition à la légalisation. Retardement de la mise en œuvre effective de la loi.",
+    "zones_influence": "Assemblée nationale. Sphère politique."
+  },
+  {
+    "source_table": 6,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Politique",
+    "actor_name": "Honorable Aké Natondé Promoteur de l’Université HECM",
+    "discours_cles": "« Le vote de cette loi encouragera les gens à supprimer les grossesses. Un problème de santé publique plus meurtrier que la Covid-19. »",
+    "strategies": "Lobbying direct à l'AN et au Ministère de la Santé. Opposition à l'avortement. Maintien des obstacles administratifs.",
+    "zones_influence": "Parlement. Institutions."
+  },
+  {
+    "source_table": 6,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Politique",
+    "actor_name": "Les Démocrates (parti politique)",
+    "discours_cles": "« Le droit aux DSSR est un moyen de domination occidentale. Les valeurs de l'Afrique doivent être conservées. »",
+    "strategies": "Lobbying parlementaire. Sorties médiatiques.",
+    "zones_influence": "Parlement. Réseaux sociaux. Communautés."
+  },
+  {
+    "source_table": 7,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Mouvement politique",
+    "actor_name": "Kémi Seba / Urgences Panafricanistes",
+    "discours_cles": "« Le droit aux DSSR est un moyen de domination occidentale. Destruction de la famille et éradication du peuple africain. »",
+    "strategies": "Instrumentalisation du panafricanisme pour vulgariser des idées patriarcales. Publications sur les réseaux sociaux. Appels publics.",
+    "zones_influence": "Jeunesse africaine (urbaine et connectée). Réseaux sociaux."
+  },
+  {
+    "source_table": 7,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Leader spirituel",
+    "actor_name": "M. David Koffi Aza – Leader vodoun",
+    "discours_cles": "« L'avortement rend infertile et cause la mort. La divinité de l'enfant à naître finira par demander des comptes. »",
+    "strategies": "Promotion d'une vision conservatrice des traditions africaines. Appels publics.",
+    "zones_influence": "Communautés vodoun béninoises."
+  },
+  {
+    "source_table": 7,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Socio-anthropologue",
+    "actor_name": "Dr Eustache Hessou",
+    "discours_cles": "« L'avortement vise à détruire les traditions africaines et les panthéons vodoun. »",
+    "strategies": "Revalorisation des savoirs endogènes. Réseaux sociaux et publications.",
+    "zones_influence": "Milieux académiques. Communautés."
+  },
+  {
+    "source_table": 7,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Médical (opposant)",
+    "actor_name": "Prof. Francis Dossou, Ancien président de l'Ordre des Médecins",
+    "discours_cles": "« La vie commence dès la conception et il faut la protéger. » Complications médicales de l'avortement exagérées.",
+    "strategies": "Lobbying direct à l'AN et au Ministère de la Santé.",
+    "zones_influence": "Parlement. Ordre des médecins. Médias."
+  },
+  {
+    "source_table": 7,
+    "scope": "country",
+    "countries": [
+      "B?nin"
+    ],
+    "category": "Mouvement de jeunesse",
+    "actor_name": "Scoutisme béninois",
+    "discours_cles": "« L'enfant est un don de Dieu. La vie est sacrée. »",
+    "strategies": "Publications sur les réseaux sociaux. Appels publics. Camps de jeunes.",
+    "zones_influence": "Jeunesse béninoise."
+  },
+  {
+    "source_table": 8,
+    "scope": "country",
+    "countries": [
+      "C?te d'Ivoire"
+    ],
+    "category": "Religieux",
+    "actor_name": "Église des Saints des Derniers Jours (Mormons) Église Vase d'Honneur Caritas",
+    "discours_cles": "« La vie commence à la conception. L'avortement est un meurtre ou un péché. Seul Dieu peut donner ou reprendre la vie. »",
+    "strategies": "Financement de centres de santé avec agenda pro-vie. Programmes sociaux promus dans les communautés. Initiatives en milieu scolaire.",
+    "zones_influence": "Communautés religieuses. Établissements scolaires. Structures de soins."
+  },
+  {
+    "source_table": 9,
+    "scope": "country",
+    "countries": [
+      "C?te d'Ivoire"
+    ],
+    "category": "Politique",
+    "actor_name": "Député-Maire Assale Tiemoko",
+    "discours_cles": "Stigmatisation des mouvements LGBTQIA+ et féministes.",
+    "strategies": "Discours publics. Réseaux sociaux.",
+    "zones_influence": "Sphères politiques. Médias."
+  },
+  {
+    "source_table": 9,
+    "scope": "country",
+    "countries": [
+      "C?te d'Ivoire"
+    ],
+    "category": "Politique",
+    "actor_name": "Ancien ministre de la Défense Lisa Kouassi Moise",
+    "discours_cles": "Radicalisation des discours politiques contre les droits reproductifs.",
+    "strategies": "Déclarations publiques.",
+    "zones_influence": "Sphères politiques."
+  },
+  {
+    "source_table": 10,
+    "scope": "country",
+    "countries": [
+      "C?te d'Ivoire"
+    ],
+    "category": "Numérique",
+    "actor_name": "Influenceurs Médias en ligne conservateurs Blogs religieux",
+    "discours_cles": "« L'avortement est une culture de la mort. Déclin des valeurs familiales. Les féministes instrumentalisent l'avortement. »",
+    "strategies": "Publications sur Facebook, X, YouTube, TikTok, Instagram. Campagnes coordonnées. Utilisation d'images choquantes et de récits émotionnels.",
+    "zones_influence": "Jeunesse connectée. Espace numérique national."
+  },
+  {
+    "source_table": 10,
+    "scope": "country",
+    "countries": [
+      "C?te d'Ivoire"
+    ],
+    "category": "International présent en CDI",
+    "actor_name": "CitizenGO",
+    "discours_cles": "Arguments juridiques (fœtus = personne avec droits égaux à ceux de la femme). Pseudo-scientifique (complications exagérées).",
+    "strategies": "Connexions avec réseaux internationaux anti-droits. Pression sur les décideurs politiques.",
+    "zones_influence": "Réseaux conservateurs transnationaux."
+  },
+  {
+    "source_table": 10,
+    "scope": "country",
+    "countries": [
+      "C?te d'Ivoire"
+    ],
+    "category": "International présent en CDI",
+    "actor_name": "Heartbeat International",
+    "discours_cles": "Cible les femmes ivoiriennes avec des informations contestées sur l'avortement, qualifiant l'IVG de \"meurtre\", même en cas de viol.",
+    "strategies": "Une association ivoirienne nommée \"Etoile du Matin\" est affiliée à Heartbeat International |",
+    "zones_influence": ""
+  },
+  {
+    "source_table": 11,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "International / régional",
+    "actor_name": "JRS, CRS, Caritas International, WCF, Human Life International, Alliance Defending Freedom, YMCA/UCJG, Family Research Council, KTO, Afrique Médias, Église Mormone, Urgences Panafricanistes, Christian Council International",
+    "discours_cles": "Préserver la vie. Préserver la culture africaine. L'impérialisme occidental veut réduire la population africaine. Destruction du tissu social africain.",
+    "strategies": "Débats télévisés. Lobbying politique. Influence sur la législation nationale. Financement d'OSC locales à ambitions cachées. Organisation de sommets. Production de pseudo-évidences. Actions sociales pour attirer la sympathie.",
+    "zones_influence": "Assemblée nationale. Communautés. Réseaux sociaux. Centres de santé confessionnels. Mouvements de jeunes chrétiens."
+  },
+  {
+    "source_table": 12,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Média confessionnel",
+    "actor_name": "Radio Maria, Radio Hosanna, Radio Islamique, Radio Bonne Nouvelle, Radio-Télévision Veritas, Canal de Vie, Médias des Églises de réveil",
+    "discours_cles": "Nous respectons les valeurs du code pénal. L'avortement est un péché et un crime. Le lobbying occidental veut détruire la famille africaine.",
+    "strategies": "Émissions radio/TV défavorisant les pro-choix. Prédications en ligne. Campagnes médiatiques anti-droits. Culpabilisation des femmes.",
+    "zones_influence": "Communautés. Réseaux sociaux. Croisades chrétiennes. Camps de jeunes."
+  },
+  {
+    "source_table": 13,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Communautaire",
+    "actor_name": "Chefs traditionnels / Conseil national des chefs traditionnels",
+    "discours_cles": "« L'avortement n'est pas une valeur africaine. Les enfants sont sources de richesse. Chaque enfant vient avec sa chance. »",
+    "strategies": "Rassemblements communautaires. Influence politique. Conférences.",
+    "zones_influence": "Communautés rurales et urbaines. Sphères politiques."
+  },
+  {
+    "source_table": 13,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Religieux",
+    "actor_name": "CIDIMUC (Conseil des Imams et dignitaires musulmans du Cameroun)",
+    "discours_cles": "« Valeurs islamiques. La femme au service de la famille. »",
+    "strategies": "Opposition communautaire forte dans les régions septentrionales (Nord, Extrême-Nord, Adamaoua).",
+    "zones_influence": "Régions à majorité musulmane. Forte influence islamique."
+  },
+  {
+    "source_table": 13,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Groupes de femmes",
+    "actor_name": "Association des Femmes pour le leadership féminin vertueux Groupe Maat Kamite (financement diaspora)",
+    "discours_cles": "« Témoignages de succès stories de femmes avec beaucoup d'enfants. »",
+    "strategies": "Contre-narratif aux arguments féministes. Légitimation interne du discours conservateur. Financement via crowdfunding de la diaspora.",
+    "zones_influence": "Femmes. Réseaux sociaux. Médias."
+  },
+  {
+    "source_table": 13,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Artiste",
+    "actor_name": "Artiste Dynastie le Tigre",
+    "discours_cles": "Musique anti-avortement.",
+    "strategies": "Production musicale à visée anti-droits.",
+    "zones_influence": "Jeunesse camerounaise."
+  },
+  {
+    "source_table": 13,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Communautaire",
+    "actor_name": "Matrones / Matriarches",
+    "discours_cles": "Reproduction des normes traditionnelles.",
+    "strategies": "Ancrage territorial fort. Influence au niveau familial et communautaire.",
+    "zones_influence": "Communautés rurales."
+  },
+  {
+    "source_table": 14,
+    "scope": "country",
+    "countries": [
+      "Cameroun"
+    ],
+    "category": "Politique",
+    "actor_name": "Pasteurs et personnalités d'Églises siégeant à l'Assemblée nationale",
+    "discours_cles": "« Blocage des réformes au nom des valeurs chrétiennes et africaines. »",
+    "strategies": "Blocage des réformes. Lobbying intérieur au parlement. Maintien du code pénal restrictif.",
+    "zones_influence": "Assemblée nationale."
+  },
+  {
+    "source_table": 15,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "International",
+    "actor_name": "Témoins de Jéhovah Fédération Luthérienne Mondiale Église de Jésus-Christ des Saints des Derniers Jours Ligue Islamique Mondiale JRS URPANAF ACRA Tchad ICESCO-ISESCO",
+    "discours_cles": "Discours souverainistes anti-occidentaux. Anti-LGBTQ+. Le Protocole de Maputo est présenté comme un danger permanent. Valeurs culturelles africaines. Panafricanisme religieux.",
+    "strategies": "Conférences et lobbying politique. Financement d'infrastructures religieuses et sanitaires. Bourses d'étude vers les pays arabes. Prédications anti-avortement et anti-contraception. Subventions aux organisations locales (sous conditions pour la Ligue Islamique).",
+    "zones_influence": "Grand Nord du Tchad (Kanem, Lac, BET, Ouaddaï). Sud (Mayo-Kebbi, Tandjilé, Mandoul, etc.). Mosquées, Églises, écoles coraniques, facultés théologiques."
+  },
+  {
+    "source_table": 16,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Religieux",
+    "actor_name": "Pasteur Abdoulaye Mayangar (Campus pour Christ N'Djamena)",
+    "discours_cles": "« Abstinence ou rien. Fidélité jusqu'au mariage. La contraception est haram. Les enfants sont un don de Dieu. »",
+    "strategies": "Tests de virginité avant le mariage. Prédications islamiques sur les places publiques. Homélies et prêches. Émissions radio sur le rôle traditionnel de la femme. Représentations théâtrales dans les Églises.",
+    "zones_influence": "Églises. Mosquées. Marchés et lieux publics. Écoles confessionnelles. Radios confessionnelles (La Voix de l'Espérance, Arc-en-Ciel, Electron TV, Al-Nassour)."
+  },
+  {
+    "source_table": 16,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Religieux",
+    "actor_name": "Prédicateurs islamiques des places publiques de N'Djamena Pasteurs des Églises de réveil Imams et dignitaires locaux Descendants de l'Imam Hassan Hissein",
+    "discours_cles": "« La contraception encourage la dépravation des mœurs. C'est une affaire de Blancs. »",
+    "strategies": "Prédications publiques. Mobilisation parlementaire. Propagande des idées anti-droits. Censure des contenus et programmes pro-choix.",
+    "zones_influence": "Espaces publics. Communautés. Structures de santé."
+  },
+  {
+    "source_table": 17,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Politique/influenceur",
+    "actor_name": "Ahmat Haroun Larry",
+    "discours_cles": "Discours souverainistes. Activisme anti-droits.",
+    "strategies": "Obstacle au vote d'une loi pro-avortement. Soutien au Consensus de Genève.",
+    "zones_influence": "Parlement. Gouvernement. Réseaux sociaux."
+  },
+  {
+    "source_table": 17,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Politique",
+    "actor_name": "Kitoko Gata Ngoulou, Ministre de la Femme et de la Petite Enfance",
+    "discours_cles": "« Les initiatives DSSR vont à l'encontre de nos valeurs culturelles et religieuses. »",
+    "strategies": "Blocage des initiatives DSSR. Contrôle des terminologies.",
+    "zones_influence": "Ministère. Gouvernement. Réunions institutionnelles."
+  },
+  {
+    "source_table": 17,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Institutionnel santé",
+    "actor_name": "Dr Khadidja Ahmadaye Abgrene, Directrice de la Santé de la Reproduction M. Awad, Cabinet Ministère de la Santé Dabsou Guidaoussou, SG Ministère de la Santé",
+    "discours_cles": "« La ratification du PM n'est pas pertinente ni une priorité pour le Tchad. »",
+    "strategies": "Obstacle interne au vote d'une loi pro-avortement. Restriction des terminologies (genre, avortement, féminisme). Infiltration dans les activités des organisations.",
+    "zones_influence": "Ministère de la Santé. Plateforme SRMNIAN/PF. Ateliers sur les DSSR."
+  },
+  {
+    "source_table": 17,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Politique",
+    "actor_name": "Hamit Maïdé Lony, Ancien Ministre de la Jeunesse",
+    "discours_cles": "Liens avec des organisations internationales anti-droits (Women's Health Institute, FWI).",
+    "strategies": "Contrôle et restriction des activités des organisations DSSR.",
+    "zones_influence": "Gouvernement. Sphères politiques."
+  },
+  {
+    "source_table": 17,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Politique",
+    "actor_name": "Sultan du Dar Ouaddaï",
+    "discours_cles": "« Les célibataires qui mettent enceintes des jeunes filles seront soumis à une amende. »",
+    "strategies": "Autorité traditionnelle combinée au politique. Décrets coutumiers anti-droits.",
+    "zones_influence": "Région du Ouaddaï."
+  },
+  {
+    "source_table": 18,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Blogueur",
+    "actor_name": "Doc-Jeff de Sarh",
+    "discours_cles": "« Dérision des termes \"Femme Indépendante/de valeur\". La mère nourricière. Les féministes frelatées. »",
+    "strategies": "Désinformation. Cyberharcèlement. Amplification du concept de \"Mâle Alpha\" (masculinité toxique).",
+    "zones_influence": "Réseaux sociaux. Émissions grand public."
+  },
+  {
+    "source_table": 18,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Médecin/Influenceur",
+    "actor_name": "Dr Djiddi Ali Sougoudi",
+    "discours_cles": "« Banalisation des VBG. Désinformation sur la contraception. »",
+    "strategies": "Intimidation et harcèlement. Stigmatisation des filles et adolescentes.",
+    "zones_influence": "Communautés. Médias. Systèmes de santé."
+  },
+  {
+    "source_table": 18,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Leader d'opinion",
+    "actor_name": "Sarrah Koulamallah",
+    "discours_cles": "Modèle féminin traditionnel et soumis.",
+    "strategies": "Publications sur les réseaux sociaux.",
+    "zones_influence": "Grand public. Réseaux sociaux."
+  },
+  {
+    "source_table": 18,
+    "scope": "country",
+    "countries": [
+      "Tchad"
+    ],
+    "category": "Médias",
+    "actor_name": "AL-WIHDA INFO ABBA GARDE",
+    "discours_cles": "« L'avortement encourage la dépravation des mœurs. »",
+    "strategies": "Désinformation. Publications anti-droits.",
+    "zones_influence": "Grand public tchadien."
+  },
+  {
+    "source_table": 20,
+    "scope": "country",
+    "countries": [
+      "S?n?gal"
+    ],
+    "category": "Politique / religieux",
+    "actor_name": "Collectif And Samm Jikko Yi Branche féminine Ndeyi Askan Yi (Sokhna Ndeye Diop, épouse du député Alioune Badara Ndao du PASTEF)",
+    "discours_cles": "« Défense des valeurs morales islamiques. »",
+    "strategies": "Accès privilégié à l'Assemblée nationale. Alliance entre politique et radicalisation religieuse. Campagnes contre les organisations féministes.",
+    "zones_influence": "Parlement. Médias. Communautés musulmanes."
+  },
+  {
+    "source_table": 20,
+    "scope": "country",
+    "countries": [
+      "S?n?gal"
+    ],
+    "category": "Institutionnel religieux",
+    "actor_name": "Conseil Supérieur Islamique",
+    "discours_cles": "Position conservatrice sur les questions de genre et de reproduction.",
+    "strategies": "Accès direct aux décideurs de tous bords. Mobilisation des réseaux religieux.",
+    "zones_influence": "Ensemble du territoire sénégalais (pays à 95% musulman)."
+  },
+  {
+    "source_table": 20,
+    "scope": "country",
+    "countries": [
+      "S?n?gal"
+    ],
+    "category": "Réseaux religieux",
+    "actor_name": "Dahiras et confréries mourides et tidijanes",
+    "discours_cles": "Légitimité morale et religieuse. Valeurs traditionnelles.",
+    "strategies": "Réseaux capillaires territorialement implantés, mobilisables sur les questions morales.",
+    "zones_influence": "Ensemble du territoire."
+  },
+  {
+    "source_table": 20,
+    "scope": "country",
+    "countries": [
+      "S?n?gal"
+    ],
+    "category": "Gouvernement",
+    "actor_name": "Gouvernement Sonko-Faye Acteurs politico-religieux proches du régime",
+    "discours_cles": "« Souverainisme africain. Protection de la famille. Valeurs africaines contre l'agenda occidental. »",
+    "strategies": "Tentatives de remise en question de la loi sur la parité et de la loi criminalisant le viol. Plainte contre les organisations féministes (JAMRA, début 2025).",
+    "zones_influence": "Institutions nationales. Médias. Société."
+  },
+  {
+    "source_table": 21,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "International",
+    "actor_name": "Donald Trump / administration américaine",
+    "discours_cles": "« Menace pour la famille. Protection de la cellule familiale. »",
+    "strategies": "Pression diplomatique. Restriction des financements (USAID). Relier le mouvement pro-avortement aux LGBTQ+. Restriction diplomatique.",
+    "zones_influence": "Conférences internationales. ONU. Gouvernement. Sphères politiques."
+  },
+  {
+    "source_table": 21,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "International",
+    "actor_name": "Pape Léon XIV / Vatican",
+    "discours_cles": "« Menace pour la famille. Protection de la cellule familiale. »",
+    "strategies": "Attaque des discours pro-choix. Évangiles. Refus des méthodes contraceptives.",
+    "zones_influence": "Conférences internationales. Gouvernement. Églises."
+  },
+  {
+    "source_table": 21,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "International",
+    "actor_name": "Human Life International (HLI)",
+    "discours_cles": "« Menace pour la famille. »",
+    "strategies": "Infiltration. Formation des acteurs. Financement.",
+    "zones_influence": "Conférences internationales. Églises."
+  },
+  {
+    "source_table": 21,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "International",
+    "actor_name": "Église Mormone",
+    "discours_cles": "« L'avortement est un crime. Menace pour la famille. »",
+    "strategies": "Évangélisation. Financement. Sponsoring de rencontres internationales.",
+    "zones_influence": "Conférences internationales. Églises."
+  },
+  {
+    "source_table": 21,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "International",
+    "actor_name": "Heritage Foundation Family Watch International OCADES Caritas",
+    "discours_cles": "« Menace pour la famille. »",
+    "strategies": "Sponsoring de rencontres internationales. Financement.",
+    "zones_influence": "Conférences internationales."
+  },
+  {
+    "source_table": 21,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "National",
+    "actor_name": "Conférence épiscopale Burkina-Niger Fédération des Églises et Missions Évangéliques (FEME) Fédération des Associations Islamiques du Burkina (FAIB) Organisation Diocésaine des Laïcs Évangéliques (ODE)",
+    "discours_cles": "« Évangiles. Protection de la cellule familiale. Refus des méthodes contraceptives. »",
+    "strategies": "Restriction de leurs espaces aux OSC intervenant sur les DSSR. Prêches. Sensibilisations.",
+    "zones_influence": "Communautés nationales. Églises. Mosquées."
+  },
+  {
+    "source_table": 22,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Politique",
+    "actor_name": "Bassolma Bazié",
+    "discours_cles": "« Retour aux valeurs africaines. Néocolonialisme. »",
+    "strategies": "Conférences. Communication sur les réseaux sociaux. Interviews.",
+    "zones_influence": "Sphères politiques nationales."
+  },
+  {
+    "source_table": 22,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Politique",
+    "actor_name": "Col.-Major Blaise Z. Ouédraogo (gouverneur région des Koulsé)",
+    "discours_cles": "« Retour aux valeurs africaines. »",
+    "strategies": "Autorité militaro-administrative.",
+    "zones_influence": "Sphères politiques nationales."
+  },
+  {
+    "source_table": 22,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Politique",
+    "actor_name": "Nombo Moussa (parlementaire) Lompo David (parlementaire)",
+    "discours_cles": "« Défense des intérêts de la communauté. Retour aux valeurs africaines. »",
+    "strategies": "Lobbying parlementaire.",
+    "zones_influence": "Sphères politiques."
+  },
+  {
+    "source_table": 22,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Politique",
+    "actor_name": "Sigiré Adama",
+    "discours_cles": "« Néocolonialisme. Africanisation. Alignement sur les priorités du pays. »",
+    "strategies": "Conférences. Réseaux sociaux.",
+    "zones_influence": "Sphères politiques."
+  },
+  {
+    "source_table": 22,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Institutionnel",
+    "actor_name": "Certains agents du Ministère de la Santé Certains agents du Ministère de la Justice Certains agents du Ministère de l'Éducation",
+    "discours_cles": "Blocage institutionnel interne. Changement du lexique. Refus de certains services.",
+    "strategies": "Blocage des politiques DSSR. Non-reconnaissance du leadership des OSC.",
+    "zones_influence": "Sphères politiques. Institutions nationales."
+  },
+  {
+    "source_table": 23,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Religieux catholique",
+    "actor_name": "Abbé Bicaba, Abbé Konvolvo, Centre Jean Paul II de Tanghin, Paroisse saint François d'Assise de Karpala, Cardinal Philippe Ouédraogo, Jérémie Compaoré, OCADES",
+    "discours_cles": "« L'avortement est un crime. Les méthodes contraceptives rendent les femmes stériles. »",
+    "strategies": "Prêches. Évangélisation. Production et diffusion de documents anti-PF. Refus d'accès aux infrastructures. Financement de bourses. Enseignement idéologique dans les écoles. Formation pré-mariage.",
+    "zones_influence": "Paroisses. Écoles catholiques. Milieux universitaires."
+  },
+  {
+    "source_table": 23,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Religieux musulman",
+    "actor_name": "Dr Kindo (mouvement Sunnite) El Adj Mahamoudou Bandé El Adj Bambara Moussa Cheik Omar Sankara",
+    "discours_cles": "« L'abstinence. \"Une bonne femme doit accepter la polygamie.\" L'avortement constitue un crime. \"Une femme ne doit pas se refuser à son mari.\" »",
+    "strategies": "Prêches. Enseignement dans les écoles coraniques. Prolifération des mosquées. Financement de bourses d'études arabes.",
+    "zones_influence": "Écoles coraniques. Mosquées. Communautés musulmanes."
+  },
+  {
+    "source_table": 23,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Religieux protestant",
+    "actor_name": "Communauté protestante Nestorine Sangaré ODE / FEME",
+    "discours_cles": "« Abstinence. Évangile. »",
+    "strategies": "Prêches anti-DSSR. Camps éducatifs contre la sexualité précoce. Vacances filles (cuisine, test de virginité, abstinence).",
+    "zones_influence": "Milieux évangéliques. Jeunesse."
+  },
+  {
+    "source_table": 23,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Intercommunautaire",
+    "actor_name": "Union des religieux et coutumiers du Burkina Faso (URCB)",
+    "discours_cles": "« Menace pour la famille. Encourager la perversion. »",
+    "strategies": "Valeurs culturelles africaines. Prêches. Refus de participation aux activités DSSR.",
+    "zones_influence": "Sphères politiques. Églises. Mosquées. Communautés."
+  },
+  {
+    "source_table": 24,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Communautaire",
+    "actor_name": "Julie Kongo",
+    "discours_cles": "« Le lévirat c'était juste pour protéger les femmes et les enfants. »",
+    "strategies": "Plateaux TV, radio. Animations de conférence. Déclarations anti-DSSR.",
+    "zones_influence": "Médias. Événements."
+  },
+  {
+    "source_table": 24,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Communautaire",
+    "actor_name": "Wagnignan (CNAVC)",
+    "discours_cles": "« Le financement du Fonds Mondial ne doit pas prendre en compte les populations clés. »",
+    "strategies": "Écrits. Veille citoyenne. Déclarations.",
+    "zones_influence": "Sphères politiques."
+  },
+  {
+    "source_table": 24,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Média",
+    "actor_name": "Radio/TV Maria (Ouaga, Koupéla) TV Al Houda",
+    "discours_cles": "",
+    "strategies": "Refus d'animer des émissions sur les DSSR.",
+    "zones_influence": "Communautés religieuses."
+  },
+  {
+    "source_table": 24,
+    "scope": "country",
+    "countries": [
+      "Burkina Faso"
+    ],
+    "category": "Média",
+    "actor_name": "Mousso News",
+    "discours_cles": "« Je serai la peste des féministes. »",
+    "strategies": "Publications réseaux sociaux. Journaux. Web TV.",
+    "zones_influence": "Grand public."
+  }
+]
