@@ -201,6 +201,14 @@ h1,h2,h3,.font-syne{font-family:'Syne',sans-serif}
   display:flex;flex-direction:column;z-index:100;
   transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
+.sb-overlay{
+  position:fixed;inset:0;z-index:98;
+  background:rgba(20,28,35,.28);
+  backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;
+  transition:opacity .24s ease;
+}
+.sb-overlay.open{opacity:1;pointer-events:auto}
 .sb-logo{
   display:flex;align-items:center;gap:12px;
   padding:22px 20px 18px;
@@ -252,6 +260,7 @@ h1,h2,h3,.font-syne{font-family:'Syne',sans-serif}
 }
 .tp-btn:hover{background:rgba(255,255,255,.05);color:var(--txt);border-color:var(--cyan)}
 .tp-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--bg2)}
+.tp-menu{display:none}
 .tp-avatar{
   width:36px;height:36px;border-radius:50%;
   background:linear-gradient(135deg,var(--cyan),var(--teal));
@@ -551,6 +560,8 @@ textarea.inp2{resize:vertical;min-height:100px}
   #sb{transform:translateX(-100%)}
   #sb.open{transform:none}
   #main,#topbar{margin-left:0;left:0}
+  .tp-menu{display:flex}
+  .sb-overlay.open{display:block}
   .kpi-grid{grid-template-columns:1fr 1fr}
   .res-grid{grid-template-columns:1fr 1fr}
 }
@@ -954,6 +965,7 @@ textarea.inp2{resize:vertical;min-height:100px}
     </div>
   </div>
 </aside>
+<div class="sb-overlay" id="sb-overlay"></div>
 
 <!-- ═══════════════════════════════════════
      TOPBAR
@@ -961,6 +973,9 @@ textarea.inp2{resize:vertical;min-height:100px}
 <header id="topbar">
   <div class="tp-title" id="tp-title">Tableau de bord</div>
   <div class="tp-actions">
+    <button class="tp-btn tp-menu" type="button" onclick="toggleSidebarMenu()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
     <div style="position:relative">
       <button class="tp-btn" onclick="toggleNotif()">
         <div class="tp-dot"></div>
@@ -1815,6 +1830,39 @@ function getSidebarItemByTarget(targetId) {
   return Array.from(document.querySelectorAll('.sb-item')).find(item => getNavTargetFromElement(item) === targetId);
 }
 
+function isMobileSidebarMode() {
+  return window.innerWidth <= 900;
+}
+
+function syncSidebarOverlay() {
+  const sidebar = document.getElementById('sb');
+  const overlay = document.getElementById('sb-overlay');
+  const isOpen = !!sidebar?.classList.contains('open');
+  if (overlay) overlay.classList.toggle('open', isOpen && isMobileSidebarMode());
+  if (document.body) document.body.style.overflow = isOpen && isMobileSidebarMode() ? 'hidden' : '';
+}
+
+function openSidebarMenu() {
+  const sidebar = document.getElementById('sb');
+  if (!sidebar || !isMobileSidebarMode()) return;
+  sidebar.classList.add('open');
+  syncSidebarOverlay();
+}
+
+function closeSidebarMenu() {
+  const sidebar = document.getElementById('sb');
+  if (!sidebar) return;
+  sidebar.classList.remove('open');
+  syncSidebarOverlay();
+}
+
+function toggleSidebarMenu() {
+  const sidebar = document.getElementById('sb');
+  if (!sidebar || !isMobileSidebarMode()) return;
+  sidebar.classList.toggle('open');
+  syncSidebarOverlay();
+}
+
 function nav(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
@@ -1828,6 +1876,7 @@ function nav(id) {
   if (id === 'cartographie') initNet();
   if (id === 'profil') syncSessions();
   if (id === 'membres') loadMembersAdminData();
+  closeSidebarMenu();
 }
 
 // ════════════════════════════════════════
@@ -3260,6 +3309,7 @@ function nav(id) {
   if (id === 'profil') syncSessions();
   if (id === 'membres') loadMembersAdminData();
   if (id === 'signalements' || id === 'validation') loadSignalementsData();
+  closeSidebarMenu();
 }
 
 function setupSignalementFilters() {
@@ -4519,6 +4569,7 @@ function nav(id) {
   if (targetId === 'membres' && ['admin', 'analyste', 'moderateur'].includes(currentUser?.role)) loadMembersAdminData();
   if (targetId === 'signalements' || targetId === 'validation') loadSignalementsData();
   applyRoleDashboard();
+  closeSidebarMenu();
 }
 window.nav = nav;
 
@@ -6642,6 +6693,19 @@ ensureSignalementFiltersUI();
 ensureSignalementModalUI();
 ensureReportModal();
 
+document.getElementById('sb-overlay')?.addEventListener('click', closeSidebarMenu);
+window.addEventListener('resize', () => {
+  if (!isMobileSidebarMode()) {
+    closeSidebarMenu();
+  } else {
+    syncSidebarOverlay();
+  }
+});
+window.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeSidebarMenu();
+});
+syncSidebarOverlay();
+
 // Init auth forms
 document.querySelectorAll('.auth-sel').forEach((el, i) => { if (i > 0) el.style.display = 'none'; });
 initializeInteractiveFeatures();
@@ -6696,6 +6760,7 @@ restoreSession();
     if (id === 'signalements' || id === 'validation') callIfAvailable('loadSignalementsData');
     if (id === 'profil') callIfAvailable('syncSessions');
     if (id === 'membres') callIfAvailable('loadMembersAdminData');
+    closeSidebarMenu();
   }
 
   try { window.nav = fallbackNavigate; } catch (_error) {}
