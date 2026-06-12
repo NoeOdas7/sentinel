@@ -1863,6 +1863,12 @@ function toggleSidebarMenu() {
   syncSidebarOverlay();
 }
 
+function syncAuthPageVisibility() {
+  const authPage = document.getElementById('auth-page');
+  if (!authPage) return;
+  authPage.style.display = authToken && currentUser ? 'none' : 'flex';
+}
+
 function nav(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
@@ -6620,6 +6626,7 @@ syncAuthenticatedUI = async function() {
   ensureRoleSpecificExperience();
   ensureRadarExperienceStyles();
   if (!authToken || !currentUser) return;
+  syncAuthPageVisibility();
   applyRoleNavigation();
   applyRoleDashboard();
   setProfileFromUser(currentUser);
@@ -6667,6 +6674,7 @@ window.nav = nav;
 const __radarEnterAppFinal = enterApp;
 enterApp = function enterApp() {
   __radarEnterAppFinal();
+  syncAuthPageVisibility();
   window.setTimeout(() => {
     if (!authToken || !currentUser) return;
     Promise.resolve(loadActorNetworkData()).catch(() => {});
@@ -6675,6 +6683,7 @@ enterApp = function enterApp() {
 };
 
 window.addEventListener('pageshow', () => {
+  syncAuthPageVisibility();
   if (!authToken || !currentUser) return;
   Promise.resolve(loadActorNetworkData()).catch(() => {});
   Promise.resolve(loadDashboardData()).catch(() => {});
@@ -6694,6 +6703,9 @@ ensureSignalementModalUI();
 ensureReportModal();
 
 document.getElementById('sb-overlay')?.addEventListener('click', closeSidebarMenu);
+window.toggleSidebarMenu = toggleSidebarMenu;
+window.closeSidebarMenu = closeSidebarMenu;
+window.openSidebarMenu = openSidebarMenu;
 window.addEventListener('resize', () => {
   if (!isMobileSidebarMode()) {
     closeSidebarMenu();
@@ -6705,6 +6717,7 @@ window.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeSidebarMenu();
 });
 syncSidebarOverlay();
+syncAuthPageVisibility();
 
 // Init auth forms
 document.querySelectorAll('.auth-sel').forEach((el, i) => { if (i > 0) el.style.display = 'none'; });
